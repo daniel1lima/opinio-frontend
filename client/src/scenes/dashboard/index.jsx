@@ -3,6 +3,8 @@ import FlexBetween from "components/FlexBetween";
 import Header from "components/Header";
 import { DownloadOutlined, Timeline } from "@mui/icons-material";
 import { Gauge, gaugeClasses } from '@mui/x-charts/Gauge';
+import Avatar from '@mui/material/Avatar';
+import Stack from '@mui/material/Stack';
 import {
   Box,
   Button,
@@ -115,7 +117,113 @@ const Dashboard = () => {
         {/* ROW 1 */}
 
         <Box
-          gridColumn="span 10"
+          gridColumn="span 7"
+          gridRow="span 2"
+          backgroundColor={theme.palette.background.default}
+          borderRadius="0.55rem"
+          p="1rem"
+          sx={{
+            "&:hover": {
+              boxShadow: "0 0 10px 0 rgba(0,0,0,0.1)",
+              transition: "0.3s ease-out"
+              // scale: "102.6%"
+            }
+          }}
+        >
+          <FlexBetween>
+            <Box
+              display="flex"
+              flexDirection="row"
+              gap="10px"
+              ml="1.5rem"
+              mt=".5rem"
+              mb=".5rem"
+            >
+              <Typography variant="h4" fontWeight="bold">
+                {" "}
+               Overall Score
+              </Typography>
+            </Box>
+            <Box
+              display="flex"
+              flexDirection="row"
+              gap="10px"
+              ml="1.5rem"
+              mt=".5rem"
+              mb=".5rem"
+            >
+              <LongMenu />
+            </Box>
+          </FlexBetween>
+          <Box  sx={{ borderRadius: "16px", display: "flex", justifyContent: "center", alignItems: "center" }}>
+          <Gauge width={150} height={150} value={80} sx={{
+        [`& .${gaugeClasses.valueText}`]: {
+          fontSize: 20,
+        },
+        [`& .${gaugeClasses.valueArc}`]: {
+          fill: "#2456EC",
+        },
+        [`& .${gaugeClasses.referenceArc}`]: {
+          fill: theme.palette.text.disabled,
+        },
+      }}/>
+          </Box>
+        </Box>
+
+        <Box
+          gridColumn="span 6"
+          gridRow="span 2"
+          backgroundColor={theme.palette.background.default}
+          borderRadius="0.55rem"
+          p="1rem"
+          sx={{
+            "&:hover": {
+              boxShadow: "0 0 10px 0 rgba(0,0,0,0.1)",
+              transition: "0.3s ease-out"
+              // scale: "102.6%"
+            }
+          }}
+        >
+          <FlexBetween>
+            <Box
+              display="flex"
+              flexDirection="row"
+              gap="10px"
+              ml="1.5rem"
+              mt=".5rem"
+              mb=".5rem"
+            >
+              <Typography variant="h4" fontWeight="bold">
+                {" "}
+               Team Members
+              </Typography>
+            </Box>
+            <Box
+              display="flex"
+              flexDirection="row"
+              gap="10px"
+              ml="1.5rem"
+              mt=".5rem"
+              mb=".5rem"
+            >
+              <LongMenu />
+            </Box>
+          </FlexBetween>
+          <Box  sx={{ borderRadius: "16px", display: "flex", justifyContent: "center", alignItems: "center" }}>
+            <Stack direction="row" spacing={2}>
+              <Avatar alt="Khrish" src="" />
+              <Avatar alt="Youssef" src="" />
+              <Avatar alt="Khrish" src="" />
+              <Avatar alt="Youssef" src="" />
+            </Stack>
+          </Box>
+        </Box>
+
+
+
+        {/* EL 2 */}
+        <Box
+          gridColumn="span 11"
           gridRow="span 5"
           backgroundColor={theme.palette.background.default}
           p="1rem"
@@ -128,6 +236,7 @@ const Dashboard = () => {
             }
           }}
         >
+          
           <FlexBetween>
             <Box
               display="flex"
@@ -158,9 +267,10 @@ const Dashboard = () => {
           </Box>
         </Box>
 
-        {/* EL 2 */}
+        {/* ROW 2 */}
+        
         <Box
-          gridColumn="span 14"
+          gridColumn="span 11"
           gridRow="span 4"
           backgroundColor={theme.palette.background.default}
           borderRadius="0.55rem"
@@ -181,9 +291,9 @@ const Dashboard = () => {
               ml="1.5rem"
               mt=".5rem"
             >
-              <Typography variant="h6" fontWeight="bold">
+              <Typography variant="h4" fontWeight="bold">
                 {" "}
-                Timeline
+                Frequency of Reviews
               </Typography>
             </Box>
             <Box
@@ -201,74 +311,9 @@ const Dashboard = () => {
             <LineAnimation />
           </Box>
         </Box>
-
-        {/* ROW 2 */}
-        <Box
-          gridColumn="span 12"
-          gridRow="span 2"
-          backgroundColor={theme.palette.background.default}
-          borderRadius="0.55rem"
-          p="1rem"
-          sx={{
-            "&:hover": {
-              boxShadow: "0 0 10px 0 rgba(0,0,0,0.1)",
-              transition: "0.3s ease-out"
-              // scale: "102.6%"
-            }
-          }}
-        >
-          <Box
-            display="flex"
-            flexDirection="row"
-            gap="10px"
-            ml="1.5rem"
-            mt="1.5rem"
-          >
-            <Timeline />
-            <Typography variant="h6" fontWeight="bold">
-              {" "}
-              Checklist
-            </Typography>
-          </Box>
-          <Box ml="1rem" mt="2rem">
-            <FormGroup>
-              <FormControlLabel
-                control={<Checkbox defaultChecked />}
-                label="Label"
-                sx={{
-                  ".MuiFormControlLabel-label": {
-                    fontSize: "16px",
-                    fontWeight: "bold"
-                  }
-                }}
-              />
-              <FormControlLabel
-                required
-                control={<Checkbox />}
-                label="Required"
-                sx={{
-                  ".MuiFormControlLabel-label": {
-                    fontSize: "16px",
-                    fontWeight: "bold"
-                  }
-                }}
-              />
-              <FormControlLabel
-                disabled
-                control={<Checkbox />}
-                label="Disabled"
-                sx={{
-                  ".MuiFormControlLabel-label": {
-                    fontSize: "16px",
-                    fontWeight: "bold"
-                  }
-                }}
-              />
-            </FormGroup>
-          </Box>
-        </Box>
+        
         {/* ROW 2 COLUMN 2 */}
-        <Box
+        {/* <Box
           gridColumn="span 10"
           gridRow="span 4"
           backgroundColor={theme.palette.background.default}
@@ -331,10 +376,10 @@ const Dashboard = () => {
               />
             </FormGroup>
           </Box>
-        </Box>
+        </Box> */}
 
-        <Box
-          gridColumn="span 5"
+<Box
+          gridColumn="span 12"
           gridRow="span 2"
           backgroundColor={theme.palette.background.default}
           borderRadius="0.55rem"
@@ -347,45 +392,59 @@ const Dashboard = () => {
             }
           }}
         >
-          <FlexBetween>
-            <Box
-              display="flex"
-              flexDirection="row"
-              gap="10px"
-              ml="1.5rem"
-              mt=".5rem"
-              mb=".5rem"
-            >
-              <Typography variant="h4" fontWeight="bold">
-                {" "}
-               Gauge
-              </Typography>
-            </Box>
-            <Box
-              display="flex"
-              flexDirection="row"
-              gap="10px"
-              ml="1.5rem"
-              mt=".5rem"
-              mb=".5rem"
-            >
-              <LongMenu />
-            </Box>
-          </FlexBetween>
-          <Box  sx={{ borderRadius: "16px", display: "flex", justifyContent: "center", alignItems: "center" }}>
-          <Gauge width={150} height={150} value={50} sx={{
-        [`& .${gaugeClasses.valueText}`]: {
-          fontSize: 20,
-        },
-        [`& .${gaugeClasses.valueArc}`]: {
-          fill: "#2456EC",
-        },
-        [`& .${gaugeClasses.referenceArc}`]: {
-          fill: theme.palette.text.disabled,
-        },
-      }}/>
+          <Box
+            display="flex"
+            flexDirection="row"
+            gap="10px"
+            ml="1.5rem"
+            mt="1.5rem"
+          >
+            <Timeline />
+            <Typography variant="h4" fontWeight="bold">
+              {" "}
+              Insights
+            </Typography>
+          </Box>
+          <Box ml="1rem" mt="2rem">
+            <FormGroup>
+              <FormControlLabel
+                control={<Checkbox defaultChecked />}
+                label="Label"
+                sx={{
+                  ".MuiFormControlLabel-label": {
+                    fontSize: "16px",
+                    fontWeight: "bold"
+                  }
+                }}
+              />
+              <FormControlLabel
+                required
+                control={<Checkbox />}
+                label="Required"
+                sx={{
+                  ".MuiFormControlLabel-label": {
+                    fontSize: "16px",
+                    fontWeight: "bold"
+                  }
+                }}
+              />
+              <FormControlLabel
+                disabled
+                control={<Checkbox />}
+                label="Disabled"
+                sx={{
+                  ".MuiFormControlLabel-label": {
+                    fontSize: "16px",
+                    fontWeight: "bold"
+                  }
+                }}
+              />
+            </FormGroup>
           </Box>
         </Box>
+
+
+        
       </Box>
     </Box>
   );
