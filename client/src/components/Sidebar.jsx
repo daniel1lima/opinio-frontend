@@ -59,10 +59,6 @@ const navItems = [
     icon: <ReviewsIcon />,
   },
   {
-    text: "Sales",
-    icon: null,
-  },
-  {
     text: "Overview",
     icon: <PointOfSaleOutlined />,
   },
@@ -100,10 +96,6 @@ const Sidebar = ({
 
   const companyName = companyDB?.company_name;
 
-
-
-
-  
 
   useEffect(() => {
     setActive(pathname.substring(1));

@@ -35,7 +35,7 @@ export default function BarAnimation() {
           .map((s) => ({ ...s, data: s.data.slice(0, itemNb) }))}
         skipAnimation={skipAnimation}
       />
-      <FormControlLabel
+      {/* <FormControlLabel
         checked={skipAnimation}
         control={
           <Checkbox onChange={(event) => setSkipAnimation(event.target.checked)} />
@@ -64,7 +64,7 @@ export default function BarAnimation() {
         min={1}
         max={10}
         aria-labelledby="input-series-number"
-      />
+      /> */}
     </Box>
     </FlexBetween>
   );

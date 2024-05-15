@@ -3,9 +3,10 @@ import { Box, useTheme } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { useGetTransactionsQuery } from "state/api";
 import Header from "components/Header";
+import FlexBetween from "components/FlexBetween";
 import DataGridCustomToolbar from "components/DataGridCustomToolbar";
 
-const Transactions = () => {
+const Reviews = () => {
   const theme = useTheme();
 
   // values to be sent to the backend
@@ -54,9 +55,25 @@ const Transactions = () => {
   ];
 
   return (
-    <Box m="1.5rem 2.5rem">
-      <Header title="TRANSACTIONS" subtitle="Entire list of transactions" />
+  <Box
+    m=".5rem 1.5rem"
+    bgcolor={theme.palette.grey[100]}
+    sx={{ borderRadius: "16px" }}
+    mb="1.5rem">
+
+
+<FlexBetween>
+        <Box m="1rem 1rem 0rem">
+          <Box ml="0.8rem" mt="1rem">
+            <Header title="Reviews" />
+          </Box>
+        </Box>
+      </FlexBetween>
+    {/* <Box ml="1.5rem" mt="1rem" pt="0.1rem"  pl="0.5rem">
+        <Header title="Reviews" />
+   </Box> */}
       <Box
+      px="1.5rem"
         height="80vh"
         sx={{
           "& .MuiDataGrid-root": {
@@ -108,4 +125,4 @@ const Transactions = () => {
   );
 };
 
-export default Transactions;
+export default Reviews;

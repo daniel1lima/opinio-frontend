@@ -11,8 +11,8 @@ const AddCompanyToUser = () => {
 
     const { user, companyId } = useSelector(state => state.userCompany);
 
-    // console.log("Company ID:", companyId);
-    // console.log("Company user:", user);
+    console.log("Company ID:", companyId);
+    console.log("Company user:", user);
 
     const clerkUser = useAuth();
     const clerkPersonal = useUser().user;
