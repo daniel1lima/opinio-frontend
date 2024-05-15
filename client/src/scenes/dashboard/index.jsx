@@ -17,8 +17,6 @@ import {
   Checkbox
 } from "@mui/material";
 
-import { BarChart, LineChart } from "@mui/x-charts";
-
 import { DataGrid } from "@mui/x-data-grid";
 // import BreakdownChart from "components/BreakdownChart";
 // import OverviewChart from "components/OverviewChart";
@@ -46,36 +44,6 @@ const Dashboard = () => {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-  const columns = [
-    {
-      field: "_id",
-      headerName: "ID",
-      flex: 1
-    },
-    {
-      field: "userId",
-      headerName: "User ID",
-      flex: 1
-    },
-    {
-      field: "createdAt",
-      headerName: "CreatedAt",
-      flex: 1
-    },
-    {
-      field: "products",
-      headerName: "# of Products",
-      flex: 0.5,
-      sortable: false,
-      renderCell: params => params.value.length
-    },
-    {
-      field: "cost",
-      headerName: "Cost",
-      flex: 1,
-      renderCell: params => `$${Number(params.value).toFixed(2)}`
-    }
-  ];
 
   return (
     <Box
@@ -85,8 +53,8 @@ const Dashboard = () => {
       mb="1.5rem"
     >
       <FlexBetween>
-        <Box m=".3rem 1rem  1rem">
-          <Box ml="1.5rem" mt="1rem">
+        <Box m="1rem 1rem 0rem">
+          <Box ml="0.8rem" mt="1rem">
             <Header title="Dashboard" />
           </Box>
 
@@ -210,12 +178,21 @@ const Dashboard = () => {
             </Box>
           </FlexBetween>
           <Box  sx={{ borderRadius: "16px", display: "flex", justifyContent: "center", alignItems: "center" }}>
+          <Stack direction="column" spacing={2}>
+          <Stack direction="row" spacing={2}>
+              <Avatar alt="Khrish" src="" />
+              <Avatar alt="Youssef" src="" />
+              <Avatar alt="Khrish" src="" />
+              <Avatar alt="Youssef" src="" />
+            </Stack>
             <Stack direction="row" spacing={2}>
               <Avatar alt="Khrish" src="" />
               <Avatar alt="Youssef" src="" />
               <Avatar alt="Khrish" src="" />
               <Avatar alt="Youssef" src="" />
             </Stack>
+          </Stack>  
+            
           </Box>
         </Box>
 
@@ -224,7 +201,7 @@ const Dashboard = () => {
         {/* EL 2 */}
         <Box
           gridColumn="span 11"
-          gridRow="span 5"
+          gridRow="span 3"
           backgroundColor={theme.palette.background.default}
           p="1rem"
           borderRadius="0.55rem"
@@ -270,8 +247,8 @@ const Dashboard = () => {
         {/* ROW 2 */}
         
         <Box
-          gridColumn="span 11"
-          gridRow="span 4"
+          gridColumn="span 13"
+          gridRow="span 3"
           backgroundColor={theme.palette.background.default}
           borderRadius="0.55rem"
           p="1rem"
@@ -313,9 +290,11 @@ const Dashboard = () => {
         </Box>
         
         {/* ROW 2 COLUMN 2 */}
-        {/* <Box
-          gridColumn="span 10"
-          gridRow="span 4"
+
+
+<Box
+          gridColumn="span 11"
+          gridRow="span 2"
           backgroundColor={theme.palette.background.default}
           borderRadius="0.55rem"
           p="1rem"
@@ -334,17 +313,16 @@ const Dashboard = () => {
             ml="1.5rem"
             mt="1.5rem"
           >
-            <Timeline />
-            <Typography variant="h6" fontWeight="bold">
+            <Typography variant="h4" fontWeight="bold">
               {" "}
-              Checklist
+              Insights
             </Typography>
           </Box>
           <Box ml="1rem" mt="2rem">
             <FormGroup>
               <FormControlLabel
                 control={<Checkbox defaultChecked />}
-                label="Label"
+                label="Insight 1"
                 sx={{
                   ".MuiFormControlLabel-label": {
                     fontSize: "16px",
@@ -353,9 +331,8 @@ const Dashboard = () => {
                 }}
               />
               <FormControlLabel
-                required
-                control={<Checkbox />}
-                label="Required"
+                control={<Checkbox defaultChecked />}
+                label="Insight 2"
                 sx={{
                   ".MuiFormControlLabel-label": {
                     fontSize: "16px",
@@ -364,9 +341,8 @@ const Dashboard = () => {
                 }}
               />
               <FormControlLabel
-                disabled
-                control={<Checkbox />}
-                label="Disabled"
+                control={<Checkbox defaultChecked />}
+                label="Insight 3"
                 sx={{
                   ".MuiFormControlLabel-label": {
                     fontSize: "16px",
@@ -376,9 +352,9 @@ const Dashboard = () => {
               />
             </FormGroup>
           </Box>
-        </Box> */}
-
-<Box
+        </Box>
+      
+        <Box
           gridColumn="span 12"
           gridRow="span 2"
           backgroundColor={theme.palette.background.default}
@@ -399,52 +375,47 @@ const Dashboard = () => {
             ml="1.5rem"
             mt="1.5rem"
           >
-            <Timeline />
             <Typography variant="h4" fontWeight="bold">
               {" "}
-              Insights
+              Recent Reviews
             </Typography>
           </Box>
           <Box ml="1rem" mt="2rem">
-            <FormGroup>
-              <FormControlLabel
-                control={<Checkbox defaultChecked />}
-                label="Label"
-                sx={{
-                  ".MuiFormControlLabel-label": {
-                    fontSize: "16px",
-                    fontWeight: "bold"
-                  }
-                }}
-              />
-              <FormControlLabel
-                required
-                control={<Checkbox />}
-                label="Required"
-                sx={{
-                  ".MuiFormControlLabel-label": {
-                    fontSize: "16px",
-                    fontWeight: "bold"
-                  }
-                }}
-              />
-              <FormControlLabel
-                disabled
-                control={<Checkbox />}
-                label="Disabled"
-                sx={{
-                  ".MuiFormControlLabel-label": {
-                    fontSize: "16px",
-                    fontWeight: "bold"
-                  }
-                }}
-              />
-            </FormGroup>
+           5 recent reviews here
           </Box>
         </Box>
 
+        <Box
+          gridColumn="span 12"
+          gridRow="span 2"
+          backgroundColor={theme.palette.background.default}
+          borderRadius="0.55rem"
+          p="1rem"
+          sx={{
+            "&:hover": {
+              boxShadow: "0 0 10px 0 rgba(0,0,0,0.1)",
+              transition: "0.3s ease-out"
+              // scale: "102.6%"
+            }
+          }}
+        >
+          <Box
+            display="flex"
+            flexDirection="row"
+            gap="10px"
+            ml="1.5rem"
+            mt="1.5rem"
+          >
+            <Typography variant="h4" fontWeight="bold">
+              {" "}
+              Qualitative Report
+            </Typography>
+          </Box>
+          <Box ml="1rem" mt="2rem">
+          Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.
+          </Box>
+        </Box>
 
-        
       </Box>
     </Box>
   );

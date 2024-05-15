@@ -46,7 +46,7 @@ export default function LineAnimation() {
           height={300}
         />
       </div>
-      <Stack spacing={1} direction="row">
+      {/* <Stack spacing={1} direction="row">
         <Button
           variant="contained"
           onClick={() =>
@@ -82,7 +82,7 @@ export default function LineAnimation() {
           label="skipAnimation"
           labelPlacement="end"
         />
-      </Stack>
+      </Stack> */}
     </div>
   );
 }

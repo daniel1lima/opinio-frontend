@@ -6,8 +6,8 @@ import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import Dashboard from "scenes/dashboard";
 import Layout from "scenes/layout";
 import { useMemo } from "react";
-import Customers from "scenes/customers";
-import Transactions from "scenes/transactions";
+import Insights from "scenes/insights";
+import Reviews from "scenes/reviews";
 import {
   ClerkProvider,
   SignedIn,
@@ -43,8 +43,8 @@ function App() {
                     element={<Navigate to="/dashboard" replace />}
                   />
                   <Route path="/dashboard" element={<Dashboard />} />
-                  <Route path="/customers" element={<Customers />} />
-                  <Route path="/reviews" element={<Transactions />} />
+                  <Route path="/insights" element={<Insights />} />
+                  <Route path="/reviews" element={<Reviews />} />
                 </Route>
               </Routes>
             </SignedIn>
