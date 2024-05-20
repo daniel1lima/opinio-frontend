@@ -1,23 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import FlexBetween from "components/FlexBetween";
 import Header from "components/Header";
-import { DownloadOutlined, Timeline } from "@mui/icons-material";
-import { Gauge, gaugeClasses } from '@mui/x-charts/Gauge';
-import Avatar from '@mui/material/Avatar';
-import Stack from '@mui/material/Stack';
-import {
-  Box,
-  Button,
-  Typography,
-  useTheme,
-  useMediaQuery,
-  Tab,
-  FormGroup,
-  FormControlLabel,
-  Checkbox
-} from "@mui/material";
 
-
+import { Box, useTheme, useMediaQuery, Tab } from "@mui/material";
 
 import { Tabs } from "@mui/material";
 import LineAnimation from "components/LineAnimated";
@@ -45,17 +30,15 @@ const Dashboard = () => {
   const company = useGetCompanyIdQuery(userFromDb?.company_id).data;
 
   // const { data, isLoading } = useGetDataQuery({
-  //   page,
-  //   pageSize,
-  //   sort: JSON.stringify(sort),
-  //   search,
+  //   company,
+  //   value,
   // });
-
-
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
+  // VALUE IS MY FILTER VALUE
 
   return (
     <Box
@@ -81,6 +64,7 @@ const Dashboard = () => {
             <Tab label="Week" />
             <Tab label="Month" />
             <Tab label="Year" />
+            <Tab label="All Time" />
           </Tabs>
         </Box>
       </FlexBetween>
@@ -92,30 +76,29 @@ const Dashboard = () => {
         gridAutoRows="100px"
         gap="30px"
         sx={{
-          "& > div": { gridColumn: isNonMediumScreens ? undefined : "span 12" }
+          "& > div": { gridColumn: isNonMediumScreens ? undefined : "span 12" },
         }}
       >
         {/* ROW 1 */}
 
         <DashNivoGauge />
 
+        {/* TODO: Need the data for this */}
         <TeamView />
 
         <DashBar />
 
         {/* ROW 2 */}
-        
+
         <DashLine />
-        
+
         {/* ROW 2 COLUMN 2 */}
 
         <DashInsights />
-        
-      
+
         <DashRecent />
 
         <DashReport />
-
       </Box>
     </Box>
   );
