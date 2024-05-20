@@ -28,6 +28,13 @@ export const api = createApi({
             }),
             providesTags: ["CompanyId"]
         }),
+        getReviewData: build.query({
+            query: (comp_id, value) => ({
+                url: `general/client/${comp_id}/${value}`,
+                method: "GET",
+            }),
+            providesTags: ["User"]
+        }),
     })
 })
 
@@ -38,4 +45,5 @@ export const {
     useGetTransactionsQuery,
     useLazyGetCompanyIdQuery,
     useGetCompanyIdQuery,
+    useGetReviewDataQuery,
 } = api;
