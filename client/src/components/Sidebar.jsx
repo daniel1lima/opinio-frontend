@@ -17,29 +17,22 @@ import {
   ChevronLeft,
   ChevronRightOutlined,
   HomeOutlined,
-
   Groups2Outlined,
   ReceiptLongOutlined,
-
   PointOfSaleOutlined,
-
-
   AdminPanelSettingsOutlined,
   TrendingUpOutlined,
-
-  
 } from "@mui/icons-material";
 
-import ReviewsIcon from '@mui/icons-material/Reviews';
+import ReviewsIcon from "@mui/icons-material/Reviews";
 
-import InsightsIcon from '@mui/icons-material/Insights';
+import InsightsIcon from "@mui/icons-material/Insights";
 
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import FlexBetween from "./FlexBetween";
 import logo from "assets/logo.png";
 import { UserButton } from "@clerk/clerk-react";
-
 
 const navItems = [
   {
@@ -91,11 +84,10 @@ const Sidebar = ({
   const navigate = useNavigate();
   const theme = useTheme();
 
-  const firstName = clerkUser.firstName
-  const email = clerkUser.email
+  const firstName = clerkUser.firstName;
+  const email = clerkUser.email;
 
   const companyName = companyDB?.company_name;
-
 
   useEffect(() => {
     setActive(pathname.substring(1));
@@ -116,7 +108,7 @@ const Sidebar = ({
               boxSizing: "border-box",
               borderWidth: isNonMobile ? 0 : "2px",
               width: drawerWidth,
-              transition: "width 0.3s ease-in-out"
+              transition: "width 0.3s ease-in-out",
             },
           }}
         >
@@ -124,12 +116,15 @@ const Sidebar = ({
             <Box m="1rem 2rem 2rem 3rem">
               <FlexBetween color={theme.palette.secondary.main}>
                 <Box display="flex" alignItems="center" gap="0.5rem">
-                  <Box 
+                  <Box
+                    mt="1rem"
                     width="100%"
                     height="3rem"
                     component="img"
                     src={logo}
-                     />
+                    onClick={() => navigate("/dashboard")}
+                    sx={{ cursor: "pointer" }}
+                  />
                 </Box>
                 {!isNonMobile && (
                   <IconButton onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
@@ -142,7 +137,10 @@ const Sidebar = ({
               {navItems.map(({ text, icon }) => {
                 if (!icon) {
                   return (
-                    <Typography key={text} sx={{ m: "2.25rem 0 1rem 3rem", fontWeight: "bold" }}>
+                    <Typography
+                      key={text}
+                      sx={{ m: "2.25rem 0 1rem 3rem", fontWeight: "bold" }}
+                    >
                       {text}
                     </Typography>
                   );
@@ -188,22 +186,23 @@ const Sidebar = ({
               })}
             </List>
           </Box>
-          
-          <Box width="100%" position="absolute" bottom="0rem" sx={{bgcolor: "white",}}>
-          <Divider />
-            <FlexBetween textTransform="none" gap="1.8rem" m="1.5rem 2rem 2rem 2rem">
-              <UserButton />
-                <Box textAlign="center" mr="1rem">
-                  <Typography
-                    fontSize="1.1rem"
-                    sx={{ color: theme.palette.secondary[100] }}
-                  >
-                    Hey {firstName}!
-                  </Typography>
-                  
-                </Box>
 
-              
+          <Box
+            width="100%"
+            position="absolute"
+            bottom="0rem"
+            sx={{ bgcolor: "white" }}
+          >
+            <Divider />
+            <FlexBetween textTransform="none" m="1.5rem 2rem 2rem 2rem">
+              <UserButton />
+              <Typography
+                fontSize="1.1rem"
+                sx={{ color: theme.palette.secondary[100] }}
+                mr="1.5rem"
+              >
+                Hey {firstName}!
+              </Typography>
             </FlexBetween>
           </Box>
         </Drawer>

@@ -51,6 +51,7 @@ const Insights = () => {
       bgcolor={theme.palette.grey[100]}
       sx={{ borderRadius: "16px" }}
       mb="1.5rem"
+      p=".5rem"
     >
       <FlexBetween>
         <Box m="1rem 1rem  0rem">

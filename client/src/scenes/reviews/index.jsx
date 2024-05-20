@@ -59,7 +59,9 @@ const Reviews = () => {
     m=".5rem 1.5rem"
     bgcolor={theme.palette.grey[100]}
     sx={{ borderRadius: "16px" }}
-    mb="1.5rem">
+    mb="1.5rem"
+    p=".5rem"
+    >
 
 
 <FlexBetween>
