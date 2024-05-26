@@ -5,6 +5,8 @@ import { useGetTransactionsQuery } from "state/api";
 import Header from "components/Header";
 import FlexBetween from "components/FlexBetween";
 import DataGridCustomToolbar from "components/DataGridCustomToolbar";
+import { Button, Popover, Typography } from "@mui/material";
+
 
 const Reviews = () => {
   const theme = useTheme();
@@ -22,6 +24,20 @@ const Reviews = () => {
     sort: JSON.stringify(sort),
     search,
   });
+
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+  const id = open ? 'simple-popover' : undefined;
+
 
   const columns = [
     {
@@ -51,6 +67,38 @@ const Reviews = () => {
       headerName: "Cost",
       flex: 1,
       renderCell: (params) => `$${Number(params.value).toFixed(2)}`,
+    },
+    {
+      field: "action",
+      headerName: "Generate Response",
+      sortable: false,
+      width: 150,
+      renderCell: (params) => (
+        <>
+          <Button aria-describedby={id} variant="contained" color="primary" onClick={handleClick}>
+            Respond
+          </Button>
+          <Popover
+            id={id}
+            open={open}
+            anchorEl={anchorEl}
+            onClose={handleClose}
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'center',
+            }}
+            transformOrigin={{
+              vertical: 'top',
+              horizontal: 'center',
+            }}
+          >
+            <Box p={2}>
+              {/* Content of the Popover */}
+              The user ID is: {params.row.userId}
+            </Box>
+          </Popover>
+        </>
+      ),
     },
   ];
 
@@ -123,8 +171,11 @@ const Reviews = () => {
           }}
         />
       </Box>
+      {/* insert over here */}
     </Box>
   );
 };
+
+
 
 export default Reviews;
