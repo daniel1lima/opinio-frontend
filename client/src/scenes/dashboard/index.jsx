@@ -16,7 +16,7 @@ import DashLine from "components/dash_components/DashLine";
 import DashInsights from "components/dash_components/DashInsights";
 import DashRecent from "components/dash_components/DashRecent";
 import DashReport from "components/dash_components/DashReport";
-import DashNivoGauge from "components/dash_components/DashNivoGauge";
+
 
 const Dashboard = () => {
   const theme = useTheme();
@@ -81,7 +81,7 @@ const Dashboard = () => {
       >
         {/* ROW 1 */}
 
-        <DashNivoGauge />
+        <Dashgauge />
 
         {/* TODO: Need the data for this */}
         <TeamView />
