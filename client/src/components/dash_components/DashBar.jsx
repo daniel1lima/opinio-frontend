@@ -3,9 +3,56 @@ import { Avatar, Box, Stack, Typography, useTheme } from '@mui/material'
 import LongMenu from 'components/DotMenu'
 import FlexBetween from 'components/FlexBetween'
 import BarAnimation from 'components/BarAnimated'
+import { BarChart } from "@mui/x-charts/BarChart";
 
-const DashBar = () => {
+const DashBar = (data) => {
   const theme = useTheme();
+
+  console.log(data.data);
+
+  const transformedData = data.data.data
+  ? data.data.data.map(item => ({
+      category: item.category,
+      average_sentiment: item.average_sentiment,
+      average_polarity: item.average_polarity,
+    }))
+  : [];
+
+
+  const xAxis = [{
+    scaleType: 'band',
+    data: transformedData.map(item => {
+      const firstLetter = item.category.charAt(0).toUpperCase();
+      const restOfLetters = item.category.slice(1).toLowerCase();
+      return firstLetter + restOfLetters;
+    }),
+  }];
+
+
+  const series = [
+    {
+      data: transformedData.map(item => item.average_sentiment),
+      color: '#3f51b5', // Custom color for average_sentiment data
+    },
+    {
+      data: transformedData.map(item => item.average_polarity),
+      color: '#2196f3', // Custom color for average_polarity data
+    },
+  ];
+
+  
+
+  
+
+  // console.log(data)
+
+  // if (data.data.isLoading) {
+  //   return <div>Loading...</div>;
+  // }
+
+  
+
+  
   return (
     <Box
           gridColumn="span 11"
@@ -28,8 +75,7 @@ const DashBar = () => {
               flexDirection="row"
               gap="10px"
               ml="1.5rem"
-              mt=".5rem"
-              mb="1rem"
+              mt=".3rem"
             >
               <Typography variant="h4" fontWeight="bold">
                 {" "}
@@ -41,14 +87,12 @@ const DashBar = () => {
               flexDirection="row"
               gap="10px"
               ml="1.5rem"
-              mt=".5rem"
-              mb="1rem"
             >
               <LongMenu />
             </Box>
           </FlexBetween>
-          <Box ml="1rem">
-            <BarAnimation />
+          <Box>
+            <BarChart colors="blueberryTwilight" xAxis={[{label: 'Category'}]} yAxis={xAxis} series={series} height={300} barLabel="value" layout="horizontal" sx={{ "& .MuiChartsAxis-tickLabel tspan": { fontSize: "0.5em" } }}/>
           </Box>
         </Box>
   )

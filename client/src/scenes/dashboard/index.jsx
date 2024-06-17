@@ -28,17 +28,13 @@ const Dashboard = () => {
   const { userId } = useAuth();
   const { user } = useUser();
   const userFromDb = useGetUserQuery(userId).data;
-  // const company = useGetCompanyIdQuery(userFromDb?.company_id, {skip: !userFromDb?.company_id}).data;
-
-
-
-
 
   const summaryData = useGetSummaryDataByCompanyQuery(userFromDb?.company_id, {skip: !userFromDb?.company_id});
-  console.log(summaryData)
 
   const reviewData = useGetReviewDataByCompanyQuery(userFromDb?.company_id, {skip: !userFromDb?.company_id});
-  console.log(reviewData)
+
+
+  
 
   
 
@@ -94,7 +90,7 @@ const Dashboard = () => {
         {/* TODO: Need the data for this */}
         <TeamView />
 
-        <DashBar />
+        <DashBar data={summaryData}/>
 
         {/* ROW 2 */}
 
