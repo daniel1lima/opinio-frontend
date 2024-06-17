@@ -10,6 +10,7 @@ import axios from "axios";
 import { useAuth, useUser } from "@clerk/clerk-react";
 import SpeedDialTooltipOpen from "components/SpeedDialMUI";
 import { Google } from "@mui/icons-material";
+import { skipToken } from "@reduxjs/toolkit/query";
 
 const Layout = () => {
   const isNonMobile = useMediaQuery("(min-width: 600px)");
@@ -19,7 +20,10 @@ const Layout = () => {
   const { userId } = useAuth();
   const { user } = useUser();
   const userFromDb = useGetUserQuery(userId).data;
-  const company = useGetCompanyIdQuery(userFromDb?.company_id).data;
+  const company = useGetCompanyIdQuery(userFromDb?.company_id, {skip: !userFromDb?.company_id}).data;
+
+  localStorage.setItem("user_id", userId)
+  localStorage.setItem("company_id", userFromDb?.company_id)
 
   // console.log("userId", userFromDb);
   // console.log("company", company)

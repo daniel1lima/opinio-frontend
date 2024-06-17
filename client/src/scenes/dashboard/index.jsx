@@ -3,12 +3,13 @@ import FlexBetween from "components/FlexBetween";
 import Header from "components/Header";
 
 import { Box, useTheme, useMediaQuery, Tab } from "@mui/material";
+import { useMemo } from "react";
 
 import { Tabs } from "@mui/material";
 import LineAnimation from "components/LineAnimated";
 import LongMenu from "components/DotMenu";
 import { useAuth, useUser } from "@clerk/clerk-react";
-import { useGetCompanyIdQuery, useGetUserQuery } from "state/api";
+import { useGetCompanyIdQuery, useGetUserQuery, useGetReviewDataByCompanyQuery, useGetSummaryDataByCompanyQuery } from "state/api";
 import Dashgauge from "components/dash_components/DashGauge";
 import DashBar from "components/dash_components/DashBar";
 import TeamView from "components/dash_components/TeamView";
@@ -27,12 +28,19 @@ const Dashboard = () => {
   const { userId } = useAuth();
   const { user } = useUser();
   const userFromDb = useGetUserQuery(userId).data;
-  const company = useGetCompanyIdQuery(userFromDb?.company_id).data;
+  // const company = useGetCompanyIdQuery(userFromDb?.company_id, {skip: !userFromDb?.company_id}).data;
 
-  // const { data, isLoading } = useGetDataQuery({
-  //   company,
-  //   value,
-  // });
+
+
+
+
+  const summaryData = useGetSummaryDataByCompanyQuery(userFromDb?.company_id, {skip: !userFromDb?.company_id});
+  console.log(summaryData)
+
+  const reviewData = useGetReviewDataByCompanyQuery(userFromDb?.company_id, {skip: !userFromDb?.company_id});
+  console.log(reviewData)
+
+  
 
   const handleChange = (event, newValue) => {
     setValue(newValue);

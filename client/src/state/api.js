@@ -3,15 +3,11 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const api = createApi({
     baseQuery: fetchBaseQuery({ baseUrl: process.env.REACT_APP_BASE_URL }),
     reducerPath: "adminApi",
-    tagTypes: ["User", "Customers", "Transactions"],
+    tagTypes: ["User", "Customers", "Transactions", "Reviews"],
     endpoints: (build) => ({
         getUser: build.query({
             query: (id) => `general/user/${id}`,
             providesTags: ["User"]
-        }),
-        getCustomers: build.query({
-            query: () => "client/customers",
-            providesTags: ["Customers"]
         }),
         getTransactions: build.query({
             query: ({ page, pageSize, sort, search }) => ({
@@ -28,12 +24,19 @@ export const api = createApi({
             }),
             providesTags: ["CompanyId"]
         }),
-        getReviewData: build.query({
-            query: (comp_id, value) => ({
-                url: `general/client/${comp_id}/${value}`,
+        getReviewDataByCompany: build.query({
+            query: (comp_id) => ({
+                url: `client/getReviewsByCompId?comp_id=${comp_id}`,
                 method: "GET",
             }),
-            providesTags: ["User"]
+            providesTags: ["Reviews"]
+        }),
+        getSummaryDataByCompany: build.query({
+            query: (comp_id) => ({
+                url: `client/getSummariesByCompId?comp_id=${comp_id}`,
+                method: "GET",
+            }),
+            providesTags: ["Reviews"]
         }),
     })
 })
@@ -41,9 +44,11 @@ export const api = createApi({
 
 export const {
     useGetUserQuery,
-    useGetCustomersQuery,
     useGetTransactionsQuery,
     useLazyGetCompanyIdQuery,
     useGetCompanyIdQuery,
-    useGetReviewDataQuery,
+    useGetReviewDataByCompanyQuery,
+    useLazyGetReviewDataByCompanyQuery,
+    useGetSummaryDataByCompanyQuery,
+    useLazyGetSummaryDataByCompanyQuery
 } = api;
