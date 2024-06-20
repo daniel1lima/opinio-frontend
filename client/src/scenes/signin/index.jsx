@@ -5,16 +5,13 @@ import FlexBetween from 'components/FlexBetween'
 
 const SignInPage = () => {
   return (
-    
-      <Box width="100%" height="100%" alignContent="center">
-        <FlexBetween m="34%">
-          <SignIn redirectUrl={"/dashboard"}/>
-        </FlexBetween>
-    </Box>
-    
-      
-
-    
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', width: '110vw' }}>
+<Box sx={{ maxWidth: '600px', width: '100%', mx: 'auto' }}> {/* Center horizontally */}
+  <FlexBetween> {/* Ensure FlexBetween does not have default margins or paddings affecting alignment */}
+    <SignIn redirectUrl={"/dashboard"}/>
+  </FlexBetween>
+</Box>
+    </div>
   )
 }
 

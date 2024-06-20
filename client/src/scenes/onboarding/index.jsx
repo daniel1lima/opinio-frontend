@@ -57,9 +57,7 @@ const Onboarding = () => {
             color="text.secondary"
             sx={{ alignSelf: "center", width: { sm: "100%", md: "80%" } }}
           >
-            Explore our cutting-edge dashboard, delivering high-quality
-            solutions tailored to your needs. Elevate your experience with
-            top-tier features and services.
+            Get started by entering your company ID below. If you don&apos;t have a company ID, please contact your company&apos;s administrator.
           </Typography>
           <Stack
             direction={{ xs: "column", sm: "row" }}

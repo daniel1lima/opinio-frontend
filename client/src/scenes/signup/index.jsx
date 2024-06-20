@@ -37,8 +37,9 @@ const SignUpPage = () => {
 
 
   return (
-    <Box width="100%" height="100%" alignContent="center">
-      <FlexBetween m="34%">
+<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', width: '110vw' }}>
+<Box sx={{ maxWidth: '600px', width: '100%', mx: 'auto' }}> {/* Center horizontally */}
+  <FlexBetween> {/* Ensure FlexBetween does not have default margins or paddings affecting alignment */}
         {location.state || companyId ? (
           <SignUp
             redirectUrl="/addUser"
@@ -49,8 +50,9 @@ const SignUpPage = () => {
         ) : (
           <Navigate to="/onboarding" />
         )}
-      </FlexBetween>
-      </Box>
+  </FlexBetween>
+</Box>
+    </div>
   )}
 
 export default SignUpPage
