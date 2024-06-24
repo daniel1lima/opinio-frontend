@@ -4,7 +4,7 @@ import { BarChart } from "@mui/x-charts/BarChart";
 import FlexBetween from "./FlexBetween";
 
 export default function BarAnimation(data) {
-  console.log(data.data);
+  // console.log(data.data);
 
 
   const xAxis = [{

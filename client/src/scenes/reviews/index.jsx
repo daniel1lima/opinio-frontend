@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { Box, useTheme } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
-import { useGetTransactionsQuery } from "state/api";
+import { useGetReviewDataByCompanyQuery, useGetTransactionsQuery, useGetUserQuery } from "state/api";
 import Header from "components/Header";
 import FlexBetween from "components/FlexBetween";
 import DataGridCustomToolbar from "components/DataGridCustomToolbar";
 import { Button, Popover, Typography } from "@mui/material";
+import { useAuth, useUser } from "@clerk/clerk-react";
 
 
 const Reviews = () => {
@@ -18,56 +19,26 @@ const Reviews = () => {
   const [search, setSearch] = useState("");
 
   const [searchInput, setSearchInput] = useState("");
-  const { data, isLoading } = useGetTransactionsQuery({
-    page,
-    pageSize,
-    sort: JSON.stringify(sort),
-    search,
-  });
 
-  const [anchorEl, setAnchorEl] = useState(null);
+  // GRAB ALL RELEVANT DATABELOW
+  const { userId } = useAuth();
+  const { user } = useUser();
+  const userFromDb = useGetUserQuery(userId).data;
 
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
+  const {data, isLoading} = useGetReviewDataByCompanyQuery(userFromDb?.company_id, {skip: !userFromDb?.company_id});
 
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const open = Boolean(anchorEl);
-  const id = open ? 'simple-popover' : undefined;
-
+  console.log(data);
 
   const columns = [
-    {
-      field: "_id",
-      headerName: "ID",
-      flex: 1,
-    },
-    {
-      field: "userId",
-      headerName: "User ID",
-      flex: 1,
-    },
-    {
-      field: "createdAt",
-      headerName: "CreatedAt",
-      flex: 1,
-    },
-    {
-      field: "products",
-      headerName: "# of Products",
-      flex: 0.5,
-      sortable: false,
-      renderCell: (params) => params.value.length,
-    },
-    {
-      field: "cost",
-      headerName: "Cost",
-      flex: 1,
-      renderCell: (params) => `$${Number(params.value).toFixed(2)}`,
-    },
+    { field: 'assigned_label', headerName: 'Assigned Label', flex: 1 },
+    { field: 'company_id', headerName: 'Company ID', flex: 1 },
+    { field: 'date', headerName: 'Date', flex: 1 },
+    { field: 'industry_id', headerName: 'Industry ID', flex: 1 },
+    { field: 'named_labels', headerName: 'Named Labels', flex: 1 },
+    { field: 'platform_id', headerName: 'Platform ID', flex: 1 },
+    { field: 'polarity', headerName: 'Polarity', flex: 1 },
+    { field: 'processed_sentences', headerName: 'Processed Sentences', flex: 1 },
+    { field: 'sentiment', headerName: 'Sentiment', flex: 1 },
     {
       field: "action",
       headerName: "Generate Response",
@@ -75,7 +46,7 @@ const Reviews = () => {
       width: 150,
       renderCell: (params) => (
         <>
-          <Button aria-describedby={id} variant="contained" color="primary" onClick={handleClick}>
+          <Button aria-describedby={id} variant="contained" color="success" onClick={handleClick}>
             Respond
           </Button>
           <Popover
@@ -94,13 +65,29 @@ const Reviews = () => {
           >
             <Box p={2}>
               {/* Content of the Popover */}
-              The user ID is: {params.row.userId}
+              The user ID is: {params.row._id}
             </Box>
           </Popover>
         </>
       ),
     },
   ];
+
+
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+  const id = open ? 'simple-popover' : undefined;
+
+  const getRowId = (row) => row._id;
 
   return (
   <Box
@@ -119,9 +106,6 @@ const Reviews = () => {
           </Box>
         </Box>
       </FlexBetween>
-    {/* <Box ml="1.5rem" mt="1rem" pt="0.1rem"  pl="0.5rem">
-        <Header title="Reviews" />
-   </Box> */}
       <Box
       px="1.5rem"
         height="80vh"
@@ -151,25 +135,12 @@ const Reviews = () => {
         }}
       >
         <DataGrid
-          loading={isLoading || !data}
-          getRowId={(row) => row._id}
-          rows={(data && data.transactions) || []}
-          columns={columns}
-          rowCount={(data && data.total) || 0}
-          rowsPerPageOptions={[20, 50, 100]}
-          pagination
-          page={page}
-          pageSize={pageSize}
-          paginationMode="server"
-          sortingMode="server"
-          onPageChange={(newPage) => setPage(newPage)}
-          onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-          onSortModelChange={(newSortModel) => setSort(...newSortModel)}
-          components={{ Toolbar: DataGridCustomToolbar }}
-          componentsProps={{
-            toolbar: { searchInput, setSearchInput, setSearch },
-          }}
-        />
+        loading={isLoading || !data}
+        rows={(data && data) || []}
+        columns={columns}
+        rowCount={(data && data.length) || 0}
+        getRowId={getRowId}
+      />
       </Box>
       {/* insert over here */}
     </Box>

@@ -70,10 +70,8 @@ const navItems = [
 ];
 
 const Sidebar = ({
-  ID,
   clerkUser,
   companyDB,
-  userDB,
   drawerWidth,
   isSidebarOpen,
   setIsSidebarOpen,
@@ -154,6 +152,7 @@ const Sidebar = ({
                         navigate(`/${lcText}`);
                         setActive(lcText);
                       }}
+                      
                       sx={{
                         backgroundColor:
                           active === lcText
@@ -187,24 +186,7 @@ const Sidebar = ({
             </List>
           </Box>
 
-          <Box
-            width="100%"
-            position="absolute"
-            bottom="0rem"
-            sx={{ bgcolor: "white" }}
-          >
-            <Divider />
-            <FlexBetween textTransform="none" m="1.5rem 2rem 2rem 2rem">
-              <UserButton />
-              <Typography
-                fontSize="1.1rem"
-                sx={{ color: theme.palette.secondary[100] }}
-                mr="1.5rem"
-              >
-                Hey {firstName}!
-              </Typography>
-            </FlexBetween>
-          </Box>
+          
         </Drawer>
       )}
     </Box>

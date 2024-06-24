@@ -38,7 +38,7 @@ const Layout = () => {
         companyDB={company}
         userDB={userFromDb || {}}
         isNonMobile={isNonMobile}
-        drawerWidth="250px"
+        drawerWidth="220px"
         isSidebarOpen={isSidebarOpen}
         setIsSidebarOpen={setIsSidebarOpen}
       />

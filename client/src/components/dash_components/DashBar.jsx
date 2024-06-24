@@ -8,7 +8,7 @@ import { BarChart } from "@mui/x-charts/BarChart";
 const DashBar = (data) => {
   const theme = useTheme();
 
-  console.log(data.data);
+  // console.log(data.data);
 
   const transformedData = data.data.data
   ? data.data.data.map(item => ({
@@ -92,7 +92,7 @@ const DashBar = (data) => {
             </Box>
           </FlexBetween>
           <Box>
-            <BarChart colors="blueberryTwilight" xAxis={[{label: 'Category'}]} yAxis={xAxis} series={series} height={300} barLabel="value" layout="horizontal" sx={{ "& .MuiChartsAxis-tickLabel tspan": { fontSize: "0.5em" } }}/>
+            <BarChart  xAxis={[{label: 'Category'}]} yAxis={xAxis} series={series} height={300} borderRadius={5} layout="horizontal" sx={{ "& .MuiChartsAxis-tickLabel tspan": { fontSize: "0.7em" } }}/>
           </Box>
         </Box>
   )

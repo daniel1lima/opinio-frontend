@@ -1,7 +1,6 @@
 import React from 'react'
 
 import { DownloadOutlined, Timeline } from "@mui/icons-material";
-import { Gauge, gaugeClasses } from '@mui/x-charts/Gauge';
 import Avatar from '@mui/material/Avatar';
 import Stack from '@mui/material/Stack';
 import {
@@ -12,61 +11,51 @@ import {
 } from "@mui/material";
 import LongMenu from "components/DotMenu";
 import FlexBetween from "components/FlexBetween";
+import ExpandLessOutlinedIcon from '@mui/icons-material/ExpandLessOutlined';
 
-const Dashgauge = () => {
+const Stats = ({header, stat}) => {
     const theme = useTheme();
+
   return (
     <Box
-          gridColumn="span 7"
-          gridRow="span 2"
+          gridColumn="span 10"
+          gridRow="span 1"
           backgroundColor={theme.palette.background.default}
           borderRadius="0.55rem"
           sx={{
             "&:hover": {
               boxShadow: "0 0 10px 0 rgba(0,0,0,0.1)",
-              transition: "0.3s ease-out"
-              // scale: "102.6%"
+              transition: "0.3s ease-out",
+              scale: "105.6%"
             }
           }}
         >
-          <FlexBetween>
+          <FlexBetween  >
             <Box
+            
               display="flex"
               flexDirection="row"
-              m="1rem 1rem 1rem 1rem"
+              ml="1rem" 
+              mt='1rem'
             >
-              <Typography variant="h4" fontWeight="bold">
-                {" "}
-               Overall Score
+              <Typography variant="h6" fontWeight="bold">
+               {header}
               </Typography>
             </Box>
             <Box
               display="flex"
               flexDirection="row"
               gap="10px"
-              ml="1.5rem"
-              mt=".5rem"
-              mb=".5rem"
             >
               <LongMenu />
             </Box>
           </FlexBetween>
-          <Divider />
-          <Box  sx={{ borderRadius: "16px", display: "flex", justifyContent: "center", alignItems: "center" }}>
-          <Gauge width={150} height={150} value={80} sx={{
-        [`& .${gaugeClasses.valueText}`]: {
-          fontSize: 20,
-        },
-        [`& .${gaugeClasses.valueArc}`]: {
-          fill: "#2456EC",
-        },
-        [`& .${gaugeClasses.referenceArc}`]: {
-          fill: theme.palette.text.disabled,
-        },
-      }}/>
-          </Box>
+          <Typography mt=".5rem" variant="h2" fontWeight="bold" align="center" >
+            {stat}
+            <ExpandLessOutlinedIcon color="success" sx={{ fontSize: 26 }}/>
+          </Typography>
         </Box>
   )
 }
 
-export default Dashgauge
+export default Stats
