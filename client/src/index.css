@@ -8,3 +8,23 @@ body,
     width: 100%;
     font-family: "Opens Sans", sans-serif;
 }
+
+/* Hide scrollbar for all elements */
+* {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+}
+
+*::-webkit-scrollbar { /* WebKit browsers */
+    display: none;
+}
+
+/* Specific element to show scrollbar */
+.show-scrollbar {
+    scrollbar-width: auto; /* Firefox */
+    -ms-overflow-style: auto;  /* Internet Explorer 10+ */
+}
+
+.show-scrollbar::-webkit-scrollbar { /* WebKit browsers */
+    display: block;
+}

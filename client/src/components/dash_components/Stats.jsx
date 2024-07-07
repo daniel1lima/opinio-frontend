@@ -52,7 +52,8 @@ const Stats = ({header, stat}) => {
           </FlexBetween>
           <Typography mt=".5rem" variant="h2" fontWeight="bold" align="center" >
             {stat}
-            <ExpandLessOutlinedIcon color="success" sx={{ fontSize: 26 }}/>
+            {stat > 0 && <ExpandLessOutlinedIcon color="success" sx={{ fontSize: 26 }}/>}
+            {stat < 0 && <ExpandLessOutlinedIcon color="error" sx={{ fontSize: 26 }}/>}
           </Typography>
         </Box>
   )

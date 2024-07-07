@@ -1,18 +1,18 @@
-import {  CssBaseline, ThemeProvider } from "@mui/material";
+import { CssBaseline, ThemeProvider } from "@mui/material";
 import { createTheme } from "@mui/material/styles";
 import { themeSettings } from "theme";
 import { useSelector } from "react-redux";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
-import Dashboard from "scenes/dashboard";
-import Layout from "scenes/layout";
 import { useMemo } from "react";
-import Insights from "scenes/insights";
-import Reviews from "scenes/reviews";
 import {
   ClerkProvider,
   SignedIn,
   SignedOut,
 } from "@clerk/clerk-react";
+import Dashboard from "scenes/dashboard";
+import Layout from "scenes/layout";
+import Insights from "scenes/insights";
+import Reviews from "scenes/reviews";
 import SignInPage from "scenes/signin";
 import SignUpPage from "scenes/signup";
 import Onboarding from "scenes/onboarding";
@@ -25,54 +25,51 @@ if (!PUBLISHABLE_KEY) {
 }
 
 function App() {
-  const mode = useSelector((state) => state.global.mode); //use state information globally
-  const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]); //pass it into the createtheme function
+  const mode = useSelector((state) => state.global.mode);
+  const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
+
   return (
     <div className="app">
       <BrowserRouter>
         <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
           <ThemeProvider theme={theme}>
             <CssBaseline />
-
-            <SignedIn>
-              <Routes>
-                <Route path="/addUser/*" element={<AddCompanyToUser />} />
-                <Route element={<Layout />}>
-                  <Route
-                    path="/*"
-                    element={<Navigate to="/dashboard" replace />}
-                  />
-                  <Route path="/dashboard" element={<Dashboard />} />
-                  <Route path="/insights" element={<Insights />} />
-                  <Route path="/reviews" element={<Reviews />} />
-                </Route>
-              </Routes>
-            </SignedIn>
-            <SignedOut>
-              <Routes>
-                <Route path="/*" element={<Navigate to="/onboarding" />} />
-
-                <Route path="/onboarding" element={<Onboarding />} />
-
-                <Route
-                  path="/sign-in/*"
-                  redirectUrl="/dashboard"
-                  element={<SignInPage />}
-                />
-                
-                <Route
-                  path="/sign-up/*"
-                  redirectUrl="/addUser"
-                  element={<SignUpPage />}
-                />
-
-                <Route path="/addUser/*" element={<AddCompanyToUser />} />
-              </Routes>
-            </SignedOut>
+            <SignedInRoutes />
+            <SignedOutRoutes />
           </ThemeProvider>
         </ClerkProvider>
       </BrowserRouter>
     </div>
+  );
+}
+
+function SignedInRoutes() {
+  return (
+    <SignedIn>
+      <Routes>
+        <Route path="/addUser/*" element={<AddCompanyToUser />} />
+        <Route element={<Layout />}>
+          <Route path="/*" element={<Navigate to="/dashboard" replace />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/insights" element={<Insights />} />
+          <Route path="/reviews" element={<Reviews />} />
+        </Route>
+      </Routes>
+    </SignedIn>
+  );
+}
+
+function SignedOutRoutes() {
+  return (
+    <SignedOut>
+      <Routes>
+        <Route path="/*" element={<Navigate to="/onboarding" />} />
+        <Route path="/onboarding" element={<Onboarding />} />
+        <Route path="/sign-in/*" redirectUrl="/dashboard" element={<SignInPage />} />
+        <Route path="/sign-up/*" redirectUrl="/addUser" element={<SignUpPage />} />
+        <Route path="/addUser/*" element={<AddCompanyToUser />} />
+      </Routes>
+    </SignedOut>
   );
 }
 
