@@ -55,7 +55,7 @@ const DashBar = (data) => {
   
   return (
     <Box
-          gridColumn="span 11"
+          gridColumn="span 15"
           gridRow="span 3"
           backgroundColor={theme.palette.background.default}
           p="1rem"
