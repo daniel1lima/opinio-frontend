@@ -9,6 +9,7 @@ import { Button, Popover, Typography } from "@mui/material";
 import { useAuth, useUser } from "@clerk/clerk-react";
 
 
+
 const Reviews = () => {
   const theme = useTheme();
 
@@ -29,15 +30,12 @@ const Reviews = () => {
 
   console.log(data);
 
+  
   const columns = [
-    { field: 'assigned_label', headerName: 'Assigned Label', flex: 1 },
-    { field: 'company_id', headerName: 'Company ID', flex: 1 },
     { field: 'date', headerName: 'Date', flex: 1 },
-    { field: 'industry_id', headerName: 'Industry ID', flex: 1 },
-    { field: 'named_labels', headerName: 'Named Labels', flex: 1 },
     { field: 'platform_id', headerName: 'Platform ID', flex: 1 },
-    { field: 'polarity', headerName: 'Polarity', flex: 1 },
-    { field: 'processed_sentences', headerName: 'Processed Sentences', flex: 1 },
+    { field: 'processed_sentences', headerName: 'Processed Sentences', flex: 1,  },
+    { field: 'named_labels', headerName: 'Named Labels', flex: 1 },
     { field: 'sentiment', headerName: 'Sentiment', flex: 1 },
     {
       field: "action",
@@ -65,14 +63,29 @@ const Reviews = () => {
           >
             <Box p={2}>
               {/* Content of the Popover */}
-              The user ID is: {params.row._id}
+              Dear Darron, <br /> <br />
+
+We sincerely apologize for the issues you've experienced with your recent orders from Couqley through Deliveroo. Thank you for bringing this to our attention.
+
+We understand your frustration with receiving a medium rare steak twice, despite requesting medium well and well done. This is unacceptable, and we deeply regret the inconvenience it has caused you. <br /> <br /> We are investigating the issue to understand what went wrong and to ensure it doesn't happen again. It appears that there was a clear miscommunication regarding your order, and we deeply regret that this caused you such inconvenience.
+
+As a valued customer who has visited us frequently, we want to make things right. Please accept our heartfelt apologies and know that we are committed to improving our service. We would like to invite you to visit us again and enjoy a complimentary meal on us, prepared exactly to your liking.
+
+<br /> <br />Please contact us directly at manager@couqley.ae so we can arrange this for you and address any further concerns you may have. We hope to restore your trust in Couqley and have the opportunity to serve you better in the future.
+
+Thank you for your understanding and patience. <br /> <br />
+
+Warm regards,
+<br />
+
+Andy
+Manager, Couqley
             </Box>
           </Popover>
         </>
       ),
     },
   ];
-
 
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -107,7 +120,7 @@ const Reviews = () => {
         </Box>
       </FlexBetween>
       <Box
-      px="1.5rem"
+        px="1.5rem"
         height="80vh"
         sx={{
           "& .MuiDataGrid-root": {
@@ -135,14 +148,13 @@ const Reviews = () => {
         }}
       >
         <DataGrid
-        loading={isLoading || !data}
-        rows={(data && data) || []}
-        columns={columns}
-        rowCount={(data && data.length) || 0}
-        getRowId={getRowId}
-      />
+          loading={isLoading || !data}
+          rows={(data && data) || []}
+          columns={columns}
+          rowCount={(data && data.length) || 0}
+          getRowId={getRowId}
+        />
       </Box>
-      {/* insert over here */}
     </Box>
   );
 };

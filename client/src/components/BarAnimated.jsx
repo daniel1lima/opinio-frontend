@@ -23,7 +23,6 @@ export default function BarAnimation(data) {
 
   const series = [
     { data: data.data.map((item) => item.average_sentiment) },
-    { data: data.data.map((item) => item.average_polarity) },
   ];
 
   

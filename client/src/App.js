@@ -16,6 +16,8 @@ import Reviews from "scenes/reviews";
 import SignInPage from "scenes/signin";
 import SignUpPage from "scenes/signup";
 import Onboarding from "scenes/onboarding";
+import Help from "scenes/help";
+
 import AddCompanyToUser from "components/AddCompanyToUser";
 
 const PUBLISHABLE_KEY = process.env.REACT_APP_CLERK_PUBLISHABLE_KEY;
@@ -53,6 +55,7 @@ function SignedInRoutes() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/insights" element={<Insights />} />
           <Route path="/reviews" element={<Reviews />} />
+          <Route path="/help" element={<Help />} />
         </Route>
       </Routes>
     </SignedIn>

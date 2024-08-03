@@ -4,25 +4,41 @@ import FilterListIcon from '@mui/icons-material/FilterList';
 
 const insights = [
   {
-    title: "Bathrooms",
-    description: "Clean them, a user stated that some of the toilets were clogged",
-    status: "Design",
-    timeLogged: "13h 20m",
+    title: "Clean/service the bathrooms",
+    description: "Users complained that the bathrooms had a foul smell and were not clean.",
+    status: "Facility",
+    timeLogged: "4h 20m",
     statusColor: "success"
   },
   {
-    title: "Food",
-    description: "A user stated that the food was not up to par with what they paid for",
-    status: "Concept",
-    timeLogged: "8h 20m",
-    statusColor: "primary"
+    title: "Improve starter food quality",
+    description: "Multiple users have stated that the starter bread is stale and the butter is hard.",
+    status: "Food",
+    timeLogged: "20h 45m",
+    statusColor: "info"
   },
   {
-    title: "Service", 
-    description: "A user stated that the service was lackluster because one of your employees was extremely rude",
-    status: "Re-design",
-    timeLogged: "80h 40m",
+    title: "Greeter staff training", 
+    description: "5 Users have commented on rude behavior from the greeter staff.",
+    status: "Service",
+    timeLogged: "60h 0m",
     statusColor: "warning"
+  },
+
+  {
+    title: "Lower music prior to 8:00PM", 
+    description: "Guests that arrive early have complained that the music is too loud, making it hard to have a conversation.",
+    status: "Facility",
+    timeLogged: "0h 20m",
+    statusColor: "success"
+  },
+
+  {
+    title: "Include online menu on tables", 
+    description: "Guests have requested that the menu be available online and on the table through QR codes.",
+    status: "Facility",
+    timeLogged: "5h 15m",
+    statusColor: "success"
   }
 ]
 
@@ -51,7 +67,7 @@ const DashInsights = () => {
 
   return (
     <Box
-      gridColumn="span 12"
+      gridColumn="span 16"
       gridRow="span 4"
       backgroundColor={theme.palette.background.default}
       borderRadius="0.55rem"
@@ -70,9 +86,6 @@ const DashInsights = () => {
           </Typography>
         </Box>
         <Box display="flex" alignItems="center" gap="10px">
-          <Button variant="contained" color="primary" onClick={addTask} sx={{ textTransform: 'none', borderRadius: '0.55rem' }}>
-            Add Task
-          </Button>
         </Box>
       </Box>
       <Box 
@@ -106,17 +119,17 @@ const DashInsights = () => {
             >
               <CardContent>
                 <Box display="flex" justifyContent="space-between" alignItems="center">
-                  <Typography variant="h6" fontWeight="bold">
+                  <Typography variant="h6" fontWeight="bold" mr={1}>
                     {insight.title}
                   </Typography>
-                  <Chip label={insight.status} color={insight.statusColor} />
+                  <Chip label={insight.status} color={insight.statusColor}/>
                   <Checkbox
                     checked={insight.completed}
                     onChange={() => toggleTaskCompletion(index)}
                     sx={{
                       color: theme.palette.primary.main,
                       '&.Mui-checked': {
-                        color: theme.palette.common.blue,
+                        color: theme.palette.secondary.main,
                       },
                     }}
                   />

@@ -1,23 +1,19 @@
-import React from 'react'
-import { Avatar, Box, Stack, Typography, useTheme } from '@mui/material'
-import LongMenu from 'components/DotMenu'
-import FlexBetween from 'components/FlexBetween'
-import BarAnimation from 'components/BarAnimated'
+import React from 'react';
+import { Avatar, Box, Stack, Typography, useTheme } from '@mui/material';
+import LongMenu from 'components/DotMenu';
+import FlexBetween from 'components/FlexBetween';
+import BarAnimation from 'components/BarAnimated';
 import { BarChart } from "@mui/x-charts/BarChart";
 
 const DashBar = (data) => {
   const theme = useTheme();
 
-  // console.log(data.data);
-
   const transformedData = data.data.data
-  ? data.data.data.map(item => ({
-      category: item.category,
-      average_sentiment: item.average_sentiment,
-      average_polarity: item.average_polarity,
-    }))
-  : [];
-
+    ? data.data.data.map(item => ({
+        category: item.category,
+        average_sentiment: item.average_sentiment
+      }))
+    : [];
 
   const xAxis = [{
     scaleType: 'band',
@@ -28,74 +24,62 @@ const DashBar = (data) => {
     }),
   }];
 
-
   const series = [
     {
       data: transformedData.map(item => item.average_sentiment),
-      color: '#3f51b5', // Custom color for average_sentiment data
-    },
-    {
-      data: transformedData.map(item => item.average_polarity),
-      color: '#2196f3', // Custom color for average_polarity data
-    },
+      color: '#1854cc', // Custom color for average_sentiment data
+      barWidth: 5, // Set bar width to be thinner
+    }
   ];
 
-  
-
-  
-
-  // console.log(data)
-
-  // if (data.data.isLoading) {
-  //   return <div>Loading...</div>;
-  // }
-
-  
-
-  
   return (
     <Box
-          gridColumn="span 15"
-          gridRow="span 3"
-          backgroundColor={theme.palette.background.default}
-          p="1rem"
-          borderRadius="0.55rem"
-          sx={{
-            "&:hover": {
-              boxShadow: "0 0 10px 0 rgba(0,0,0,0.1)",
-              transition: "0.3s ease-out"
-              // scale: "102.6%"
-            }
-          }}
+      gridColumn="span 12"
+      gridRow="span 4"
+      backgroundColor={theme.palette.background.default}
+      p="1rem"
+      borderRadius="0.55rem"
+      sx={{
+        "&:hover": {
+          boxShadow: "0 0 10px 0 rgba(0,0,0,0.1)",
+          transition: "0.3s ease-out"
+        }
+      }}
+    >
+      <FlexBetween>
+        <Box
+          display="flex"
+          flexDirection="row"
+          gap="10px"
+          ml="1.5rem"
+          mt=".3rem"
         >
-          
-          <FlexBetween>
-            <Box
-              display="flex"
-              flexDirection="row"
-              gap="10px"
-              ml="1.5rem"
-              mt=".3rem"
-            >
-              <Typography variant="h4" fontWeight="bold">
-                {" "}
-                Rating by category
-              </Typography>
-            </Box>
-            <Box
-              display="flex"
-              flexDirection="row"
-              gap="10px"
-              ml="1.5rem"
-            >
-              <LongMenu />
-            </Box>
-          </FlexBetween>
-          <Box>
-            <BarChart  xAxis={[{label: 'Category'}]} yAxis={xAxis} series={series} height={300} borderRadius={5} layout="horizontal" sx={{ "& .MuiChartsAxis-tickLabel tspan": { fontSize: "0.7em" } }}/>
-          </Box>
+          <Typography variant="h4" fontWeight="bold">
+            Customer Sentiment by Category
+          </Typography>
         </Box>
-  )
-}
+        <Box
+          display="flex"
+          flexDirection="row"
+          gap="10px"
+          ml="1.5rem"
+        >
+          <LongMenu />
+        </Box>
+      </FlexBetween>
+      <Box>
+        <BarChart
+          xAxis={xAxis}
+          yAxis={[{ label: 'Customer Sentiment', max: 5 }]} // Set max value to 5
+          series={series}
+          height={400}
+          borderRadius={5}
+          layout="vertical" // Change layout to vertical
+          sx={{ "& .MuiChartsAxis-tickLabel tspan": { fontSize: "0.7em" } }}
+        />
+      </Box>
+    </Box>
+  );
+};
 
-export default DashBar
+export default DashBar;

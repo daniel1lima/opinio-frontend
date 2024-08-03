@@ -22,8 +22,8 @@ const DashRecent = ({ data }) => {
 
   return (
     <Box
-      gridColumn="span 17"
-      gridRow="span 3"
+      gridColumn="span 16"
+      gridRow="span 4"
       backgroundColor={theme.palette.background.default}
       borderRadius="0.55rem"
       p="1rem"
@@ -46,7 +46,7 @@ const DashRecent = ({ data }) => {
           Recent Reviews
         </Typography>
       </Box>
-      <Box ml="1rem" mt="2rem" height="200px" overflowY="auto">
+      <Box ml="1rem" mt="2rem" height="300px" overflowY="auto">
         {data.isLoading && <Typography></Typography>}
         {data.error && (
           <Typography variant="h6" fontWeight="bold" fontFamily="Arial">
@@ -119,6 +119,7 @@ const DashRecent = ({ data }) => {
         </Button>
       </Box>
     </Box>
+
   );
 };
 

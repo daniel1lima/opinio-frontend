@@ -112,6 +112,7 @@ const Dashboard = () => {
             <Tab label="Week" />
             <Tab label="Month" />
             <Tab label="Year" />
+            
           </Tabs>
         </Box>
       </FlexBetween>
@@ -145,7 +146,7 @@ const Dashboard = () => {
               <GridCloseIcon />
             </Box>
             <Typography fontWeight="bold" variant="h4">Hey {user?.firstName}, Welcome back!</Typography>
-            <Typography fontStyle="italic" mt="1rem" variant="h6">Our company reviews are soaring high! Customers are loving our new features and services. Keep up the great work team!</Typography>
+            <Typography fontStyle="italic" mt="1rem" variant="h6"> Couqley has recieved 15 new reviews since you last checked, customer sentiment seems to be up!</Typography>
           </Box>
         </animated.div>
       )}
@@ -163,11 +164,12 @@ const Dashboard = () => {
         {/* ROW 1 */}
         <Stats header="Total Reviews" stat={totalReviews} />
         <Stats header="New Reviews" stat={15} />
-        <DashInsights />
+        <DashBar data={summaryData} />
         <DashLine data={reviewData} timeframe={value} />
 
         {/* ROW 2 */}
-        <DashBar data={summaryData} />
+        
+        <DashInsights />
         <DashRecent data={reviewData} />
       </Box>
     </Box>

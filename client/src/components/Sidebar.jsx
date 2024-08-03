@@ -24,6 +24,8 @@ import {
   TrendingUpOutlined,
 } from "@mui/icons-material";
 
+import AnalyticsIcon from '@mui/icons-material/Analytics';
+
 import ReviewsIcon from "@mui/icons-material/Reviews";
 
 import InsightsIcon from "@mui/icons-material/Insights";
@@ -33,6 +35,8 @@ import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import FlexBetween from "./FlexBetween";
 import logo from "assets/logo.png";
 import { UserButton } from "@clerk/clerk-react";
+import LiveHelpIcon from '@mui/icons-material/LiveHelp';
+
 
 const navItems = [
   {
@@ -52,20 +56,12 @@ const navItems = [
     icon: <ReviewsIcon />,
   },
   {
-    text: "Overview",
-    icon: <PointOfSaleOutlined />,
+    text: "Competitor Analysis",
+    icon: <AnalyticsIcon />,
   },
   {
-    text: "Management",
-    icon: null,
-  },
-  {
-    text: "Admin",
-    icon: <AdminPanelSettingsOutlined />,
-  },
-  {
-    text: "Performance",
-    icon: <TrendingUpOutlined />,
+    text: "Help",
+    icon: <LiveHelpIcon />,
   },
 ];
 
