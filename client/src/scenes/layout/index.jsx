@@ -23,7 +23,6 @@ const Layout = () => {
   const company = useGetCompanyIdQuery(userFromDb?.company_id, {skip: !userFromDb?.company_id}).data;
 
   localStorage.setItem("user_id", userId)
-  localStorage.setItem("company_id", userFromDb?.company_id)
 
   // console.log("userId", userFromDb);
   // console.log("company", company)

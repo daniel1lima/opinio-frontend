@@ -37,7 +37,13 @@ const SignUpPage = () => {
 
 
   return (
-    <Box width="100%" height="100%" alignContent="center">
+    <Box 
+      width="100%" 
+      height="100%" 
+      display="flex" // Added to enable flexbox
+      alignItems="center" // Centers content vertically
+      justifyContent="center" // Centers content horizontally
+    >
       <FlexBetween m="34%">
         {location.state || companyId ? (
           <SignUp
@@ -50,7 +56,7 @@ const SignUpPage = () => {
           <Navigate to="/onboarding" />
         )}
       </FlexBetween>
-      </Box>
+    </Box>
   )}
 
 export default SignUpPage

@@ -13,6 +13,9 @@ const FetchCompanyId = ({ id }) => {
     if (results && results.data) {
       setCompany(results.data);
       setWarning(false); // Reset warning if company is found
+      localStorage.setItem('company_id', results.data.company_id); // Store company ID in local storage
+      console.log("Set company_id:", results.data.company_id);
+      console.log(localStorage.getItem('company_id'))
     } else if (results && results.data === null) {
       setWarning(true);
       // Set a timer to clear the warning after 5 seconds
@@ -27,6 +30,7 @@ const FetchCompanyId = ({ id }) => {
     const handleKeyDown = (event) => {
       if (event.key === 'Enter') {
         getId(id);
+        console.log(results)
       }
     };
 
