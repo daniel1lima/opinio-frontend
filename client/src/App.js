@@ -16,6 +16,7 @@ import Reviews from "scenes/reviews";
 import SignInPage from "scenes/signin";
 import SignUpPage from "scenes/signup";
 import Onboarding from "scenes/onboarding";
+import Invited from "scenes/invited";
 import AddCompanyToUser from "components/AddCompanyToUser";
 
 const PUBLISHABLE_KEY = process.env.REACT_APP_CLERK_PUBLISHABLE_KEY;
@@ -65,6 +66,7 @@ function SignedOutRoutes() {
       <Routes>
         <Route path="/*" element={<Navigate to="/onboarding" />} />
         <Route path="/onboarding" element={<Onboarding />} />
+        <Route path="/invited" element={<Invited />} />
         <Route path="/sign-in/*" redirectUrl="/dashboard" element={<SignInPage />} />
         <Route path="/sign-up/*" redirectUrl="/addUser" element={<SignUpPage />} />
         <Route path="/addUser/*" element={<AddCompanyToUser />} />
