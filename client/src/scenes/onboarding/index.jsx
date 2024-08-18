@@ -186,10 +186,10 @@ const Onboarding = () => {
             {step === 2 && (
               <>
               <Stack spacing={2}>
-                <Typography variant="h2" sx={{ textAlign: "left", fontWeight: "bold" }}>
+                <Typography variant="h2" sx={{ textAlign: "center", fontWeight: "bold" }}>
                   Schedule a demo!
                 </Typography>
-                <Typography variant="h5" sx={{ textAlign: "left", color: theme.palette.primary.secondary }}>
+                <Typography variant="h6" sx={{ textAlign: "center", color: theme.palette.primary.secondary }}>
                   We haven't made the tool publicly available yet, but you can request access and we'd be more than happy to accomodate!
                 </Typography>
                 </Stack>
@@ -200,7 +200,7 @@ const Onboarding = () => {
           <Stack spacing={4} sx={{ marginTop: 2 }}>
             {step === 0 && (
               <>
-                <BootstrapButton variant="contained" onClick={() => window.location.href = "/sign-in"}>
+                <BootstrapButton variant="contained" onClick={handleNextStep}>
                   Restaurant
                 </BootstrapButton>
                 <BootstrapButton variant="contained" onClick={handleNextStep}>
