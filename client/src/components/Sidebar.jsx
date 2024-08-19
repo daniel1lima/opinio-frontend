@@ -12,6 +12,7 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
+import LinkIcon from '@mui/icons-material/Link';
 import {
   SettingsOutlined,
   ChevronLeft,
@@ -66,6 +67,10 @@ const navItems = [
   {
     text: "Performance",
     icon: <TrendingUpOutlined />,
+  },
+  {
+    text: "Integrations",
+    icon: <LinkIcon />,
   },
 ];
 
@@ -152,25 +157,26 @@ const Sidebar = ({
                         navigate(`/${lcText}`);
                         setActive(lcText);
                       }}
-                      
                       sx={{
                         backgroundColor:
                           active === lcText
-                            ? theme.palette.background.alt
+                            ? theme.palette.primary.main // Solid color for active item
                             : "transparent",
                         color:
                           active === lcText
-                            ? theme.palette.primary[600]
+                            ? theme.palette.primary[100] // Text color for active item
                             : theme.palette.secondary[200],
+                        transition: "background-color 0.3s ease, transform 0.2s ease", // Animation transition
+                        "&:hover": {
+                          transform: active === lcText ? "scale(1.05)" : "scale(1.02)", // Scale effect on hover
+                        },
                       }}
                     >
                       <ListItemIcon
                         sx={{
                           ml: "2rem",
                           color:
-                            active === lcText
-                              ? theme.palette.primary[600]
-                              : theme.palette.secondary[200],
+                            active === lcText ? theme.palette.primary[600] : theme.palette.secondary[200],
                         }}
                       >
                         {icon}

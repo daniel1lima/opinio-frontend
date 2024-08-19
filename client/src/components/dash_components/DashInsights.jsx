@@ -52,7 +52,7 @@ const DashInsights = () => {
   return (
     <Box
       gridColumn="span 12"
-      gridRow="span 4"
+      gridRow="span 3"
       backgroundColor={theme.palette.background.default}
       borderRadius="0.55rem"
       p="1rem"

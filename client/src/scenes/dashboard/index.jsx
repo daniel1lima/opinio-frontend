@@ -14,6 +14,7 @@ import DashInsights from "components/dash_components/DashInsights";
 import DashRecent from "components/dash_components/DashRecent";
 import DashReport from "components/dash_components/DashReport";
 import Stats from "components/dash_components/Stats";
+import ActiveIntegrations from "components/dash_components/ActiveIntegrations"; // Import the new component
 import { subWeeks, subMonths, subYears, isAfter } from "date-fns";
 import { keyframes } from "@emotion/react";
 import { GridCloseIcon } from "@mui/x-data-grid";
@@ -163,12 +164,21 @@ const Dashboard = () => {
         {/* ROW 1 */}
         <Stats header="Total Reviews" stat={totalReviews} />
         <Stats header="New Reviews" stat={15} />
-        <DashInsights />
+        <ActiveIntegrations /> 
+        
         <DashLine data={reviewData} timeframe={value} />
+
+        
+        
+        {/* Add the Active Integrations component */}
+        
 
         {/* ROW 2 */}
         <DashBar data={summaryData} />
+
+        
         <DashRecent data={reviewData} />
+        <DashInsights />
       </Box>
     </Box>
   );
