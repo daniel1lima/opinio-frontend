@@ -107,7 +107,7 @@ const Integrations = () => {
     setIntegrations(newIntegrations);
     
     // Use base URL from .env
-    const baseUrl = process.env.REACT_APP_SERVICES_BASE_URL || "http://localhost:3000/"
+    const baseUrl = process.env.REACT_APP_SERVICES_BASE_URL || "http://localhost:5000/"
 
     console.log(baseUrl)
 
@@ -117,7 +117,7 @@ const Integrations = () => {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(newIntegrations[selectedIntegration]),
+            body: JSON.stringify({ ...newIntegrations[selectedIntegration], company_id: localStorage.getItem('company_id') }),
         });
 
         if (!response.ok) {
