@@ -6,8 +6,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import globalReducer from "state";
 import { Provider } from "react-redux";
 import { setupListeners } from "@reduxjs/toolkit/query";
-import { api } from "state/api";
-import { createSlice } from "@reduxjs/toolkit";
+import { api, servicesApi } from "state/api";
 import userCompanyReducer from "state/userCompanySlice";
 
 import { persistReducer, persistStore } from "redux-persist";
@@ -25,10 +24,12 @@ const store = configureStore({
   reducer: {
     global: globalReducer,
     [api.reducerPath]: api.reducer,
+    [servicesApi.reducerPath]: servicesApi.reducer,
     userCompany: persistedReducer,
   },
-  middleware: (getDefault) => getDefault({serializableCheck: false}).concat(api.middleware),
-  
+  middleware: (getDefault) => getDefault({serializableCheck: false})
+    .concat(api.middleware)
+    .concat(servicesApi.middleware),
 });
 
 const persistor = persistStore(store);

@@ -41,6 +41,17 @@ export const api = createApi({
     })
 })
 
+export const servicesApi = createApi({
+    baseQuery: fetchBaseQuery({ baseUrl: process.env.REACT_APP_SERVICES_BASE_URL }),
+    reducerPath: "servicesApi",
+    tagTypes: ["CompanyConnections"],
+    endpoints: (build) => ({
+        getCompanyConnections: build.query({
+            query: (companyId) => `company_connections?company_id=${companyId}`,
+            providesTags: ["CompanyConnections"]
+        }),
+    })
+});
 
 export const {
     useGetUserQuery,
@@ -50,5 +61,9 @@ export const {
     useGetReviewDataByCompanyQuery,
     useLazyGetReviewDataByCompanyQuery,
     useGetSummaryDataByCompanyQuery,
-    useLazyGetSummaryDataByCompanyQuery
+    useLazyGetSummaryDataByCompanyQuery,
 } = api;
+
+export const {
+    useGetCompanyConnectionsQuery
+} = servicesApi;

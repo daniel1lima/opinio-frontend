@@ -7,7 +7,7 @@ import { Tabs } from "@mui/material";
 import LineAnimation from "components/LineAnimated";
 import LongMenu from "components/DotMenu";
 import { useAuth, useUser } from "@clerk/clerk-react";
-import { useGetCompanyIdQuery, useGetUserQuery, useGetReviewDataByCompanyQuery, useGetSummaryDataByCompanyQuery } from "state/api";
+import { useGetCompanyIdQuery, useGetUserQuery, useGetReviewDataByCompanyQuery, useGetSummaryDataByCompanyQuery, useGetCompanyConnectionsQuery } from "state/api";
 import DashBar from "components/dash_components/DashBar";
 import DashLine from "components/dash_components/DashLine";
 import DashInsights from "components/dash_components/DashInsights";
@@ -42,6 +42,8 @@ const Dashboard = () => {
 
   const summaryData = useGetSummaryDataByCompanyQuery(userFromDb?.company_id, {skip: !userFromDb?.company_id});
   const reviewData = useGetReviewDataByCompanyQuery(userFromDb?.company_id, {skip: !userFromDb?.company_id});
+  const { data: connectionsData, isLoading: isConnectionsLoading } = useGetCompanyConnectionsQuery(localStorage.getItem("company_id"), { skip: !localStorage.getItem("company_id") });
+  console.log(connectionsData)
 
   console.log(reviewData)
   console.log(summaryData)
@@ -164,7 +166,7 @@ const Dashboard = () => {
         {/* ROW 1 */}
         <Stats header="Total Reviews" stat={totalReviews} />
         <Stats header="New Reviews" stat={15} />
-        <ActiveIntegrations /> 
+        <ActiveIntegrations data={connectionsData} isLoading={isConnectionsLoading} />
         
         <DashLine data={reviewData} timeframe={value} />
 
