@@ -1,99 +1,63 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Typography, useTheme } from "@mui/material";
 import LongMenu from "components/DotMenu";
 import FlexBetween from "components/FlexBetween";
 import { BarChart } from "@mui/x-charts";
-import { subWeeks, subMonths, subYears, isAfter } from "date-fns";
+import axios from 'axios'; // Import axios for fetching data
 
-const DashLine = ({ data, timeframe }) => {
+const DashLine = ({ timeframe }) => {
   const theme = useTheme();
+  const [reviewData, setReviewData] = useState({}); // State to hold fetched review data
 
-  const reviews_final = data.data;
+  useEffect(() => {
+    const fetchReviewData = async () => {
+      try {
+        const response = await axios.get(process.env.REACT_APP_BASE_URL + '/client/get_frequency_reviews', {
+          params: {
+            company_id: localStorage.getItem("company_id")
+          }
+        }); // Send company_id as a query parameter
+        setReviewData(response.data);
+      } catch (error) {
+        console.error("Error fetching review data:", error);
+      }
+    };
 
-  // console.log(timeframe);
+    fetchReviewData();
+  }, []);
 
-  const filterReviews = (reviews, timeframe) => {
-    if (!reviews || !reviews.length) return []; // If reviews are empty, return empty array
-    const now = new Date();
+  const getBinnedReviews = () => {
+    if (!reviewData || Object.keys(reviewData).length === 0) {
+      return []; // Return an empty array if reviewData is not populated
+    }
+
     switch (timeframe) {
-      case 0:
-        return reviews; // Return all reviews
-      case 1:
-        const lastWeek = subWeeks(now, 1);
-        return reviews.filter((review) =>
-          isAfter(new Date(review.date), lastWeek)
-        );
-      case 2:
-        const lastMonth = subMonths(now, 1);
-        return reviews.filter((review) =>
-          isAfter(new Date(review.date), lastMonth)
-        );
-      case 3:
-        const lastYear = subYears(now, 1);
-        return reviews.filter((review) =>
-          isAfter(new Date(review.date), lastYear)
-        );
+      case 0: // All Time
+        return Object.entries(reviewData.allTime || {}).map(([year, count]) => ({
+          date: year,
+          count,
+        }));
+      case 1: // Week
+        return Object.entries(reviewData.week || {}).map(([day, count]) => ({
+          date: day,
+          count,
+        }));
+      case 2: // Month
+        return Object.entries(reviewData.month || {}).map(([month, count]) => ({
+          date: month,
+          count,
+        }));
+      case 3: // Year
+        return Object.entries(reviewData.year || {}).map(([month, count]) => ({
+          date: month,
+          count,
+        }));
       default:
         return [];
     }
   };
 
-  const filteredReviews = filterReviews(reviews_final, timeframe);
-
-  // console.log(filteredReviews);
-
-  const reviewCountsPerDate = {};
-
-  filteredReviews.forEach((review) => {
-    const date = new Date(review.date).toISOString().split("T")[0]; // Extracting the date without the time part
-    if (reviewCountsPerDate[date]) {
-      reviewCountsPerDate[date]++;
-    } else {
-      reviewCountsPerDate[date] = 1;
-    }
-  });
-
-  const reviewCountsArray = Object.entries(reviewCountsPerDate).map(
-    ([date, count]) => ({
-      date: new Date(date),
-      count,
-    })
-  );
-
-  // Custom sort function to sort by date
-  reviewCountsArray.sort((a, b) => a.date.getTime() - b.date.getTime());
-
-  // console.log(reviewCountsArray);
-
-  function binReviews(reviewCountsArray, timeframe) {
-    const binnedReviews = {};
-
-    reviewCountsArray.forEach(({ date, count }) => {
-      let bin;
-      if (timeframe === 0) {
-        bin = new Date(date).getFullYear();
-      } else if (timeframe === 1) {
-        bin = new Date(date).toLocaleString("en-US", { weekday: "short" });
-      } else if (timeframe === 3) {
-        bin = new Date(date).toLocaleString("en-US", { month: "short" });
-      }
-
-      if (binnedReviews[bin]) {
-        binnedReviews[bin] += count;
-      } else {
-        binnedReviews[bin] = count;
-      }
-    });
-
-    return Object.entries(binnedReviews).map(([date, count]) => ({
-      date: date.toString(),
-      count,
-    }));
-  }
-
-  const binnedReviews = binReviews(reviewCountsArray, timeframe);
-
-  // console.log(binnedReviews);
+  const binnedReviews = getBinnedReviews();
 
   return (
     <Box
@@ -134,7 +98,6 @@ const DashLine = ({ data, timeframe }) => {
 
       <Box>
         <BarChart
-          // barLabel="value"
           borderRadius={5}
           xAxis={[{ scaleType: "band", data: binnedReviews.map((item) => item.date) }]}
           series={[
@@ -145,7 +108,6 @@ const DashLine = ({ data, timeframe }) => {
           ]}
           height={300}
           sx={{ "& .MuiChartsAxis-tickLabel tspan": { fontSize: "0.8em" } }}
-
         />
       </Box>
     </Box>
