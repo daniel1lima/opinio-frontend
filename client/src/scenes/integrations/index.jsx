@@ -200,9 +200,9 @@ const Integrations = () => {
       }
 
       const data = await response.json();
-      console.log(data); // Handle the response data as needed
+      // console.log(data); // Handle the response data as needed
     } catch (error) {
-      console.error('Error removing integration:', error);
+      // console.error('Error removing integration:', error);
       // Handle error (e.g., show an error message to the user)
     }
 

@@ -25,8 +25,8 @@ export const api = createApi({
             providesTags: ["CompanyId"]
         }),
         getReviewDataByCompany: build.query({
-            query: (comp_id) => ({
-                url: `client/get_reviews?comp_id=${comp_id}`,
+            query: ({ company_id, page, page_size }) => ({
+                url: `client/get_reviews?company_id=${company_id}&page=${page}&page_size=${page_size}`,
                 method: "GET",
             }),
             providesTags: ["Reviews"]

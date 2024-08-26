@@ -14,7 +14,7 @@ import DashInsights from "components/dash_components/DashInsights";
 import DashRecent from "components/dash_components/DashRecent";
 import DashReport from "components/dash_components/DashReport";
 import Stats from "components/dash_components/Stats";
-import ActiveIntegrations from "components/dash_components/ActiveIntegrations"; // Import the new component
+import ActiveIntegrations from "components/dash_components/ActiveIntegrations";
 import { subWeeks, subMonths, subYears, isAfter } from "date-fns";
 import { keyframes } from "@emotion/react";
 import { GridCloseIcon } from "@mui/x-data-grid";
@@ -23,9 +23,7 @@ import { siLK } from "@mui/material/locale";
 // Define the keyframes for the gradient animation
 const gradientAnimation = keyframes`
   0% { background-position: 0% 50%; }
-
   50% { background-position: 100% 80%; }
-
   100% { background-position: 0% 80%; }
 `;
 
@@ -40,13 +38,21 @@ const Dashboard = () => {
   const { user } = useUser();
   const userFromDb = useGetUserQuery(userId).data;
 
-  const summaryData = useGetSummaryDataByCompanyQuery(userFromDb?.company_id, {skip: !userFromDb?.company_id});
-  const reviewData = useGetReviewDataByCompanyQuery(userFromDb?.company_id, {skip: !userFromDb?.company_id});
-  const { data: connectionsData, isLoading: isConnectionsLoading } = useGetCompanyConnectionsQuery(localStorage.getItem("company_id"), { skip: !localStorage.getItem("company_id") });
-  console.log(connectionsData)
+  // const summaryData = useGetSummaryDataByCompanyQuery(userFromDb?.company_id, {skip: !userFromDb?.company_id});
+  const { data: reviewData, isLoading, error } = useGetReviewDataByCompanyQuery({
+    company_id: localStorage.getItem("company_id"),
+    page: 1,
+    page_size: 1,
+  }, {skip: !localStorage.getItem("company_id")});
 
-  console.log(reviewData)
-  console.log(summaryData)
+  // Ensure reviewData is defined before accessing its properties
+  
+  const totalReviews = reviewData ? reviewData.totalReviews : 0; // Extract total reviews count
+
+  const { data: connectionsData, isLoading: isConnectionsLoading } = useGetCompanyConnectionsQuery(localStorage.getItem("company_id"), { skip: !localStorage.getItem("company_id") });
+  // console.log(connectionsData)
+
+  // console.log(reviewData)
 
   const filterReviews = (reviews, timeframe) => {
     if (!reviews || !reviews.length) return []; // If reviews are empty, return empty array
@@ -74,8 +80,7 @@ const Dashboard = () => {
     }
   };
 
-  const filteredReviews = filterReviews(reviewData.data, value);
-  const totalReviews = filteredReviews && filteredReviews.length > 0 ? filteredReviews.length : "";
+  const filteredReviews = reviewData ? filterReviews(reviewData.data, value) : [];
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -88,6 +93,12 @@ const Dashboard = () => {
     config: { tension: 200, friction: 20 },
   });
 
+  // Get today's day of the week
+  const today = new Date().toLocaleString('en-US', { weekday: 'long' });
+
+  // Extract today's reviews count
+  const newReviewsToday = reviewData?.week?.[today] || 0;
+
   return (
     <Box
       m=".5rem 1.5rem"
@@ -96,8 +107,6 @@ const Dashboard = () => {
       mb="1.5rem"
       p=".5rem"
     >
-      
-
       <FlexBetween>
         <Box m=".5rem 1rem 0rem">
           <Box ml="0.8rem">
@@ -165,20 +174,13 @@ const Dashboard = () => {
       >
         {/* ROW 1 */}
         <Stats header="Total Reviews" stat={totalReviews} />
-        <Stats header="New Reviews" stat={15} />
+        <Stats header="New Reviews" stat={newReviewsToday} />
         <ActiveIntegrations data={connectionsData} isLoading={isConnectionsLoading} />
         
-        <DashLine data={reviewData} timeframe={value} />
-
-        
-        
-        {/* Add the Active Integrations component */}
-        
+        <DashLine timeframe={value} />
 
         {/* ROW 2 */}
-        <DashBar data={summaryData} />
-
-        
+        {/* <DashBar data={summaryData} /> */}
         <DashRecent data={reviewData} />
         <DashInsights />
       </Box>

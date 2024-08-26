@@ -16,10 +16,10 @@ const AddCompanyToUser = () => {
     const user_id = clerkUser.userId
 
     const company_id = localStorage.getItem('company_id') || undefined; // Get company_id only if it exists
-    console.log("Retrieved company_id:", company_id);
+    // console.log("Retrieved company_id:", company_id);
 
-    console.log("Company ID:", company_id);
-    console.log("Company user:", user_id);
+    // console.log("Company ID:", company_id);
+    // console.log("Company user:", user_id);
 
 
     dispatch(setUser(clerkUser.userId));

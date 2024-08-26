@@ -53,7 +53,7 @@ const navItems = [
     icon: <ReviewsIcon />,
   },
   {
-    text: "Overview",
+    text: "Inbox",
     icon: <PointOfSaleOutlined />,
   },
   {
