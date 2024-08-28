@@ -9,7 +9,7 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { useTheme } from "@emotion/react";
 import logo from "assets/logo.png";
-import onboardingGraphic from "assets/onboarding.png";
+import onboardingGraphic from "assets/onboarding.jpeg";
 import { purple } from "@mui/material/colors";
 import { ChevronRight, Scale } from "@mui/icons-material";
 import LinearProgress, { linearProgressClasses } from '@mui/material/LinearProgress';
