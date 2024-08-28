@@ -12,6 +12,8 @@ import userCompanyReducer from "state/userCompanySlice";
 import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import { PersistGate } from "redux-persist/integration/react";
+import { SpeedInsights } from "@vercel/speed-insights/react";
+import { Analytics } from "@vercel/analytics/react";
 
 const persistConfig = {
   key: "root",
@@ -40,6 +42,8 @@ setupListeners(store.dispatch);
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
+    <SpeedInsights />
+    <Analytics />
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <App />
