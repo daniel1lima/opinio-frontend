@@ -1,17 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Box, useTheme, Typography, Paper, Grid } from "@mui/material";
 import { DataGrid, GridCheckCircleIcon, GridCloseIcon } from "@mui/x-data-grid";
 import ScheduleIcon from "@mui/icons-material/Schedule";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import DraftsIcon from "@mui/icons-material/Drafts";
 import TimerIcon from "@mui/icons-material/Timer";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { useGetReviewDataByCompanyQuery } from "state/api";
 import Header from "components/Header";
 import FlexBetween from "components/FlexBetween";
 import DataGridCustomToolbar from "components/DataGridCustomToolbar";
-import { Button, Popover } from "@mui/material";
-import { useAuth } from "@clerk/clerk-react";
 import YelpLogo from "../../assets/yelp-svgrepo-com.svg";
 import GoogleLogo from "../../assets/google-icon.svg";
 import TripLogo from "../../assets/tripadvisor.svg";

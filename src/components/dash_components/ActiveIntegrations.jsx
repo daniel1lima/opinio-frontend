@@ -14,7 +14,6 @@ import YelpLogo from "../../assets/yelp-svgrepo-com.svg";
 import GoogleLogo from "../../assets/google-icon.svg";
 import TripLogo from "../../assets/tripadvisor.svg";
 import { differenceInDays, parseISO } from "date-fns";
-import logo from "../../assets/logo.png";
 import { useNavigate } from "react-router-dom"; // Import this if you're using React Router v6+
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 

@@ -1,7 +1,6 @@
 import React from "react";
 import {
   Box,
-  Divider,
   Drawer,
   IconButton,
   List,
@@ -14,12 +13,9 @@ import {
 } from "@mui/material";
 import LinkIcon from "@mui/icons-material/Link";
 import {
-  SettingsOutlined,
   ChevronLeft,
   ChevronRightOutlined,
   HomeOutlined,
-  Groups2Outlined,
-  ReceiptLongOutlined,
   PointOfSaleOutlined,
   AdminPanelSettingsOutlined,
   TrendingUpOutlined,
@@ -30,10 +26,9 @@ import ReviewsIcon from "@mui/icons-material/Reviews";
 import InsightsIcon from "@mui/icons-material/Insights";
 
 import { useEffect, useState } from "react";
-import { Navigate, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import FlexBetween from "./FlexBetween";
 import logo from "assets/logo.png";
-import { UserButton } from "@clerk/clerk-react";
 
 const navItems = [
   {

@@ -1,11 +1,4 @@
 import * as React from "react";
-import Button from "@mui/material/Button";
-import Stack from "@mui/material/Stack";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import { LineChart } from "@mui/x-charts/LineChart";
-import { mangoFusionPalette } from "@mui/x-charts/colorPalettes";
-import { Typography } from "@mui/material";
 
 export default function LineAnimation() {
   return (

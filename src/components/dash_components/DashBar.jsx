@@ -1,8 +1,7 @@
 import React from "react";
-import { Avatar, Box, Stack, Typography, useTheme } from "@mui/material";
+import { Box, Typography, useTheme } from "@mui/material";
 import LongMenu from "components/DotMenu";
 import FlexBetween from "components/FlexBetween";
-import BarAnimation from "components/BarAnimated";
 import { BarChart } from "@mui/x-charts/BarChart";
 
 const DashBar = (data) => {

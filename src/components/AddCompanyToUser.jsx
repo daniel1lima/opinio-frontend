@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import { useAuth, useUser } from "@clerk/clerk-react";
 import { Navigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { setCompanyId, setUser } from "state/userCompanySlice";
+import { useDispatch } from "react-redux";
+import { setUser } from "state/userCompanySlice";
 
 const AddCompanyToUser = () => {
   const dispatch = useDispatch();

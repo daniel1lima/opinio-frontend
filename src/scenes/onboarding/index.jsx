@@ -1,17 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { useMediaQuery } from "@mui/material";
-import { alpha, styled, keyframes } from "@mui/material";
+import { styled, keyframes } from "@mui/material";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Stack from "@mui/material/Stack";
-import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { useTheme } from "@emotion/react";
-import logo from "assets/logo.png";
 import onboardingGraphic from "assets/onboarding.jpeg";
 import { purple } from "@mui/material/colors";
-import { ChevronRight, Scale } from "@mui/icons-material";
+import { ChevronRight } from "@mui/icons-material";
 import LinearProgress, {
   linearProgressClasses,
 } from "@mui/material/LinearProgress";

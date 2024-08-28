@@ -4,27 +4,20 @@ import Header from "components/Header";
 import { Box, useTheme, useMediaQuery, Tab, Typography } from "@mui/material";
 import { useSpring, animated } from "@react-spring/web";
 import { Tabs } from "@mui/material";
-import LineAnimation from "components/LineAnimated";
-import LongMenu from "components/DotMenu";
 import { useAuth, useUser } from "@clerk/clerk-react";
 import {
-  useGetCompanyIdQuery,
   useGetUserQuery,
   useGetReviewDataByCompanyQuery,
-  useGetSummaryDataByCompanyQuery,
   useGetCompanyConnectionsQuery,
 } from "state/api";
-import DashBar from "components/dash_components/DashBar";
 import DashLine from "components/dash_components/DashLine";
 import DashInsights from "components/dash_components/DashInsights";
 import DashRecent from "components/dash_components/DashRecent";
-import DashReport from "components/dash_components/DashReport";
 import Stats from "components/dash_components/Stats";
 import ActiveIntegrations from "components/dash_components/ActiveIntegrations";
 import { subWeeks, subMonths, subYears, isAfter } from "date-fns";
 import { keyframes } from "@emotion/react";
 import { GridCloseIcon } from "@mui/x-data-grid";
-import { siLK } from "@mui/material/locale";
 
 // Define the keyframes for the gradient animation
 const gradientAnimation = keyframes`

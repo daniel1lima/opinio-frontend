@@ -1,16 +1,11 @@
 import React, { useState } from "react";
-import { Box, Fab, useMediaQuery } from "@mui/material";
+import { Box, useMediaQuery } from "@mui/material";
 import { Outlet } from "react-router-dom";
-import { useSelector } from "react-redux";
 import Navbar from "components/Navbar";
 import Sidebar from "components/Sidebar";
 import { useGetUserQuery, useGetCompanyIdQuery } from "state/api";
-import { useEffect } from "react";
-import axios from "axios";
 import { useAuth, useUser } from "@clerk/clerk-react";
 import SpeedDialTooltipOpen from "components/SpeedDialMUI";
-import { Google } from "@mui/icons-material";
-import { skipToken } from "@reduxjs/toolkit/query";
 
 const Layout = () => {
   const isNonMobile = useMediaQuery("(min-width: 600px)");

@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import {
   Menu as MenuIcon,
   Search,
-  SettingsOutlined,
 } from "@mui/icons-material";
 import FlexBetween from "components/FlexBetween";
 import { useDispatch } from "react-redux";
@@ -12,14 +11,9 @@ import {
   InputBase,
   Toolbar,
   useTheme,
-  MenuItem,
-  Button,
   Box,
   Typography,
-  Menu,
-  Badge,
 } from "@mui/material";
-import MailIcon from "@mui/icons-material/Mail";
 import { UserButton, useAuth } from "@clerk/clerk-react";
 import MailMenu from "./MailMenu";
 

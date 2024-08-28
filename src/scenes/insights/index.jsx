@@ -1,32 +1,17 @@
 import React from "react";
 import FlexBetween from "components/FlexBetween";
 import Header from "components/Header";
-import { DownloadOutlined, Timeline } from "@mui/icons-material";
-import { Gauge, gaugeClasses } from "@mui/x-charts/Gauge";
-import Avatar from "@mui/material/Avatar";
-import Stack from "@mui/material/Stack";
 import {
   Box,
-  Button,
   Typography,
   useTheme,
   useMediaQuery,
-  Tab,
-  FormGroup,
-  FormControlLabel,
-  Checkbox,
 } from "@mui/material";
 
-import { DataGrid } from "@mui/x-data-grid";
 // import BreakdownChart from "components/BreakdownChart";
 // import OverviewChart from "components/OverviewChart";
 
-import StatBox from "components/StatBox";
 
-import { Tabs } from "@mui/material";
-import BarAnimation from "components/BarAnimated";
-import LineAnimation from "components/LineAnimated";
-import LongMenu from "components/DotMenu";
 import { useAuth, useUser } from "@clerk/clerk-react";
 import { useGetCompanyIdQuery, useGetUserQuery } from "state/api";
 

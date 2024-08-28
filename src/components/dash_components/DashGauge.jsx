@@ -1,9 +1,6 @@
 import React from "react";
 
-import { DownloadOutlined, Timeline } from "@mui/icons-material";
 import { Gauge, gaugeClasses } from "@mui/x-charts/Gauge";
-import Avatar from "@mui/material/Avatar";
-import Stack from "@mui/material/Stack";
 import { Box, Divider, Typography, useTheme } from "@mui/material";
 import LongMenu from "components/DotMenu";
 import FlexBetween from "components/FlexBetween";

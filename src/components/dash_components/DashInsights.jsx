@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import {
-  Avatar,
   Box,
   Button,
   Card,
@@ -10,9 +9,7 @@ import {
   Typography,
   useTheme,
   Checkbox,
-  IconButton,
 } from "@mui/material";
-import FilterListIcon from "@mui/icons-material/FilterList";
 
 const insights = [
   {
