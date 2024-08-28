@@ -1,34 +1,46 @@
-import React, { useState } from 'react'
-import { Avatar, Box, Button, Card, CardContent, Chip, Stack, Typography, useTheme, Checkbox, IconButton } from '@mui/material'
-import FilterListIcon from '@mui/icons-material/FilterList';
+import React, { useState } from "react";
+import {
+  Box,
+  Button,
+  Card,
+  CardContent,
+  Chip,
+  Stack,
+  Typography,
+  useTheme,
+  Checkbox,
+} from "@mui/material";
 
 const insights = [
   {
     title: "Bathrooms",
-    description: "Clean them, a user stated that some of the toilets were clogged",
+    description:
+      "Clean them, a user stated that some of the toilets were clogged",
     status: "Design",
     timeLogged: "13h 20m",
-    statusColor: "success"
+    statusColor: "success",
   },
   {
     title: "Food",
-    description: "A user stated that the food was not up to par with what they paid for",
+    description:
+      "A user stated that the food was not up to par with what they paid for",
     status: "Concept",
     timeLogged: "8h 20m",
-    statusColor: "primary"
+    statusColor: "primary",
   },
   {
-    title: "Service", 
-    description: "A user stated that the service was lackluster because one of your employees was extremely rude",
+    title: "Service",
+    description:
+      "A user stated that the service was lackluster because one of your employees was extremely rude",
     status: "Re-design",
     timeLogged: "80h 40m",
-    statusColor: "warning"
-  }
-]
+    statusColor: "warning",
+  },
+];
 
 const DashInsights = () => {
-  const theme = useTheme()
-  const [taskList, setTaskList] = useState(insights)
+  const theme = useTheme();
+  const [taskList, setTaskList] = useState(insights);
 
   const addTask = () => {
     const newTask = {
@@ -37,17 +49,17 @@ const DashInsights = () => {
       status: "New",
       timeLogged: "0h 0m",
       statusColor: "default",
-      completed: false // Added completed field
-    }
-    setTaskList([...taskList, newTask])
-  }
+      completed: false, // Added completed field
+    };
+    setTaskList([...taskList, newTask]);
+  };
 
   const toggleTaskCompletion = (index) => {
-    const newTaskList = taskList.map((task, i) => 
-      i === index ? { ...task, completed: !task.completed } : task
-    )
-    setTaskList(newTaskList)
-  }
+    const newTaskList = taskList.map((task, i) =>
+      i === index ? { ...task, completed: !task.completed } : task,
+    );
+    setTaskList(newTaskList);
+  };
 
   return (
     <Box
@@ -59,27 +71,39 @@ const DashInsights = () => {
       sx={{
         "&:hover": {
           boxShadow: "0 0 10px 0 rgba(0,0,0,0.1)",
-          transition: "0.3s ease-out"
-        }
+          transition: "0.3s ease-out",
+        },
       }}
     >
-      <Box display="flex" justifyContent="space-between" alignItems="center" ml="1rem" mt="1rem" mr="1rem">
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        ml="1rem"
+        mt="1rem"
+        mr="1rem"
+      >
         <Box display="flex" alignItems="center" gap="10px">
           <Typography variant="h3" fontWeight="bold">
             Insights
           </Typography>
         </Box>
         <Box display="flex" alignItems="center" gap="10px">
-          <Button variant="contained" color="primary" onClick={addTask} sx={{ textTransform: 'none', borderRadius: '0.55rem' }}>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={addTask}
+            sx={{ textTransform: "none", borderRadius: "0.55rem" }}
+          >
             Add Task
           </Button>
         </Box>
       </Box>
-      <Box 
+      <Box
         className="show-scrollbar"
         height="calc(100% - 5rem)" // Adjust height to fit within the parent box
-        ml=".5rem" 
-        mt="2rem" 
+        ml=".5rem"
+        mt="2rem"
         p=".5rem"
         sx={{
           overflowY: "auto", // Ensure overflow content is scrollable
@@ -95,17 +119,21 @@ const DashInsights = () => {
       >
         <Stack spacing={2}>
           {taskList.map((insight, index) => (
-            <Card 
-              key={index} 
-              variant="outlined" 
-              sx={{ 
-                borderRadius: "0.55rem", 
-                width: '100%', 
-                opacity: insight.completed ? 0.5 : 1 // Adjust opacity based on completion
+            <Card
+              key={index}
+              variant="outlined"
+              sx={{
+                borderRadius: "0.55rem",
+                width: "100%",
+                opacity: insight.completed ? 0.5 : 1, // Adjust opacity based on completion
               }}
             >
               <CardContent>
-                <Box display="flex" justifyContent="space-between" alignItems="center">
+                <Box
+                  display="flex"
+                  justifyContent="space-between"
+                  alignItems="center"
+                >
                   <Typography variant="h6" fontWeight="bold">
                     {insight.title}
                   </Typography>
@@ -115,7 +143,7 @@ const DashInsights = () => {
                     onChange={() => toggleTaskCompletion(index)}
                     sx={{
                       color: theme.palette.primary.main,
-                      '&.Mui-checked': {
+                      "&.Mui-checked": {
                         color: theme.palette.common.blue,
                       },
                     }}
@@ -135,7 +163,7 @@ const DashInsights = () => {
         </Stack>
       </Box>
     </Box>
-  )
-}
+  );
+};
 
-export default DashInsights
+export default DashInsights;

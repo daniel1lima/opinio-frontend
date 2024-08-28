@@ -13,7 +13,7 @@ const FetchCompanyId = ({ id }) => {
     if (results && results.data) {
       setCompany(results.data);
       setWarning(false); // Reset warning if company is found
-      localStorage.setItem('company_id', results.data.company_id); // Store company ID in local storage
+      localStorage.setItem("company_id", results.data.company_id); // Store company ID in local storage
       // console.log("Set company_id:", results.data.company_id);
       // console.log(localStorage.getItem('company_id'))
     } else if (results && results.data === null) {
@@ -28,29 +28,46 @@ const FetchCompanyId = ({ id }) => {
 
   useEffect(() => {
     const handleKeyDown = (event) => {
-      if (event.key === 'Enter') {
+      if (event.key === "Enter") {
         getId(id);
-        console.log(results)
+        console.log(results);
       }
     };
 
-    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener("keydown", handleKeyDown);
     return () => {
-      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener("keydown", handleKeyDown);
     };
   }, [getId, id]);
 
   return (
     <>
       <Fade in={warning} timeout={{ enter: 500, exit: 500 }}>
-        <Alert severity="warning" variant="outlined" sx={{position: "fixed", top: "5%", left: "50%", transform: "translate(-50%, -50%)"}}>
+        <Alert
+          severity="warning"
+          variant="outlined"
+          sx={{
+            position: "fixed",
+            top: "5%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+          }}
+        >
           This company ID does not exist
         </Alert>
       </Fade>
-      <Button variant="contained" color="primary" onClick={() => {getId(id)}}>
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={() => {
+          getId(id);
+        }}
+      >
         Start now
       </Button>
-      {company && <Navigate to={`/sign-up/${company.company_id}`} state={{ company }} />}
+      {company && (
+        <Navigate to={`/sign-up/${company.company_id}`} state={{ company }} />
+      )}
     </>
   );
 };

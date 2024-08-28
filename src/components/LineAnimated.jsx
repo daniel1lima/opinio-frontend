@@ -1,27 +1,15 @@
-import * as React from 'react';
-import Button from '@mui/material/Button';
-import Stack from '@mui/material/Stack';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import { LineChart } from '@mui/x-charts/LineChart';
-import { mangoFusionPalette } from '@mui/x-charts/colorPalettes';
-import { Typography } from '@mui/material';
-
-
+import * as React from "react";
 
 export default function LineAnimation() {
-
   return (
     <div
       style={{
-        width: '100%',
-        display: 'flex',
-        flexDirection: 'column',
+        width: "100%",
+        display: "flex",
+        flexDirection: "column",
       }}
     >
-      <div>
-        
-      </div>
+      <div></div>
       {/* <Stack spacing={1} direction="row">
         <Button
           variant="contained"

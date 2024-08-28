@@ -4,15 +4,12 @@ import { themeSettings } from "theme";
 import { useSelector } from "react-redux";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import { useMemo } from "react";
-import {
-  ClerkProvider,
-  SignedIn,
-  SignedOut,
-} from "@clerk/clerk-react";
+import { ClerkProvider, SignedIn, SignedOut } from "@clerk/clerk-react";
 import Dashboard from "scenes/dashboard";
 import Layout from "scenes/layout";
 import Insights from "scenes/insights";
 import Integrations from "scenes/integrations";
+import Inbox from "scenes/inbox";
 import Reviews from "scenes/reviews";
 import SignInPage from "scenes/signin";
 import SignUpPage from "scenes/signup";
@@ -56,6 +53,7 @@ function SignedInRoutes() {
           <Route path="/insights" element={<Insights />} />
           <Route path="/reviews" element={<Reviews />} />
           <Route path="/integrations" element={<Integrations />} />
+          <Route path="/inbox" element={<Inbox />} />
         </Route>
       </Routes>
     </SignedIn>
@@ -69,8 +67,16 @@ function SignedOutRoutes() {
         <Route path="/*" element={<Navigate to="/onboarding" />} />
         <Route path="/onboarding" element={<Onboarding />} />
         <Route path="/invited" element={<Invited />} />
-        <Route path="/sign-in/*" redirectUrl="/dashboard" element={<SignInPage />} />
-        <Route path="/sign-up/*" redirectUrl="/addUser" element={<SignUpPage />} />
+        <Route
+          path="/sign-in/*"
+          redirectUrl="/dashboard"
+          element={<SignInPage />}
+        />
+        <Route
+          path="/sign-up/*"
+          redirectUrl="/addUser"
+          element={<SignUpPage />}
+        />
         <Route path="/addUser/*" element={<AddCompanyToUser />} />
       </Routes>
     </SignedOut>

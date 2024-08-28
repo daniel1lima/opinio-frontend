@@ -2,7 +2,7 @@ import { Box, Typography, useTheme } from "@mui/material";
 import React from "react";
 
 const DashReport = () => {
-    const theme = useTheme();
+  const theme = useTheme();
   return (
     <Box
       gridColumn="span 12"

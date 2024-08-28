@@ -1,32 +1,11 @@
 import React from "react";
 import FlexBetween from "components/FlexBetween";
 import Header from "components/Header";
-import { DownloadOutlined, Timeline } from "@mui/icons-material";
-import { Gauge, gaugeClasses } from '@mui/x-charts/Gauge';
-import Avatar from '@mui/material/Avatar';
-import Stack from '@mui/material/Stack';
-import {
-  Box,
-  Button,
-  Typography,
-  useTheme,
-  useMediaQuery,
-  Tab,
-  FormGroup,
-  FormControlLabel,
-  Checkbox
-} from "@mui/material";
+import { Box, Typography, useTheme, useMediaQuery } from "@mui/material";
 
-import { DataGrid } from "@mui/x-data-grid";
 // import BreakdownChart from "components/BreakdownChart";
 // import OverviewChart from "components/OverviewChart";
 
-import StatBox from "components/StatBox";
-
-import { Tabs } from "@mui/material";
-import BarAnimation from "components/BarAnimated";
-import LineAnimation from "components/LineAnimated";
-import LongMenu from "components/DotMenu";
 import { useAuth, useUser } from "@clerk/clerk-react";
 import { useGetCompanyIdQuery, useGetUserQuery } from "state/api";
 
@@ -68,10 +47,9 @@ const Insights = () => {
         gridAutoRows="100px"
         gap="30px"
         sx={{
-          "& > div": { gridColumn: isNonMediumScreens ? undefined : "span 12" }
+          "& > div": { gridColumn: isNonMediumScreens ? undefined : "span 12" },
         }}
       >
-
         {/* insight 1 */}
 
         <Box
@@ -83,67 +61,72 @@ const Insights = () => {
           sx={{
             "&:hover": {
               boxShadow: "0 0 10px 0 rgba(0,0,0,0.1)",
-              transition: "0.3s ease-out"
+              transition: "0.3s ease-out",
               // scale: "102.6%"
-            }
+            },
           }}
         >
-            <Box
-              display="flex"
-              flexDirection="row"
-              gap="10px"
-              ml="1.5rem"
-              mt=".5rem"
-              mb=".5rem"
-            >
-              <Typography variant="h3" fontWeight="bold">
-                {" "}
-              Insight 1
-              </Typography>
-            </Box>
-            <Box
-            display="flex"
-            flexDirection="row"
-            gap="10px"
-            ml="1.5rem"
-            mt=".5rem"
-            mb=".5rem">
-              <Typography variant="h6">
-                {" "}
-              Some context here
-              </Typography>
-            </Box>
-
-            <Box
+          <Box
             display="flex"
             flexDirection="row"
             gap="10px"
             ml="1.5rem"
             mt=".5rem"
             mb=".5rem"
-            pt="2rem">
-              <Typography variant="h6">
-                {" "}
-                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-              </Typography>
-            </Box>
+          >
+            <Typography variant="h3" fontWeight="bold">
+              {" "}
+              Insight 1
+            </Typography>
+          </Box>
+          <Box
+            display="flex"
+            flexDirection="row"
+            gap="10px"
+            ml="1.5rem"
+            mt=".5rem"
+            mb=".5rem"
+          >
+            <Typography variant="h6"> Some context here</Typography>
+          </Box>
 
+          <Box
+            display="flex"
+            flexDirection="row"
+            gap="10px"
+            ml="1.5rem"
+            mt=".5rem"
+            mb=".5rem"
+            pt="2rem"
+          >
+            <Typography variant="h6">
+              {" "}
+              Lorem Ipsum is simply dummy text of the printing and typesetting
+              industry. Lorem Ipsum has been the industry's standard dummy text
+              ever since the 1500s, when an unknown printer took a galley of
+              type and scrambled it to make a type specimen book. It has
+              survived not only five centuries, but also the leap into
+              electronic typesetting, remaining essentially unchanged. It was
+              popularised in the 1960s with the release of Letraset sheets
+              containing Lorem Ipsum passages, and more recently with desktop
+              publishing software like Aldus PageMaker including versions of
+              Lorem Ipsum.
+            </Typography>
+          </Box>
 
-            <Box
-              display="flex"
-              flexDirection="row"
-              gap="10px"
-              ml="1.5rem"
-              mt=".5rem"
-              mb=".5rem"
-            >
-            </Box>
+          <Box
+            display="flex"
+            flexDirection="row"
+            gap="10px"
+            ml="1.5rem"
+            mt=".5rem"
+            mb=".5rem"
+          ></Box>
         </Box>
 
+        {/* insight 2 */}
 
-{/* insight 2 */}
-
-<Box
+        <Box
           gridColumn="span 12"
           gridRow="span 3"
           backgroundColor={theme.palette.background.default}
@@ -152,66 +135,72 @@ const Insights = () => {
           sx={{
             "&:hover": {
               boxShadow: "0 0 10px 0 rgba(0,0,0,0.1)",
-              transition: "0.3s ease-out"
+              transition: "0.3s ease-out",
               // scale: "102.6%"
-            }
+            },
           }}
         >
-            <Box
-              display="flex"
-              flexDirection="row"
-              gap="10px"
-              ml="1.5rem"
-              mt=".5rem"
-              mb=".5rem"
-            >
-              <Typography variant="h3" fontWeight="bold">
-                {" "}
-              Insight 2
-              </Typography>
-            </Box>
-            <Box
-            display="flex"
-            flexDirection="row"
-            gap="10px"
-            ml="1.5rem"
-            mt=".5rem"
-            mb=".5rem">
-              <Typography variant="h6">
-                {" "}
-              Some context here
-              </Typography>
-            </Box>
-
-            <Box
+          <Box
             display="flex"
             flexDirection="row"
             gap="10px"
             ml="1.5rem"
             mt=".5rem"
             mb=".5rem"
-            pt="2rem">
-              <Typography variant="h6">
-                {" "}
-                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-              </Typography>
-            </Box>
+          >
+            <Typography variant="h3" fontWeight="bold">
+              {" "}
+              Insight 2
+            </Typography>
+          </Box>
+          <Box
+            display="flex"
+            flexDirection="row"
+            gap="10px"
+            ml="1.5rem"
+            mt=".5rem"
+            mb=".5rem"
+          >
+            <Typography variant="h6"> Some context here</Typography>
+          </Box>
 
+          <Box
+            display="flex"
+            flexDirection="row"
+            gap="10px"
+            ml="1.5rem"
+            mt=".5rem"
+            mb=".5rem"
+            pt="2rem"
+          >
+            <Typography variant="h6">
+              {" "}
+              Lorem Ipsum is simply dummy text of the printing and typesetting
+              industry. Lorem Ipsum has been the industry's standard dummy text
+              ever since the 1500s, when an unknown printer took a galley of
+              type and scrambled it to make a type specimen book. It has
+              survived not only five centuries, but also the leap into
+              electronic typesetting, remaining essentially unchanged. It was
+              popularised in the 1960s with the release of Letraset sheets
+              containing Lorem Ipsum passages, and more recently with desktop
+              publishing software like Aldus PageMaker including versions of
+              Lorem Ipsum.
+            </Typography>
+          </Box>
 
-            <Box
-              display="flex"
-              flexDirection="row"
-              gap="10px"
-              ml="1.5rem"
-              mt=".5rem"
-              mb=".5rem"
-            >
-            </Box>
+          <Box
+            display="flex"
+            flexDirection="row"
+            gap="10px"
+            ml="1.5rem"
+            mt=".5rem"
+            mb=".5rem"
+          ></Box>
         </Box>
 
         {/* insight 3 */}
 
-<Box
+        <Box
           gridColumn="span 12"
           gridRow="span 3"
           backgroundColor={theme.palette.background.default}
@@ -220,66 +209,72 @@ const Insights = () => {
           sx={{
             "&:hover": {
               boxShadow: "0 0 10px 0 rgba(0,0,0,0.1)",
-              transition: "0.3s ease-out"
+              transition: "0.3s ease-out",
               // scale: "102.6%"
-            }
+            },
           }}
         >
-            <Box
-              display="flex"
-              flexDirection="row"
-              gap="10px"
-              ml="1.5rem"
-              mt=".5rem"
-              mb=".5rem"
-            >
-              <Typography variant="h3" fontWeight="bold">
-                {" "}
+          <Box
+            display="flex"
+            flexDirection="row"
+            gap="10px"
+            ml="1.5rem"
+            mt=".5rem"
+            mb=".5rem"
+          >
+            <Typography variant="h3" fontWeight="bold">
+              {" "}
               Insight 3
-              </Typography>
-            </Box>
-            <Box
-            display="flex"
-            flexDirection="row"
-            gap="10px"
-            ml="1.5rem"
-            mt=".5rem"
-            mb=".5rem">
-              <Typography variant="h6">
-                {" "}
-              Some context here
-              </Typography>
-            </Box>
-
-            <Box
+            </Typography>
+          </Box>
+          <Box
             display="flex"
             flexDirection="row"
             gap="10px"
             ml="1.5rem"
             mt=".5rem"
             mb=".5rem"
-            pt="2rem">
-              <Typography variant="h6">
-                {" "}
-                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-              </Typography>
-            </Box>
+          >
+            <Typography variant="h6"> Some context here</Typography>
+          </Box>
 
+          <Box
+            display="flex"
+            flexDirection="row"
+            gap="10px"
+            ml="1.5rem"
+            mt=".5rem"
+            mb=".5rem"
+            pt="2rem"
+          >
+            <Typography variant="h6">
+              {" "}
+              Lorem Ipsum is simply dummy text of the printing and typesetting
+              industry. Lorem Ipsum has been the industry's standard dummy text
+              ever since the 1500s, when an unknown printer took a galley of
+              type and scrambled it to make a type specimen book. It has
+              survived not only five centuries, but also the leap into
+              electronic typesetting, remaining essentially unchanged. It was
+              popularised in the 1960s with the release of Letraset sheets
+              containing Lorem Ipsum passages, and more recently with desktop
+              publishing software like Aldus PageMaker including versions of
+              Lorem Ipsum.
+            </Typography>
+          </Box>
 
-            <Box
-              display="flex"
-              flexDirection="row"
-              gap="10px"
-              ml="1.5rem"
-              mt=".5rem"
-              mb=".5rem"
-            >
-            </Box>
+          <Box
+            display="flex"
+            flexDirection="row"
+            gap="10px"
+            ml="1.5rem"
+            mt=".5rem"
+            mb=".5rem"
+          ></Box>
         </Box>
 
-{/* insight 4 */}
+        {/* insight 4 */}
 
-<Box
+        <Box
           gridColumn="span 12"
           gridRow="span 3"
           backgroundColor={theme.palette.background.default}
@@ -288,63 +283,68 @@ const Insights = () => {
           sx={{
             "&:hover": {
               boxShadow: "0 0 10px 0 rgba(0,0,0,0.1)",
-              transition: "0.3s ease-out"
+              transition: "0.3s ease-out",
               // scale: "102.6%"
-            }
+            },
           }}
         >
-            <Box
-              display="flex"
-              flexDirection="row"
-              gap="10px"
-              ml="1.5rem"
-              mt=".5rem"
-              mb=".5rem"
-            >
-              <Typography variant="h3" fontWeight="bold">
-                {" "}
-              Insight 4
-              </Typography>
-            </Box>
-            <Box
-            display="flex"
-            flexDirection="row"
-            gap="10px"
-            ml="1.5rem"
-            mt=".5rem"
-            mb=".5rem">
-              <Typography variant="h6">
-                {" "}
-              Some context here
-              </Typography>
-            </Box>
-
-            <Box
+          <Box
             display="flex"
             flexDirection="row"
             gap="10px"
             ml="1.5rem"
             mt=".5rem"
             mb=".5rem"
-            pt="2rem">
-              <Typography variant="h6">
-                {" "}
-                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-              </Typography>
-            </Box>
+          >
+            <Typography variant="h3" fontWeight="bold">
+              {" "}
+              Insight 4
+            </Typography>
+          </Box>
+          <Box
+            display="flex"
+            flexDirection="row"
+            gap="10px"
+            ml="1.5rem"
+            mt=".5rem"
+            mb=".5rem"
+          >
+            <Typography variant="h6"> Some context here</Typography>
+          </Box>
 
+          <Box
+            display="flex"
+            flexDirection="row"
+            gap="10px"
+            ml="1.5rem"
+            mt=".5rem"
+            mb=".5rem"
+            pt="2rem"
+          >
+            <Typography variant="h6">
+              {" "}
+              Lorem Ipsum is simply dummy text of the printing and typesetting
+              industry. Lorem Ipsum has been the industry's standard dummy text
+              ever since the 1500s, when an unknown printer took a galley of
+              type and scrambled it to make a type specimen book. It has
+              survived not only five centuries, but also the leap into
+              electronic typesetting, remaining essentially unchanged. It was
+              popularised in the 1960s with the release of Letraset sheets
+              containing Lorem Ipsum passages, and more recently with desktop
+              publishing software like Aldus PageMaker including versions of
+              Lorem Ipsum.
+            </Typography>
+          </Box>
 
-            <Box
-              display="flex"
-              flexDirection="row"
-              gap="10px"
-              ml="1.5rem"
-              mt=".5rem"
-              mb=".5rem"
-            >
-            </Box>
+          <Box
+            display="flex"
+            flexDirection="row"
+            gap="10px"
+            ml="1.5rem"
+            mt=".5rem"
+            mb=".5rem"
+          ></Box>
         </Box>
-
       </Box>
     </Box>
   );

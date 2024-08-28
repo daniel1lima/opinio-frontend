@@ -1,7 +1,7 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
 const userCompanySlice = createSlice({
-  name: 'userCompany',
+  name: "userCompany",
   initialState: { user: null, companyId: null },
   reducers: {
     setUser: (state, action) => {

@@ -1,33 +1,23 @@
 import React, { useState } from "react";
-import { Box, Fab, useMediaQuery } from "@mui/material";
+import { Box, useMediaQuery } from "@mui/material";
 import { Outlet } from "react-router-dom";
-import { useSelector } from "react-redux";
 import Navbar from "components/Navbar";
 import Sidebar from "components/Sidebar";
 import { useGetUserQuery, useGetCompanyIdQuery } from "state/api";
-import { useEffect } from "react";
-import axios from "axios";
 import { useAuth, useUser } from "@clerk/clerk-react";
-import SpeedDialTooltipOpen from "components/SpeedDialMUI";
-import { Google } from "@mui/icons-material";
-import { skipToken } from "@reduxjs/toolkit/query";
 
 const Layout = () => {
   const isNonMobile = useMediaQuery("(min-width: 600px)");
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
-  // Dont matter, I just hvave to noiw use userID to check the database and return the data and then it will give me what I need to fill in everything!
   const { userId } = useAuth();
   const { user } = useUser();
   const userFromDb = useGetUserQuery(userId).data;
-  const company = useGetCompanyIdQuery(userFromDb?.company_id, {skip: !userFromDb?.company_id}).data;
+  const company = useGetCompanyIdQuery(userFromDb?.company_id, {
+    skip: !userFromDb?.company_id,
+  }).data;
 
-  localStorage.setItem("user_id", userId)
-
-  // console.log("userId", userFromDb);
-  // console.log("company", company)
-
-  // console.log('data', data);
+  localStorage.setItem("user_id", userId);
 
   return (
     <Box display={isNonMobile ? "flex" : "block"} width="100%" height="100%">
@@ -48,9 +38,7 @@ const Layout = () => {
           isSidebarOpen={isSidebarOpen}
           setIsSidebarOpen={setIsSidebarOpen}
         />
-        
         <Outlet />
-        <SpeedDialTooltipOpen />
       </Box>
     </Box>
   );
