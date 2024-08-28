@@ -10,7 +10,6 @@ export default [
       "unused-imports": unusedImports,
     },
     rules: {
-      "no-unused-vars": "off", // or "@typescript-eslint/no-unused-vars": "off",
       "unused-imports/no-unused-imports": "error",
       "unused-imports/no-unused-vars": [
         "warn",
@@ -23,7 +22,7 @@ export default [
       ],
     },
   },
-  { languageOptions: { globals: globals.browser } },
+  { languageOptions: { globals: { ...globals.browser, noUnusedVars: "off" } } },
   pluginJs.configs.recommended,
   pluginReact.configs.flat.recommended,
 ];
