@@ -13,7 +13,12 @@ const SignInPage = () => {
       justifyContent="center" // Centers horizontally
     >
       <FlexBetween m="34%">
-        <SignIn redirectUrl={"/dashboard"} />
+        <SignIn
+          transferable={false}
+          forceRedirectUrl={"/dashboard"}
+          signUpUrl={"/onboarding"}
+          layout={{ logoPlacement: "outside" }}
+        />
       </FlexBetween>
     </Box>
   );

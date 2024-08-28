@@ -55,7 +55,16 @@ const Reviews = () => {
     { field: "review_id", headerName: "ID", flex: 1 },
     { field: "review_date", headerName: "DATE", flex: 1 },
     { field: "review_text", headerName: "TEXT", flex: 1 },
-    { field: "review_url", headerName: "URL", flex: 1 },
+    {
+      field: "review_url",
+      headerName: "URL",
+      flex: 1,
+      renderCell: (params) => (
+        <a href={params.value} target="_blank" rel="noopener noreferrer">
+          {params.value}
+        </a>
+      ),
+    },
     { field: "rating", headerName: "RATING", flex: 1 },
     {
       field: "platform_id",

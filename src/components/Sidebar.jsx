@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState, useTransition } from "react";
 import {
   Box,
   Drawer,
@@ -11,24 +11,26 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
-import LinkIcon from "@mui/icons-material/Link";
 import {
   ChevronLeft,
   ChevronRightOutlined,
   HomeOutlined,
-  PointOfSaleOutlined,
   AdminPanelSettingsOutlined,
   TrendingUpOutlined,
+  ArrowBack,
 } from "@mui/icons-material";
-
+import InboxIcon from "@mui/icons-material/Inbox";
+import LinkIcon from "@mui/icons-material/Link";
 import ReviewsIcon from "@mui/icons-material/Reviews";
-
 import InsightsIcon from "@mui/icons-material/Insights";
-
-import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import FlexBetween from "./FlexBetween";
 import logo from "assets/logo.png";
+import StarIcon from "@mui/icons-material/Star";
+import SnoozeIcon from "@mui/icons-material/Snooze";
+import SendIcon from "@mui/icons-material/Send";
+import DraftsIcon from "@mui/icons-material/Drafts";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 const navItems = [
   {
@@ -49,7 +51,7 @@ const navItems = [
   },
   {
     text: "Inbox",
-    icon: <PointOfSaleOutlined />,
+    icon: <InboxIcon />,
   },
   {
     text: "Management",
@@ -69,6 +71,33 @@ const navItems = [
   },
 ];
 
+const inboxItems = [
+  {
+    text: "Inbox",
+    icon: <InboxIcon />,
+  },
+  {
+    text: "Starred",
+    icon: <StarIcon />,
+  },
+  {
+    text: "Snoozed",
+    icon: <SnoozeIcon />,
+  },
+  {
+    text: "Sent",
+    icon: <SendIcon />,
+  },
+  {
+    text: "Drafts",
+    icon: <DraftsIcon />,
+  },
+  {
+    text: "Trash",
+    icon: <DeleteIcon />,
+  },
+];
+
 const Sidebar = ({
   clerkUser,
   companyDB,
@@ -79,17 +108,51 @@ const Sidebar = ({
 }) => {
   const { pathname } = useLocation();
   const [active, setActive] = useState("");
+  const [showInboxItems, setShowInboxItems] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false);
+  const [isPending, startTransition] = useTransition();
   const navigate = useNavigate();
   const theme = useTheme();
 
   const firstName = clerkUser.firstName;
   const email = clerkUser.email;
-
   const companyName = companyDB?.company_name;
 
   useEffect(() => {
     setActive(pathname.substring(1));
   }, [pathname]);
+
+  const handleInboxClick = () => {
+    setIsAnimating(true);
+    startTransition(() => {
+      setTimeout(() => {
+        setShowInboxItems(true);
+        setIsAnimating(false);
+      }, 300); // Duration of the animation
+    });
+  };
+
+  const handleBackClick = () => {
+    setIsAnimating(true);
+    startTransition(() => {
+      setTimeout(() => {
+        setShowInboxItems(false);
+        setIsAnimating(false);
+        navigate("/dashboard"); // Navigate to dashboard
+      }, 300); // Duration of the animation
+    });
+  };
+
+  const handleNavItemClick = (lcText) => {
+    if (lcText === "inbox") {
+      handleInboxClick();
+    } else {
+      setShowInboxItems(false);
+    }
+    navigate(`/${lcText}`);
+    setActive(lcText);
+  };
+
   return (
     <Box component="nav">
       {isSidebarOpen && (
@@ -131,63 +194,73 @@ const Sidebar = ({
                 )}
               </FlexBetween>
             </Box>
-            <List>
-              {navItems.map(({ text, icon }) => {
-                if (!icon) {
-                  return (
-                    <Typography
-                      key={text}
-                      sx={{ m: "2.25rem 0 1rem 3rem", fontWeight: "bold" }}
-                    >
-                      {text}
-                    </Typography>
-                  );
-                }
-                const lcText = text.toLowerCase();
+            {showInboxItems && (
+              <IconButton onClick={handleBackClick} sx={{ ml: "1rem" }}>
+                <ArrowBack sx={{ color: "black" }} />
+              </IconButton>
+            )}
+            <List
+              sx={{
+                opacity: isAnimating ? 0 : 1,
+                transform: isAnimating ? "translateX(-20px)" : "translateX(0)",
+                transition: "opacity 0.3s ease, transform 0.3s ease",
+              }}
+            >
+              {(showInboxItems ? inboxItems : navItems).map(
+                ({ text, icon }) => {
+                  if (!icon) {
+                    return (
+                      <Typography
+                        key={text}
+                        sx={{ m: "2.25rem 0 1rem 3rem", fontWeight: "bold" }}
+                      >
+                        {text}
+                      </Typography>
+                    );
+                  }
+                  const lcText = text.toLowerCase();
 
-                return (
-                  <ListItem key={text} disablePadding>
-                    <ListItemButton
-                      onClick={() => {
-                        navigate(`/${lcText}`);
-                        setActive(lcText);
-                      }}
-                      sx={{
-                        backgroundColor:
-                          active === lcText
-                            ? theme.palette.primary.main // Solid color for active item
-                            : "transparent",
-                        color:
-                          active === lcText
-                            ? theme.palette.primary[100] // Text color for active item
-                            : theme.palette.secondary[200],
-                        transition:
-                          "background-color 0.3s ease, transform 0.2s ease", // Animation transition
-                        "&:hover": {
-                          transform:
-                            active === lcText ? "scale(1.05)" : "scale(1.02)", // Scale effect on hover
-                        },
-                      }}
-                    >
-                      <ListItemIcon
+                  return (
+                    <ListItem key={text} disablePadding>
+                      <ListItemButton
+                        onClick={() => handleNavItemClick(lcText)}
                         sx={{
-                          ml: "2rem",
+                          backgroundColor:
+                            active === lcText
+                              ? theme.palette.primary.main
+                              : "transparent",
                           color:
                             active === lcText
-                              ? theme.palette.primary[600]
+                              ? theme.palette.primary[100]
                               : theme.palette.secondary[200],
+                          transition:
+                            "background-color 0.3s ease, transform 0.2s ease",
+                          "&:hover": {
+                            transform:
+                              active === lcText ? "scale(1.05)" : "scale(1.02)",
+                          },
                         }}
                       >
-                        {icon}
-                      </ListItemIcon>
-                      <ListItemText primary={text} />
-                      {active === lcText && (
-                        <ChevronRightOutlined sx={{ ml: "auto" }} />
-                      )}
-                    </ListItemButton>
-                  </ListItem>
-                );
-              })}
+                        <ListItemIcon
+                          sx={{
+                            ml: "2rem",
+                            color:
+                              active === lcText
+                                ? theme.palette.primary[600]
+                                : theme.palette.secondary[200],
+                          }}
+                        >
+                          {icon}
+                        </ListItemIcon>
+                        <ListItemText primary={text} />
+                        {active === lcText && (
+                          <ChevronRightOutlined sx={{ ml: "auto" }} />
+                        )}
+                      </ListItemButton>
+                    </ListItem>
+                  );
+                },
+              )}
             </List>
           </Box>
         </Drawer>

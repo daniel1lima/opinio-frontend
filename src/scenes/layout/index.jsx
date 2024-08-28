@@ -5,13 +5,11 @@ import Navbar from "components/Navbar";
 import Sidebar from "components/Sidebar";
 import { useGetUserQuery, useGetCompanyIdQuery } from "state/api";
 import { useAuth, useUser } from "@clerk/clerk-react";
-import SpeedDialTooltipOpen from "components/SpeedDialMUI";
 
 const Layout = () => {
   const isNonMobile = useMediaQuery("(min-width: 600px)");
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
-  // Dont matter, I just hvave to noiw use userID to check the database and return the data and then it will give me what I need to fill in everything!
   const { userId } = useAuth();
   const { user } = useUser();
   const userFromDb = useGetUserQuery(userId).data;
@@ -20,11 +18,6 @@ const Layout = () => {
   }).data;
 
   localStorage.setItem("user_id", userId);
-
-  // console.log("userId", userFromDb);
-  // console.log("company", company)
-
-  // console.log('data', data);
 
   return (
     <Box display={isNonMobile ? "flex" : "block"} width="100%" height="100%">
@@ -45,9 +38,7 @@ const Layout = () => {
           isSidebarOpen={isSidebarOpen}
           setIsSidebarOpen={setIsSidebarOpen}
         />
-
         <Outlet />
-        <SpeedDialTooltipOpen />
       </Box>
     </Box>
   );

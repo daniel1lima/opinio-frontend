@@ -9,6 +9,7 @@ import Dashboard from "scenes/dashboard";
 import Layout from "scenes/layout";
 import Insights from "scenes/insights";
 import Integrations from "scenes/integrations";
+import Inbox from "scenes/inbox";
 import Reviews from "scenes/reviews";
 import SignInPage from "scenes/signin";
 import SignUpPage from "scenes/signup";
@@ -52,6 +53,7 @@ function SignedInRoutes() {
           <Route path="/insights" element={<Insights />} />
           <Route path="/reviews" element={<Reviews />} />
           <Route path="/integrations" element={<Integrations />} />
+          <Route path="/inbox" element={<Inbox />} />
         </Route>
       </Routes>
     </SignedIn>
