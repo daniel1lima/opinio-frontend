@@ -3,7 +3,7 @@ import { Box, Typography, useTheme } from "@mui/material";
 import LongMenu from "components/DotMenu";
 import FlexBetween from "components/FlexBetween";
 import { BarChart } from "@mui/x-charts";
-import axios from 'axios'; // Import axios for fetching data
+import axios from "axios"; // Import axios for fetching data
 
 const DashLine = ({ timeframe }) => {
   const theme = useTheme();
@@ -12,11 +12,14 @@ const DashLine = ({ timeframe }) => {
   useEffect(() => {
     const fetchReviewData = async () => {
       try {
-        const response = await axios.get(process.env.REACT_APP_BASE_URL + '/client/get_frequency_reviews', {
-          params: {
-            company_id: localStorage.getItem("company_id")
-          }
-        }); // Send company_id as a query parameter
+        const response = await axios.get(
+          process.env.REACT_APP_BASE_URL + "/client/get_frequency_reviews",
+          {
+            params: {
+              company_id: localStorage.getItem("company_id"),
+            },
+          },
+        ); // Send company_id as a query parameter
         setReviewData(response.data);
       } catch (error) {
         console.error("Error fetching review data:", error);
@@ -33,10 +36,12 @@ const DashLine = ({ timeframe }) => {
 
     switch (timeframe) {
       case 0: // All Time
-        return Object.entries(reviewData.allTime || {}).map(([year, count]) => ({
-          date: year,
-          count,
-        }));
+        return Object.entries(reviewData.allTime || {}).map(
+          ([year, count]) => ({
+            date: year,
+            count,
+          }),
+        );
       case 1: // Week
         return Object.entries(reviewData.week || {}).map(([day, count]) => ({
           date: day,
@@ -99,11 +104,13 @@ const DashLine = ({ timeframe }) => {
       <Box>
         <BarChart
           borderRadius={5}
-          xAxis={[{ scaleType: "band", data: binnedReviews.map((item) => item.date) }]}
+          xAxis={[
+            { scaleType: "band", data: binnedReviews.map((item) => item.date) },
+          ]}
           series={[
             {
               data: binnedReviews.map((item) => item.count),
-              color: '#1250cc'
+              color: "#1250cc",
             },
           ]}
           height={300}

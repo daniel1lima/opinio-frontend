@@ -12,10 +12,26 @@ import ErrorIcon from "@mui/icons-material/Error";
 import { styled } from "@mui/system";
 
 const options = [
-  { icon: <SettingsIcon />, title: "Settings", description: "Update Dashboard" },
-  { icon: <EventIcon />, title: "Event Update", description: "An event date update again" },
-  { icon: <AccountCircleIcon />, title: "Profile", description: "Update your profile" },
-  { icon: <ErrorIcon />, title: "Application Error", description: "Check Your running application" }
+  {
+    icon: <SettingsIcon />,
+    title: "Settings",
+    description: "Update Dashboard",
+  },
+  {
+    icon: <EventIcon />,
+    title: "Event Update",
+    description: "An event date update again",
+  },
+  {
+    icon: <AccountCircleIcon />,
+    title: "Profile",
+    description: "Update your profile",
+  },
+  {
+    icon: <ErrorIcon />,
+    title: "Application Error",
+    description: "Check Your running application",
+  },
 ];
 
 const ITEM_HEIGHT = 48;
@@ -29,23 +45,23 @@ const PulsingDot = styled("div")({
   "@keyframes pulse": {
     "0%": {
       transform: "scale(1)",
-      opacity: 0
+      opacity: 0,
     },
     "50%": {
       transform: "scale(1.2)",
-      opacity: 1
+      opacity: 1,
     },
     "100%": {
       transform: "scale(1)",
-      opacity: 0
-    }
-  }
+      opacity: 0,
+    },
+  },
 });
 
 export default function MailMenu() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
-  const handleClick = event => {
+  const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
@@ -67,7 +83,7 @@ export default function MailMenu() {
       <Menu
         id="long-menu"
         MenuListProps={{
-          "aria-labelledby": "long-button"
+          "aria-labelledby": "long-button",
         }}
         anchorEl={anchorEl}
         open={open}
@@ -76,15 +92,15 @@ export default function MailMenu() {
           height: "100%",
           maxHeight: ITEM_HEIGHT * 9.5,
           width: "300px",
-          borderRadius: "10px"
+          borderRadius: "10px",
         }}
         anchorOrigin={{
           vertical: "bottom",
-          horizontal: "right"
+          horizontal: "right",
         }}
         transformOrigin={{
           vertical: "top",
-          horizontal: "right"
+          horizontal: "right",
         }}
         className="custom-menu"
       >

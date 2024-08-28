@@ -1,31 +1,32 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap");
 
 html,
 body,
 #root,
 .app {
-    height: 100%;
-    width: 100%;
-    font-family: "Opens Sans", sans-serif;
+  height: 100%;
+  width: 100%;
+  font-family: "Opens Sans", sans-serif;
 }
 
 /* Hide scrollbar for all elements */
 * {
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
 }
 
-*::-webkit-scrollbar { /* WebKit browsers */
-    display: none;
+*::-webkit-scrollbar {
+  /* WebKit browsers */
+  display: none;
 }
 
 /* Specific element to show scrollbar */
 .show-scrollbar {
-    scrollbar-width: auto; /* Firefox */
-    -ms-overflow-style: auto;  /* Internet Explorer 10+ */
+  scrollbar-width: auto; /* Firefox */
+  -ms-overflow-style: auto; /* Internet Explorer 10+ */
 }
 
-.show-scrollbar::-webkit-scrollbar { /* WebKit browsers */
-    display: block;
+.show-scrollbar::-webkit-scrollbar {
+  /* WebKit browsers */
+  display: block;
 }
-

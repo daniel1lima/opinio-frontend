@@ -1,5 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { Box, Typography, useTheme, Button, IconButton, Menu, MenuItem } from "@mui/material";
+import {
+  Box,
+  Typography,
+  useTheme,
+  Button,
+  IconButton,
+  Menu,
+  MenuItem,
+} from "@mui/material";
 import { ChevronLeft, ChevronRight, MoreVert } from "@mui/icons-material";
 import { format } from "date-fns";
 import { useGetReviewDataByCompanyQuery } from "../../state/api";
@@ -11,20 +19,23 @@ const DashRecent = ({ data }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const reviewsPerPage = 10;
 
-  const { data: reviewsData, isLoading, error } = useGetReviewDataByCompanyQuery({
+  const {
+    data: reviewsData,
+    isLoading,
+    error,
+  } = useGetReviewDataByCompanyQuery({
     company_id: localStorage.getItem("company_id"),
     page: currentPage,
     page_size: reviewsPerPage,
   });
 
-  
-
   const total_reviews = reviewsData ? reviewsData.totalReviews : 0;
   const page = reviewsData ? reviewsData.page : 1;
   const reviews_per_page = reviewsData ? reviewsData.pageSize : 10;
 
-  const currentReviews = Array.isArray(reviewsData?.reviews) ? reviewsData.reviews : [];
-
+  const currentReviews = Array.isArray(reviewsData?.reviews)
+    ? reviewsData.reviews
+    : [];
 
   useEffect(() => {
     setCurrentReviewIndex(0);
@@ -169,7 +180,10 @@ const DashRecent = ({ data }) => {
         </Box>
         <Button
           onClick={handleNextPage}
-          disabled={currentReviewIndex + reviews_per_page * (page - 1) >= total_reviews - 1}
+          disabled={
+            currentReviewIndex + reviews_per_page * (page - 1) >=
+            total_reviews - 1
+          }
           sx={{
             minWidth: "30px",
             minHeight: "30px",

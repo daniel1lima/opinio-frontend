@@ -27,9 +27,10 @@ const store = configureStore({
     [servicesApi.reducerPath]: servicesApi.reducer,
     userCompany: persistedReducer,
   },
-  middleware: (getDefault) => getDefault({serializableCheck: false})
-    .concat(api.middleware)
-    .concat(servicesApi.middleware),
+  middleware: (getDefault) =>
+    getDefault({ serializableCheck: false })
+      .concat(api.middleware)
+      .concat(servicesApi.middleware),
 });
 
 const persistor = persistStore(store);
@@ -44,5 +45,5 @@ root.render(
         <App />
       </PersistGate>
     </Provider>
-  </React.StrictMode>
+  </React.StrictMode>,
 );

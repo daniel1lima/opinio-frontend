@@ -4,11 +4,7 @@ import { themeSettings } from "theme";
 import { useSelector } from "react-redux";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import { useMemo } from "react";
-import {
-  ClerkProvider,
-  SignedIn,
-  SignedOut,
-} from "@clerk/clerk-react";
+import { ClerkProvider, SignedIn, SignedOut } from "@clerk/clerk-react";
 import Dashboard from "scenes/dashboard";
 import Layout from "scenes/layout";
 import Insights from "scenes/insights";
@@ -69,8 +65,16 @@ function SignedOutRoutes() {
         <Route path="/*" element={<Navigate to="/onboarding" />} />
         <Route path="/onboarding" element={<Onboarding />} />
         <Route path="/invited" element={<Invited />} />
-        <Route path="/sign-in/*" redirectUrl="/dashboard" element={<SignInPage />} />
-        <Route path="/sign-up/*" redirectUrl="/addUser" element={<SignUpPage />} />
+        <Route
+          path="/sign-in/*"
+          redirectUrl="/dashboard"
+          element={<SignInPage />}
+        />
+        <Route
+          path="/sign-up/*"
+          redirectUrl="/addUser"
+          element={<SignUpPage />}
+        />
         <Route path="/addUser/*" element={<AddCompanyToUser />} />
       </Routes>
     </SignedOut>

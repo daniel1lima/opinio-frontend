@@ -24,9 +24,6 @@ const Invited = () => {
 
   const [companyIdInput, setCompanyIdInput] = useState("");
 
-
-  
-
   return (
     <Box id="hero" bgcolor={theme.palette.grey[100]} height="100%" width="100%">
       <Container
@@ -98,16 +95,20 @@ const Invited = () => {
           </Typography>
         </Stack>
         <Link
-            href="/sign-in"
-            underline="hover"
-            variant="subtitle1"
-            mt="1.5rem"
-            textAlign="center"
-            color="text.secondary"
-            sx={{ "&:hover": { transform: "scale(1.05)" }, alignSelf: "center", width: { sm: "100%", md: "80%" } }}
-          >
-            Already have an account?&nbsp;
-          </Link>
+          href="/sign-in"
+          underline="hover"
+          variant="subtitle1"
+          mt="1.5rem"
+          textAlign="center"
+          color="text.secondary"
+          sx={{
+            "&:hover": { transform: "scale(1.05)" },
+            alignSelf: "center",
+            width: { sm: "100%", md: "80%" },
+          }}
+        >
+          Already have an account?&nbsp;
+        </Link>
       </Container>
     </Box>
   );

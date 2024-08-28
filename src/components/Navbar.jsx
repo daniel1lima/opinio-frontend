@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import {
   Menu as MenuIcon,
   Search,
-  SettingsOutlined
+  SettingsOutlined,
 } from "@mui/icons-material";
 import FlexBetween from "components/FlexBetween";
 import { useDispatch } from "react-redux";
@@ -17,7 +17,7 @@ import {
   Box,
   Typography,
   Menu,
-  Badge
+  Badge,
 } from "@mui/material";
 import MailIcon from "@mui/icons-material/Mail";
 import { UserButton, useAuth } from "@clerk/clerk-react";
@@ -31,7 +31,7 @@ const Navbar = ({ user, isSidebarOpen, setIsSidebarOpen, company }) => {
 
   const [anchorEl, setAnchorEl] = useState(null);
   const isOpen = Boolean(anchorEl);
-  const handleClick = event =>
+  const handleClick = (event) =>
     isOpen ? setAnchorEl(null) : setAnchorEl(event.currentTarget);
   const handleClose = () => setAnchorEl(null);
 
@@ -40,7 +40,7 @@ const Navbar = ({ user, isSidebarOpen, setIsSidebarOpen, company }) => {
       sx={{
         position: "static",
         background: "none",
-        boxShadow: "none"
+        boxShadow: "none",
       }}
     >
       <Toolbar sx={{ justifyContent: "space-between" }}>
@@ -67,7 +67,7 @@ const Navbar = ({ user, isSidebarOpen, setIsSidebarOpen, company }) => {
               justifyContent: "space-between",
               alignItems: "center",
               textTransform: "none",
-              gap: "1rem"
+              gap: "1rem",
             }}
           >
             {/* <Button

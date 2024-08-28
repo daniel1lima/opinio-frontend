@@ -20,9 +20,11 @@ const Layout = () => {
   const { userId } = useAuth();
   const { user } = useUser();
   const userFromDb = useGetUserQuery(userId).data;
-  const company = useGetCompanyIdQuery(userFromDb?.company_id, {skip: !userFromDb?.company_id}).data;
+  const company = useGetCompanyIdQuery(userFromDb?.company_id, {
+    skip: !userFromDb?.company_id,
+  }).data;
 
-  localStorage.setItem("user_id", userId)
+  localStorage.setItem("user_id", userId);
 
   // console.log("userId", userFromDb);
   // console.log("company", company)
@@ -48,7 +50,7 @@ const Layout = () => {
           isSidebarOpen={isSidebarOpen}
           setIsSidebarOpen={setIsSidebarOpen}
         />
-        
+
         <Outlet />
         <SpeedDialTooltipOpen />
       </Box>

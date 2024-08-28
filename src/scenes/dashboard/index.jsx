@@ -7,7 +7,13 @@ import { Tabs } from "@mui/material";
 import LineAnimation from "components/LineAnimated";
 import LongMenu from "components/DotMenu";
 import { useAuth, useUser } from "@clerk/clerk-react";
-import { useGetCompanyIdQuery, useGetUserQuery, useGetReviewDataByCompanyQuery, useGetSummaryDataByCompanyQuery, useGetCompanyConnectionsQuery } from "state/api";
+import {
+  useGetCompanyIdQuery,
+  useGetUserQuery,
+  useGetReviewDataByCompanyQuery,
+  useGetSummaryDataByCompanyQuery,
+  useGetCompanyConnectionsQuery,
+} from "state/api";
 import DashBar from "components/dash_components/DashBar";
 import DashLine from "components/dash_components/DashLine";
 import DashInsights from "components/dash_components/DashInsights";
@@ -39,17 +45,27 @@ const Dashboard = () => {
   const userFromDb = useGetUserQuery(userId).data;
 
   // const summaryData = useGetSummaryDataByCompanyQuery(userFromDb?.company_id, {skip: !userFromDb?.company_id});
-  const { data: reviewData, isLoading, error } = useGetReviewDataByCompanyQuery({
-    company_id: localStorage.getItem("company_id"),
-    page: 1,
-    page_size: 1,
-  }, {skip: !localStorage.getItem("company_id")});
+  const {
+    data: reviewData,
+    isLoading,
+    error,
+  } = useGetReviewDataByCompanyQuery(
+    {
+      company_id: localStorage.getItem("company_id"),
+      page: 1,
+      page_size: 1,
+    },
+    { skip: !localStorage.getItem("company_id") },
+  );
 
   // Ensure reviewData is defined before accessing its properties
-  
+
   const totalReviews = reviewData ? reviewData.totalReviews : 0; // Extract total reviews count
 
-  const { data: connectionsData, isLoading: isConnectionsLoading } = useGetCompanyConnectionsQuery(localStorage.getItem("company_id"), { skip: !localStorage.getItem("company_id") });
+  const { data: connectionsData, isLoading: isConnectionsLoading } =
+    useGetCompanyConnectionsQuery(localStorage.getItem("company_id"), {
+      skip: !localStorage.getItem("company_id"),
+    });
   // console.log(connectionsData)
 
   // console.log(reviewData)
@@ -63,24 +79,26 @@ const Dashboard = () => {
       case 1:
         const lastWeek = subWeeks(now, 1);
         return reviews.filter((review) =>
-          isAfter(new Date(review.date), lastWeek)
+          isAfter(new Date(review.date), lastWeek),
         );
       case 2:
         const lastMonth = subMonths(now, 1);
         return reviews.filter((review) =>
-          isAfter(new Date(review.date), lastMonth)
+          isAfter(new Date(review.date), lastMonth),
         );
       case 3:
         const lastYear = subYears(now, 1);
         return reviews.filter((review) =>
-          isAfter(new Date(review.date), lastYear)
+          isAfter(new Date(review.date), lastYear),
         );
       default:
         return [];
     }
   };
 
-  const filteredReviews = reviewData ? filterReviews(reviewData.data, value) : [];
+  const filteredReviews = reviewData
+    ? filterReviews(reviewData.data, value)
+    : [];
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -94,7 +112,7 @@ const Dashboard = () => {
   });
 
   // Get today's day of the week
-  const today = new Date().toLocaleString('en-US', { weekday: 'long' });
+  const today = new Date().toLocaleString("en-US", { weekday: "long" });
 
   // Extract today's reviews count
   const newReviewsToday = reviewData?.week?.[today] || 0;
@@ -156,8 +174,13 @@ const Dashboard = () => {
             >
               <GridCloseIcon />
             </Box>
-            <Typography fontWeight="bold" variant="h4">Hey {user?.firstName}, Welcome back!</Typography>
-            <Typography fontStyle="italic" mt="1rem" variant="h6">Our company reviews are soaring high! Customers are loving our new features and services. Keep up the great work team!</Typography>
+            <Typography fontWeight="bold" variant="h4">
+              Hey {user?.firstName}, Welcome back!
+            </Typography>
+            <Typography fontStyle="italic" mt="1rem" variant="h6">
+              Our company reviews are soaring high! Customers are loving our new
+              features and services. Keep up the great work team!
+            </Typography>
           </Box>
         </animated.div>
       )}
@@ -175,8 +198,11 @@ const Dashboard = () => {
         {/* ROW 1 */}
         <Stats header="Total Reviews" stat={totalReviews} />
         <Stats header="New Reviews" stat={newReviewsToday} />
-        <ActiveIntegrations data={connectionsData} isLoading={isConnectionsLoading} />
-        
+        <ActiveIntegrations
+          data={connectionsData}
+          isLoading={isConnectionsLoading}
+        />
+
         <DashLine timeframe={value} />
 
         {/* ROW 2 */}
