@@ -16,6 +16,7 @@ const Layout = () => {
   const company = useGetCompanyIdQuery(userFromDb?.company_id, {
     skip: !userFromDb?.company_id,
   }).data;
+  const [active, setActive] = useState("");
 
   localStorage.setItem("user_id", userId);
 
@@ -30,14 +31,20 @@ const Layout = () => {
         drawerWidth="220px"
         isSidebarOpen={isSidebarOpen}
         setIsSidebarOpen={setIsSidebarOpen}
+        active={active}
+        setActive={setActive}
       />
       <Box flexGrow={1}>
-        <Navbar
-          company={company || {}}
-          user={userFromDb || {}}
-          isSidebarOpen={isSidebarOpen}
-          setIsSidebarOpen={setIsSidebarOpen}
-        />
+        {active !== "inbox" && (
+          <Navbar
+            company={company || {}}
+            user={userFromDb || {}}
+            isSidebarOpen={isSidebarOpen}
+            setIsSidebarOpen={setIsSidebarOpen}
+            active={active}
+            setActive={setActive}
+          />
+        )}
         <Outlet />
       </Box>
     </Box>

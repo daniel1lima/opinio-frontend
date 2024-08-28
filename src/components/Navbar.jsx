@@ -1,20 +1,20 @@
 import React, { useState } from "react";
-import { Menu as MenuIcon, Search } from "@mui/icons-material";
+import { Menu as MenuIcon } from "@mui/icons-material";
 import FlexBetween from "components/FlexBetween";
 import { useDispatch } from "react-redux";
 import {
   AppBar,
   IconButton,
-  InputBase,
   Toolbar,
   useTheme,
   Box,
   Typography,
+  InputBase,
 } from "@mui/material";
 import { UserButton, useAuth } from "@clerk/clerk-react";
 import MailMenu from "./MailMenu";
 
-const Navbar = ({ user, isSidebarOpen, setIsSidebarOpen, company }) => {
+const Navbar = ({ user, isSidebarOpen, setIsSidebarOpen, company, active }) => {
   const dispatch = useDispatch();
   const theme = useTheme();
 
@@ -40,56 +40,62 @@ const Navbar = ({ user, isSidebarOpen, setIsSidebarOpen, company }) => {
           <IconButton onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
             <MenuIcon />
           </IconButton>
-          <FlexBetween borderRadius="9px" gap="3rem" p="0.1rem 1.5rem">
-            <InputBase placeholder="Search..." />
-            <IconButton>
-              <Search />
-            </IconButton>
-          </FlexBetween>
         </FlexBetween>
 
         {/* {Right Side} */}
         <FlexBetween gap="1.5rem">
-          <MailMenu />
-
-          <FlexBetween
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              textTransform: "none",
-              gap: "1rem",
-            }}
-          >
-            {/* <Button
-              
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                textTransform: "none",
-                gap: "0rem",
-              }}
-            >
-              
-            </Button> */}
-            <UserButton />
-            <Box textAlign="left">
+          {active === "inbox" ? (
+            <>
               <Typography
-                fontWeight="bold"
-                fontSize="0.85rem"
+                variant="h6"
                 sx={{ color: theme.palette.secondary[100] }}
               >
-                {company.company_name}
+                Inbox
               </Typography>
-              <Typography
-                fontSize="0.75rem"
-                sx={{ color: theme.palette.secondary[200] }}
+              <InputBase
+                placeholder="Search"
+                sx={{
+                  backgroundColor: theme.palette.background.paper,
+                  borderRadius: "4px",
+                  padding: "0.5rem 1rem",
+                  marginLeft: "1rem",
+                }}
+              />
+              <IconButton>
+                <MailMenu />
+              </IconButton>
+            </>
+          ) : (
+            <>
+              <MailMenu />
+              <FlexBetween
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  textTransform: "none",
+                  gap: "1rem",
+                }}
               >
-                {user.occupation}
-              </Typography>
-            </Box>
-          </FlexBetween>
+                <UserButton />
+                <Box textAlign="left">
+                  <Typography
+                    fontWeight="bold"
+                    fontSize="0.85rem"
+                    sx={{ color: theme.palette.secondary[100] }}
+                  >
+                    {company.company_name}
+                  </Typography>
+                  <Typography
+                    fontSize="0.75rem"
+                    sx={{ color: theme.palette.secondary[200] }}
+                  >
+                    {user.occupation}
+                  </Typography>
+                </Box>
+              </FlexBetween>
+            </>
+          )}
         </FlexBetween>
       </Toolbar>
     </AppBar>
