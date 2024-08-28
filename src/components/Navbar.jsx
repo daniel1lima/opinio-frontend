@@ -1,8 +1,5 @@
 import React, { useState } from "react";
-import {
-  Menu as MenuIcon,
-  Search,
-} from "@mui/icons-material";
+import { Menu as MenuIcon, Search } from "@mui/icons-material";
 import FlexBetween from "components/FlexBetween";
 import { useDispatch } from "react-redux";
 import {

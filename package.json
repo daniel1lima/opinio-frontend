@@ -14,6 +14,7 @@
     "@reduxjs/toolkit": "^2.2.7",
     "axios": "^1.6.8",
     "date-fns": "^3.6.0",
+    "prettier": "^3.3.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-redux": "^9.1.2",
@@ -33,6 +34,9 @@
       "react-app",
       "react-app/jest"
     ],
+    "plugins": [
+      "unused-imports"
+    ],
     "rules": {
       "unused-imports/no-unused-imports": "error"
     }
@@ -50,7 +54,7 @@
     ]
   },
   "lint-staged": {
-    "**/*": "prettier --write --ignore-unknown"
+    "**/*": "npx prettier --write ."
   },
   "devDependencies": {
     "@eslint/js": "^9.9.1",

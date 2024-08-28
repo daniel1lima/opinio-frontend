@@ -1,16 +1,10 @@
 import React from "react";
 import FlexBetween from "components/FlexBetween";
 import Header from "components/Header";
-import {
-  Box,
-  Typography,
-  useTheme,
-  useMediaQuery,
-} from "@mui/material";
+import { Box, Typography, useTheme, useMediaQuery } from "@mui/material";
 
 // import BreakdownChart from "components/BreakdownChart";
 // import OverviewChart from "components/OverviewChart";
-
 
 import { useAuth, useUser } from "@clerk/clerk-react";
 import { useGetCompanyIdQuery, useGetUserQuery } from "state/api";
