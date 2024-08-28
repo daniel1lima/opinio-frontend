@@ -52,6 +52,7 @@ const navItems = [
   {
     text: "Inbox",
     icon: <InboxIcon />,
+    count: 12923,
   },
   {
     text: "Management",
@@ -75,26 +76,62 @@ const inboxItems = [
   {
     text: "Inbox",
     icon: <InboxIcon />,
+    count: 12923,
   },
   {
     text: "Starred",
     icon: <StarIcon />,
+    count: 8,
   },
   {
     text: "Snoozed",
     icon: <SnoozeIcon />,
+    count: 132,
   },
   {
     text: "Sent",
     icon: <SendIcon />,
+    count: 264,
   },
   {
     text: "Drafts",
     icon: <DraftsIcon />,
+    count: 264,
   },
   {
     text: "Trash",
     icon: <DeleteIcon />,
+    count: 264,
+  },
+];
+
+const folders = [
+  {
+    text: "Folder 1",
+    count: 18,
+  },
+  {
+    text: "Folder 2",
+    count: 4,
+  },
+];
+
+const labels = [
+  {
+    text: "Dribbble",
+    color: "pink",
+    count: 152,
+    fontWeight: "bold",
+  },
+  {
+    text: "Behance",
+    color: "blue",
+    count: 37,
+  },
+  {
+    text: "Craftwork",
+    color: "green",
+    count: 26,
   },
 ];
 
@@ -105,9 +142,10 @@ const Sidebar = ({
   isSidebarOpen,
   setIsSidebarOpen,
   isNonMobile,
+  active,
+  setActive,
 }) => {
   const { pathname } = useLocation();
-  const [active, setActive] = useState("");
   const [showInboxItems, setShowInboxItems] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
   const [isPending, startTransition] = useTransition();
@@ -207,7 +245,7 @@ const Sidebar = ({
               }}
             >
               {(showInboxItems ? inboxItems : navItems).map(
-                ({ text, icon }) => {
+                ({ text, icon, count }) => {
                   if (!icon) {
                     return (
                       <Typography
@@ -231,7 +269,7 @@ const Sidebar = ({
                               : "transparent",
                           color:
                             active === lcText
-                              ? theme.palette.primary[100]
+                              ? "darkblue"
                               : theme.palette.secondary[200],
                           transition:
                             "background-color 0.3s ease, transform 0.2s ease",
@@ -239,6 +277,14 @@ const Sidebar = ({
                             transform:
                               active === lcText ? "scale(1.05)" : "scale(1.02)",
                           },
+                          borderLeft:
+                            active === lcText
+                              ? "2px solid transparent"
+                              : "none",
+                          borderImage:
+                            active === lcText
+                              ? "linear-gradient(135deg, #00c6ff 0%, #0072ff 100%) 1"
+                              : "none",
                         }}
                       >
                         <ListItemIcon
@@ -246,13 +292,45 @@ const Sidebar = ({
                             ml: "2rem",
                             color:
                               active === lcText
-                                ? theme.palette.primary[600]
+                                ? "#0072ff"
                                 : theme.palette.secondary[200],
                           }}
                         >
                           {icon}
                         </ListItemIcon>
-                        <ListItemText primary={text} />
+                        <ListItemText
+                          primary={
+                            <Typography
+                              sx={{
+                                fontWeight: "bold",
+                                color:
+                                  active === lcText ? "transparent" : "inherit",
+                                backgroundImage:
+                                  active === lcText
+                                    ? "linear-gradient(135deg, #00c6ff 0%, #0072ff 100%)"
+                                    : "none",
+                                backgroundClip:
+                                  active === lcText ? "text" : "border-box",
+                                WebkitBackgroundClip:
+                                  active === lcText ? "text" : "border-box",
+                                WebkitTextFillColor:
+                                  active === lcText ? "transparent" : "inherit",
+                              }}
+                            >
+                              {text}
+                            </Typography>
+                          }
+                        />
+                        <Typography
+                          variant="body2"
+                          sx={{
+                            ml: "auto",
+                            color: "textSecondary",
+                            opacity: 0.6,
+                          }} // Reduced opacity
+                        >
+                          {count}
+                        </Typography>
                         {active === lcText && (
                           <ChevronRightOutlined sx={{ ml: "auto" }} />
                         )}
@@ -260,6 +338,92 @@ const Sidebar = ({
                     </ListItem>
                   );
                 },
+              )}
+              {showInboxItems && (
+                <>
+                  <Typography
+                    sx={{ m: "2.25rem 0 1rem 3rem", fontWeight: "bold" }}
+                  >
+                    Folders
+                  </Typography>
+                  {folders.map(({ text, count }) => (
+                    <ListItem key={text} disablePadding>
+                      <ListItemButton
+                        sx={{
+                          color: theme.palette.secondary[200],
+                          transition: "transform 0.2s ease",
+                          "&:hover": {
+                            transform: "scale(1.02)",
+                          },
+                        }}
+                      >
+                        <ListItemText
+                          primary={
+                            <Typography sx={{ fontWeight: "bold" }}>
+                              {text}
+                            </Typography>
+                          }
+                        />
+                        <Typography
+                          variant="body2"
+                          sx={{
+                            ml: "auto",
+                            color: "textSecondary",
+                            opacity: 0.6,
+                          }} // Reduced opacity
+                        >
+                          {count}
+                        </Typography>
+                      </ListItemButton>
+                    </ListItem>
+                  ))}
+                  <Typography
+                    sx={{ m: "2.25rem 0 1rem 3rem", fontWeight: "bold" }}
+                  >
+                    Labels
+                  </Typography>
+                  {labels.map(({ text, color, count }) => (
+                    <ListItem key={text} disablePadding>
+                      <ListItemButton
+                        sx={{
+                          color: "textSecondary",
+                          transition: "transform 0.2s ease",
+                          "&:hover": {
+                            transform: "scale(1.02)",
+                          },
+                        }}
+                      >
+                        <Box
+                          sx={{
+                            width: "10px",
+                            height: "10px",
+                            backgroundColor: color,
+                            borderRadius: "50%",
+                            mr: "1rem",
+                          }}
+                        />
+                        <ListItemText
+                          primary={
+                            <Typography sx={{ fontWeight: "bold" }}>
+                              {text}
+                            </Typography>
+                          }
+                        />
+                        <Typography
+                          variant="body2"
+                          fontWeight="bold"
+                          sx={{
+                            ml: "auto",
+                            color: "textSecondary",
+                            opacity: 0.6,
+                          }} // Reduced opacity
+                        >
+                          {count}
+                        </Typography>
+                      </ListItemButton>
+                    </ListItem>
+                  ))}
+                </>
               )}
             </List>
           </Box>
