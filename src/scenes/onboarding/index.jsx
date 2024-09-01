@@ -14,6 +14,8 @@ import LinearProgress, {
   linearProgressClasses,
 } from "@mui/material/LinearProgress";
 import { ChevronLeft } from "@mui/icons-material";
+import Modal from "@mui/material/Modal";
+import TextField from "@mui/material/TextField";
 
 // Define custom button styles
 const BootstrapButton = styled(Button)({
@@ -102,6 +104,43 @@ const swipeIn = keyframes`
   }
 `;
 
+const EmailModal = ({ open, handleClose, handleSubmit, email, setEmail }) => (
+  <Modal open={open} onClose={handleClose}>
+    <Box
+      sx={{
+        position: "absolute",
+        top: "50%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
+        width: 400,
+        bgcolor: "background.paper",
+        boxShadow: 24,
+        p: 4,
+        display: "flex",
+        flexDirection: "column",
+        gap: 2,
+      }}
+    >
+      <Typography variant="h6" component="h2">
+        Join the Waitlist
+      </Typography>
+      <TextField
+        label="Email"
+        variant="outlined"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        fullWidth
+      />
+      <Button variant="contained" onClick={handleSubmit}>
+        Submit
+      </Button>
+      <Button variant="text" onClick={handleClose}>
+        Close
+      </Button>
+    </Box>
+  </Modal>
+);
+
 const Onboarding = () => {
   const isNonMobile = useMediaQuery("(min-width: 600px)");
   const theme = useTheme();
@@ -111,6 +150,8 @@ const Onboarding = () => {
   const [businessType, setBusinessType] = useState("");
   const [teamSize, setTeamSize] = useState("");
   const [isImageLoaded, setIsImageLoaded] = useState(false); // Add loading state
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [email, setEmail] = useState("");
 
   useEffect(() => {
     const img = new Image();
@@ -139,6 +180,15 @@ const Onboarding = () => {
       setStep((prevStep) => prevStep - 1);
       setIsAnimating(false);
     }, 300); // Match this duration with the animation duration
+  };
+
+  const handleJoinWaitlist = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleEmailSubmit = () => {
+    alert(`Email submitted: ${email}`);
+    setIsModalOpen(false);
   };
 
   return (
@@ -191,7 +241,7 @@ const Onboarding = () => {
                     variant="h2"
                     sx={{ textAlign: "left", fontWeight: "bold" }}
                   >
-                    I'm planning to use Opinio for...
+                    I'm planning to use Opinio for my...
                   </Typography>
                 </Stack>
               </>
@@ -202,7 +252,7 @@ const Onboarding = () => {
                   variant="h2"
                   sx={{ textAlign: "left", fontWeight: "bold" }}
                 >
-                  How large is your business?
+                  How large is your team?
                 </Typography>
               </>
             )}
@@ -229,7 +279,12 @@ const Onboarding = () => {
               </>
             )}
           </Box>
-          <BorderLinearProgress variant="determinate" value={(step + 1) * 25} />
+          {step < 2 && ( // Conditionally render BorderLinearProgress
+            <BorderLinearProgress
+              variant="determinate"
+              value={(step + 1) * 25}
+            />
+          )}
           <Stack spacing={4} sx={{ marginTop: 2 }}>
             {step === 0 && (
               <>
@@ -261,7 +316,7 @@ const Onboarding = () => {
                     handleNextStep();
                   }}
                 >
-                  Small Business
+                  &lt; 5
                 </BootstrapButton>
                 <BootstrapButton
                   variant="contained"
@@ -270,7 +325,7 @@ const Onboarding = () => {
                     handleNextStep();
                   }}
                 >
-                  Large Business
+                  &gt; 15+
                 </BootstrapButton>
                 <Button
                   variant="text"
