@@ -79,10 +79,19 @@ const useStyles = makeStyles((theme) => ({
     opacity: 1,
   },
   appBar: {
-    position: "relative",
+    position: "fixed", // Ensure it stays at the top
+    top: 0,
+    left: 0,
+    right: 0,
     zIndex: 2,
     boxShadow: "none", // Remove the box shadow
-    borderBottom: "none", // Ensure no border is present
+    borderBottom: "1px solid #ddd", // Ensure no border is present
+  },
+  toolbarOffset: {
+    height: 64, // Set the height to match the AppBar height for desktop
+    "@media (max-width: 600px)": {
+      height: 56, // Set the height to match the AppBar height for mobile
+    },
   },
 }));
 
@@ -120,10 +129,14 @@ const InboxNavbar = ({ unreadCount }) => {
         className={`${classes.overlay} ${isSearchFocused ? classes.overlayVisible : ""}`}
       />
       <AppBar
-        position="static"
+        position="fixed" // Ensure it stays at the top
         color="default"
-        className={classes.appBar}
-        sx={{ boxShadow: "none", borderBottom: "1px solid #ddd" }}
+        sx={{
+          boxShadow: "none",
+          borderBottom: "1px solid #ddd",
+          left: 220,
+          width: "83%",
+        }}
       >
         <Toolbar>
           <Box display="flex" flexDirection="column" justifyContent="center">
