@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import {
   Box,
   Typography,
@@ -115,29 +115,70 @@ const Integrations = () => {
   const [confirmationModal, setConfirmationModal] = useState(false);
   const [integrationToRemove, setIntegrationToRemove] = useState(null);
   const [jobStatus, setJobStatus] = useState({});
+  const [eventSource, setEventSource] = useState(null);
+  const eventSourceRef = useRef(null);
+
+  const createEventSource = useCallback(() => {
+    if (eventSourceRef.current) {
+      console.log("EventSource already exists, not creating a new one");
+      return;
+    }
+
+    const companyId = localStorage.getItem("company_id");
+    const token = localStorage.getItem("token"); // Assuming you store the auth token in localStorage
+    const url = new URL(
+      `${process.env.REACT_APP_SERVICES_BASE_URL}/job_status_webhook`,
+    );
+    url.searchParams.append("company_id", companyId);
+    url.searchParams.append("token", token);
+
+    const newEventSource = new EventSource(url);
+
+    newEventSource.onopen = () => {
+      console.log("EventSource connection opened");
+    };
+
+    newEventSource.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      if (data.type === "heartbeat") {
+        console.log("Heartbeat received");
+      } else {
+        setJobStatus(data);
+      }
+    };
+
+    newEventSource.onerror = (error) => {
+      console.error("EventSource failed:", error);
+      newEventSource.close();
+      eventSourceRef.current = null;
+      retryConnection();
+    };
+
+    eventSourceRef.current = newEventSource;
+    setEventSource(newEventSource);
+  }, []);
+
+  const retryConnection = useCallback(() => {
+    const retryInterval = 5000; // 5 seconds
+    console.log(`Retrying connection in ${retryInterval / 1000} seconds...`);
+    setTimeout(() => {
+      createEventSource();
+    }, retryInterval);
+  }, [createEventSource]);
+
+  useEffect(() => {
+    createEventSource();
+
+    return () => {
+      if (eventSourceRef.current) {
+        eventSourceRef.current.close();
+        eventSourceRef.current = null;
+      }
+    };
+  }, [createEventSource]);
 
   useEffect(() => {
     fetchIntegrations();
-  }, []);
-
-  useEffect(() => {
-    const eventSource = new EventSource(
-      `${process.env.REACT_APP_SERVICES_BASE_URL}/job_status_webhook?company_id=${localStorage.getItem("company_id")}`,
-    );
-
-    eventSource.onmessage = (event) => {
-      const data = JSON.parse(event.data);
-      setJobStatus(data);
-    };
-
-    eventSource.onerror = (error) => {
-      console.error("EventSource failed:", error);
-      eventSource.close();
-    };
-
-    return () => {
-      eventSource.close();
-    };
   }, []);
 
   const fetchIntegrations = async () => {
@@ -182,7 +223,11 @@ const Integrations = () => {
 
   const getIntegrationStatus = (integration) => {
     if (jobStatus.connector_type === integration.name) {
-      if (jobStatus.status === "pending") {
+      if (
+        jobStatus.status === "pending" ||
+        jobStatus.status === "in_progress"
+      ) {
+        console.log("syncing");
         return "syncing";
       } else if (jobStatus.status === "failed") {
         return "failed";
@@ -242,6 +287,7 @@ const Integrations = () => {
         body: JSON.stringify({
           company_id: localStorage.getItem("company_id"),
           type: newIntegrations[integrationToRemove].name,
+          user_id: localStorage.getItem("user_id"),
         }),
       });
 
@@ -315,6 +361,7 @@ const Integrations = () => {
           company_id: companyId,
           connectors: [integrationType],
           action: "initial",
+          user_id: localStorage.getItem("user_id"),
         }),
       });
 

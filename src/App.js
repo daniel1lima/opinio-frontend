@@ -53,7 +53,7 @@ function SignedInRoutes() {
           <Route path="/insights" element={<Insights />} />
           <Route path="/reviews" element={<Reviews />} />
           <Route path="/integrations" element={<Integrations />} />
-          <Route path="/inbox" element={<Inbox />} />
+          <Route path="/inbox/:page?" element={<Inbox />} />
         </Route>
       </Routes>
     </SignedIn>

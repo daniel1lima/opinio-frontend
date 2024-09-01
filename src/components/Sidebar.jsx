@@ -31,6 +31,7 @@ import SnoozeIcon from "@mui/icons-material/Snooze";
 import SendIcon from "@mui/icons-material/Send";
 import DraftsIcon from "@mui/icons-material/Drafts";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { useGetInboxBreakdownQuery } from "state/api";
 
 const navItems = [
   {
@@ -52,7 +53,6 @@ const navItems = [
   {
     text: "Inbox",
     icon: <InboxIcon />,
-    count: 12923,
   },
   {
     text: "Management",
@@ -69,39 +69,6 @@ const navItems = [
   {
     text: "Integrations",
     icon: <LinkIcon />,
-  },
-];
-
-const inboxItems = [
-  {
-    text: "Inbox",
-    icon: <InboxIcon />,
-    count: 12923,
-  },
-  {
-    text: "Starred",
-    icon: <StarIcon />,
-    count: 8,
-  },
-  {
-    text: "Snoozed",
-    icon: <SnoozeIcon />,
-    count: 132,
-  },
-  {
-    text: "Sent",
-    icon: <SendIcon />,
-    count: 264,
-  },
-  {
-    text: "Drafts",
-    icon: <DraftsIcon />,
-    count: 264,
-  },
-  {
-    text: "Trash",
-    icon: <DeleteIcon />,
-    count: 264,
   },
 ];
 
@@ -156,9 +123,65 @@ const Sidebar = ({
   const email = clerkUser.email;
   const companyName = companyDB?.company_name;
 
+  const userId = localStorage.getItem("user_id");
+  const { data: breakdownData, refetch: refetchInboxBreakdown } =
+    useGetInboxBreakdownQuery({ user_id: userId });
+
+  const [inboxBreakdown, setInboxBreakdown] = useState({
+    totalReviews: 0,
+    unreadReviews: 0,
+    starredReviews: 0,
+  });
+
   useEffect(() => {
-    setActive(pathname.substring(1));
-  }, [pathname]);
+    if (pathname === "/inbox") {
+      setShowInboxItems(true);
+      setActive("inbox");
+      refetchInboxBreakdown(); // Refetch inbox data when navigating to /inbox
+    } else {
+      setShowInboxItems(false);
+      setActive(pathname.substring(1));
+    }
+  }, [pathname, refetchInboxBreakdown]);
+
+  useEffect(() => {
+    if (breakdownData?.data) {
+      setInboxBreakdown({
+        totalReviews: breakdownData.data.total_reviews,
+        unreadReviews: breakdownData.data.unread_reviews,
+        starredReviews: breakdownData.data.starred_reviews,
+      });
+    }
+  }, [breakdownData]);
+
+  const inboxItems = [
+    {
+      text: "Inbox",
+      icon: <InboxIcon />,
+      count: inboxBreakdown.unreadReviews,
+    },
+    {
+      text: "Starred",
+      icon: <StarIcon />,
+      count: inboxBreakdown.starredReviews,
+    },
+    {
+      text: "Snoozed",
+      icon: <SnoozeIcon />,
+    },
+    {
+      text: "Sent",
+      icon: <SendIcon />,
+    },
+    {
+      text: "Drafts",
+      icon: <DraftsIcon />,
+    },
+    {
+      text: "Trash",
+      icon: <DeleteIcon />,
+    },
+  ];
 
   const handleInboxClick = () => {
     setIsAnimating(true);
@@ -166,7 +189,10 @@ const Sidebar = ({
       setTimeout(() => {
         setShowInboxItems(true);
         setIsAnimating(false);
-      }, 300); // Duration of the animation
+        setActive("inbox");
+        refetchInboxBreakdown(); // Refetch inbox data when clicking on Inbox
+        navigate("/inbox"); // Navigate to inbox
+      }, 300);
     });
   };
 
@@ -177,7 +203,7 @@ const Sidebar = ({
         setShowInboxItems(false);
         setIsAnimating(false);
         navigate("/dashboard"); // Navigate to dashboard
-      }, 300); // Duration of the animation
+      }, 300);
     });
   };
 
@@ -186,9 +212,9 @@ const Sidebar = ({
       handleInboxClick();
     } else {
       setShowInboxItems(false);
+      navigate(`/${lcText}`);
+      setActive(lcText);
     }
-    navigate(`/${lcText}`);
-    setActive(lcText);
   };
 
   return (
@@ -315,6 +341,10 @@ const Sidebar = ({
                                   active === lcText ? "text" : "border-box",
                                 WebkitTextFillColor:
                                   active === lcText ? "transparent" : "inherit",
+                                fontSize:
+                                  active === lcText && lcText === "integrations"
+                                    ? "0.8rem"
+                                    : "inherit",
                               }}
                             >
                               {text}
@@ -327,7 +357,7 @@ const Sidebar = ({
                             ml: "auto",
                             color: "textSecondary",
                             opacity: 0.6,
-                          }} // Reduced opacity
+                          }}
                         >
                           {count}
                         </Typography>
@@ -370,7 +400,7 @@ const Sidebar = ({
                             ml: "auto",
                             color: "textSecondary",
                             opacity: 0.6,
-                          }} // Reduced opacity
+                          }}
                         >
                           {count}
                         </Typography>
@@ -416,7 +446,7 @@ const Sidebar = ({
                             ml: "auto",
                             color: "textSecondary",
                             opacity: 0.6,
-                          }} // Reduced opacity
+                          }}
                         >
                           {count}
                         </Typography>

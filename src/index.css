@@ -22,11 +22,11 @@ body,
 
 /* Specific element to show scrollbar */
 .show-scrollbar {
-  scrollbar-width: auto; /* Firefox */
+  scrollbar-width: thin; /* Firefox */
   -ms-overflow-style: auto; /* Internet Explorer 10+ */
 }
 
 .show-scrollbar::-webkit-scrollbar {
   /* WebKit browsers */
-  display: block;
+  display: inline;
 }

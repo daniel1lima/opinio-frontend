@@ -38,6 +38,13 @@ export const api = createApi({
       }),
       providesTags: ["Reviews"],
     }),
+    getInboxReviews: build.query({
+      query: ({ user_id, company_id, page, page_size }) => ({
+        url: `get_inbox_reviews?user_id=${user_id}&company_id=${company_id}&page=${page}&page_size=${page_size}`,
+        method: "GET",
+      }),
+      providesTags: ["Reviews"],
+    }),
   }),
 });
 
@@ -51,6 +58,20 @@ export const servicesApi = createApi({
     getCompanyConnections: build.query({
       query: (companyId) => `company_connections?company_id=${companyId}`,
       providesTags: ["CompanyConnections"],
+    }),
+    getInboxReviews: build.query({
+      query: ({ user_id, company_id, page, page_size }) => ({
+        url: `get_inbox_reviews?user_id=${user_id}&company_id=${company_id}&page=${page}&page_size=${page_size}`,
+        method: "GET",
+      }),
+      providesTags: ["Reviews"],
+    }),
+    getInboxBreakdown: build.query({
+      query: ({ user_id }) => ({
+        url: "inbox_breakdown",
+        method: "GET",
+        params: { user_id },
+      }),
     }),
   }),
 });
@@ -66,4 +87,8 @@ export const {
   useLazyGetSummaryDataByCompanyQuery,
 } = api;
 
-export const { useGetCompanyConnectionsQuery } = servicesApi;
+export const {
+  useGetCompanyConnectionsQuery,
+  useGetInboxReviewsQuery,
+  useGetInboxBreakdownQuery,
+} = servicesApi;

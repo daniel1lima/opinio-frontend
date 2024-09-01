@@ -95,7 +95,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const InboxNavbar = ({ unreadCount }) => {
+const InboxNavbar = ({ unreadCount, starredCount, totalCount }) => {
   const theme = useTheme();
   const classes = useStyles(theme);
   const searchInputRef = useRef(null);
