@@ -74,6 +74,8 @@ const DashRecent = () => {
 
   const currentReview = currentReviews[currentIndex % reviewsPerPage];
 
+  console.log(currentReview);
+
   const handleOpenModal = () => setIsModalOpen(true);
   const handleCloseModal = () => setIsModalOpen(false);
 
@@ -261,7 +263,7 @@ const DashRecent = () => {
             >
               <AIResponseButton
                 userId={localStorage.getItem("user_id")}
-                reviewId={currentReview?.id}
+                reviewId={currentReview?.review_id}
                 onResponseGenerated={handleResponseGenerated}
               />
               <Button

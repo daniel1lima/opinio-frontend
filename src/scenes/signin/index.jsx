@@ -15,7 +15,7 @@ const SignInPage = () => {
       <FlexBetween m="34%">
         <SignIn
           transferable={false}
-          forceRedirectUrl={"/dashboard"}
+          afterSignInUrl="/poll-connections"
           signUpUrl={"/onboarding"}
           layout={{ logoPlacement: "outside" }}
         />
