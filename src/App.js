@@ -16,6 +16,7 @@ import SignUpPage from "scenes/signup";
 import Onboarding from "scenes/onboarding";
 import Invited from "scenes/invited";
 import AddCompanyToUser from "components/AddCompanyToUser";
+import ApiCallHandler from "components/ApiCallHandler";
 
 const PUBLISHABLE_KEY = process.env.REACT_APP_CLERK_PUBLISHABLE_KEY;
 
@@ -54,6 +55,7 @@ function SignedInRoutes() {
           <Route path="/reviews" element={<Reviews />} />
           <Route path="/integrations" element={<Integrations />} />
           <Route path="/inbox/:page?" element={<Inbox />} />
+          <Route path="/poll-connections" element={<ApiCallHandler />} />
         </Route>
       </Routes>
     </SignedIn>

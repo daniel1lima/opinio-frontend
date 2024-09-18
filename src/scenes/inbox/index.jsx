@@ -23,7 +23,7 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { useLocation, useNavigate } from "react-router-dom";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-// import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import AIResponseButton from "components/dash_components/AIResponseButton";
 
 const Inbox = () => {
   const theme = useTheme();
@@ -44,6 +44,34 @@ const Inbox = () => {
   const companyId = localStorage.getItem("company_id");
 
   const location = useLocation();
+
+  const fetchResponse = async (reviewId, userId) => {
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_SERVICES_BASE_URL}/fetch_response`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            user_id: userId,
+            review_id: reviewId,
+          }),
+        },
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch response");
+      }
+
+      const data = await response.json();
+      return data.data.content;
+    } catch (error) {
+      console.error("Error fetching response:", error);
+      return null;
+    }
+  };
 
   const {
     data: reviewData,
@@ -92,10 +120,21 @@ const Inbox = () => {
     }
   }, [location, refetch, refetchBreakdown]);
 
-  const handleReviewClick = (review) => {
+  const handleReviewClick = async (review) => {
+    // Save the current editor content before switching
+    if (editorInstance.current && selectedReview) {
+      await handleSaveResponse();
+    }
+
+    // Destroy the existing editor instance if it exists
+    if (editorInstance.current) {
+      editorInstance.current.destroy();
+      editorInstance.current = null;
+    }
+
     setSelectedReview(review);
     updateReviewStatus(review.id, review.is_starred, true); // Mark as read
-    // Immediate feedback: hide the blue dot
+
     setReviews((prevReviews) =>
       prevReviews.map((r) =>
         r.review_id === review.review_id ? { ...r, is_read: true } : r,
@@ -158,77 +197,186 @@ const Inbox = () => {
     }
   };
 
+  const [generatedResponse, setGeneratedResponse] = useState(null);
+  const editorInstance = useRef(null);
+  const autosaveTimer = useRef(null);
+
+  const handleEditorContentChange = () => {
+    // Clear existing timer
+    if (autosaveTimer.current) {
+      clearTimeout(autosaveTimer.current);
+    }
+    // Set new timer for 10 seconds
+    autosaveTimer.current = setTimeout(() => {
+      handleSaveResponse();
+    }, 10000);
+  };
+
+  const handleSaveResponse = async () => {
+    if (editorInstance.current && selectedReview) {
+      try {
+        const outputData = await editorInstance.current.save();
+
+        // Prepare data for the backend
+        const payload = {
+          user_id: userId,
+          review_id: selectedReview.id,
+          response_data: outputData,
+        };
+
+        // Send data to your backend
+        const response = await fetch(
+          `${process.env.REACT_APP_SERVICES_BASE_URL}/save_response`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(payload),
+          },
+        );
+
+        if (response.ok) {
+          console.log("Response saved successfully.");
+        } else {
+          const errorData = await response.json();
+          console.error("Error saving response:", errorData.message);
+        }
+      } catch (error) {
+        console.error("Saving failed:", error);
+      }
+    }
+  };
+
+  const handleResponseGenerated = (response) => {
+    setGeneratedResponse(response);
+    if (response && editorInstance.current) {
+      editorInstance.current.blocks.clear();
+      editorInstance.current.blocks.insert("paragraph", {
+        text: response,
+      });
+    }
+  };
+
+  // Initialize EditorJS with onChange handler
   useEffect(() => {
     if (selectedReview) {
-      const editor = new EditorJS({
-        holder: "editorjs",
-        placeholder: "Start writing your response...",
-        tools: {
-          header: {
-            class: require("@editorjs/header"),
-            inlineToolbar: ["link"],
-          },
-          list: {
-            class: require("@editorjs/list"),
-            inlineToolbar: true,
-          },
-          // image: {
-          //   class: require('@editorjs/image'),
-          //   inlineToolbar: true,
-          //   config: {
-          //     endpoints: {
-          //       byFile: 'http://localhost:8008/uploadFile', // Your backend file uploader endpoint
-          //       byUrl: 'http://localhost:8008/fetchUrl', // Your endpoint that provides uploading by Url
-          //     },
-          //   },
-          // },
-          quote: {
-            class: require("@editorjs/quote"),
-            inlineToolbar: true,
-            config: {
-              quotePlaceholder: "Enter a quote",
-              captionPlaceholder: "Quote's author",
-            },
-          },
-          marker: {
-            class: require("@editorjs/marker"),
-            shortcut: "CMD+SHIFT+M",
-          },
-          code: {
-            class: require("@editorjs/code"),
-          },
-          delimiter: {
-            class: require("@editorjs/delimiter"),
-          },
-          inlineCode: {
-            class: require("@editorjs/inline-code"),
-            shortcut: "CMD+SHIFT+C",
-          },
-          embed: {
-            class: require("@editorjs/embed"),
-            config: {
-              services: {
-                youtube: true,
-                coub: true,
+      const initializeEditor = async () => {
+        try {
+          const responseContent = await fetchResponse(
+            selectedReview.id,
+            userId,
+          );
+
+          // Destroy existing editor instance if it exists
+          if (editorInstance.current) {
+            editorInstance.current.destroy();
+          }
+
+          const editor = new EditorJS({
+            holder: "editorjs",
+            placeholder: "Start writing your response...",
+            onChange: handleEditorContentChange,
+            tools: {
+              header: {
+                class: require("@editorjs/header"),
+                inlineToolbar: ["link"],
+              },
+              list: {
+                class: require("@editorjs/list"),
+                inlineToolbar: true,
+              },
+              quote: {
+                class: require("@editorjs/quote"),
+                inlineToolbar: true,
+                config: {
+                  quotePlaceholder: "Enter a quote",
+                  captionPlaceholder: "Quote's author",
+                },
+              },
+              marker: {
+                class: require("@editorjs/marker"),
+                shortcut: "CMD+SHIFT+M",
+              },
+              code: {
+                class: require("@editorjs/code"),
+              },
+              delimiter: {
+                class: require("@editorjs/delimiter"),
+              },
+              inlineCode: {
+                class: require("@editorjs/inline-code"),
+                shortcut: "CMD+SHIFT+C",
+              },
+              embed: {
+                class: require("@editorjs/embed"),
+                config: {
+                  services: {
+                    youtube: true,
+                    coub: true,
+                  },
+                },
+              },
+              table: {
+                class: require("@editorjs/table"),
+                inlineToolbar: true,
+                config: {
+                  rows: 2,
+                  cols: 3,
+                },
               },
             },
-          },
-          table: {
-            class: require("@editorjs/table"),
-            inlineToolbar: true,
-            config: {
-              rows: 2,
-              cols: 3,
-            },
-          },
-        },
-      });
+            onReady: () => {
+              editorInstance.current = editor;
 
-      return () => {
-        editor.destroy();
+              if (responseContent && editorInstance.current) {
+                editorInstance.current.render(responseContent);
+              } else {
+                if (editorInstance.current && editorInstance.current.blocks) {
+                  editorInstance.current.blocks.clear();
+                }
+              }
+            },
+          });
+
+          return () => {
+            handleSaveResponse();
+            if (editorInstance.current) {
+              editorInstance.current.destroy();
+              editorInstance.current = null;
+            }
+          };
+        } catch (error) {
+          console.error("Error initializing editor:", error);
+        }
       };
+
+      initializeEditor();
     }
+  }, [selectedReview, userId]);
+
+  // Add an effect to save when unmounting or changing reviews
+  useEffect(() => {
+    return () => {
+      if (editorInstance.current && selectedReview) {
+        handleSaveResponse();
+      }
+    };
   }, [selectedReview]);
+
+  // Cleanup on component unmount
+  useEffect(() => {
+    return () => {
+      if (autosaveTimer.current) {
+        clearTimeout(autosaveTimer.current);
+      }
+      if (editorInstance.current) {
+        handleSaveResponse();
+        editorInstance.current.destroy();
+        editorInstance.current = null;
+      }
+    };
+  }, []);
 
   const updateReviewStatus = async (reviewId, is_starred, is_read) => {
     const userId = localStorage.getItem("user_id");
@@ -567,6 +715,13 @@ const Inbox = () => {
                   Craft a Response:
                 </Typography>
                 <Box borderBottom="1px solid #ddd" my={2} />
+                <Box display="flex" justifyContent="flex-end" mb={2}>
+                  <AIResponseButton
+                    userId={userId}
+                    reviewId={selectedReview.id}
+                    onResponseGenerated={handleResponseGenerated}
+                  />
+                </Box>
                 <Box>
                   <Box
                     bgcolor="gray.100"
