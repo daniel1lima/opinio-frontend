@@ -8,14 +8,16 @@ import {
   Rating,
   Modal,
 } from "@mui/material";
-import { ChevronLeft, ChevronRight } from "@mui/icons-material";
 import { format, parseISO } from "date-fns";
+import AIResponseButton from "./AIResponseButton";
+import { ChevronLeft, ChevronRight } from "@mui/icons-material";
 import { useGetReviewDataByCompanyQuery } from "../../state/api";
 
 const DashRecent = () => {
   const theme = useTheme();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [generatedResponse, setGeneratedResponse] = useState(null);
   const [preloadedImages, setPreloadedImages] = useState({});
   const reviewsPerPage = 10;
 
@@ -74,6 +76,10 @@ const DashRecent = () => {
 
   const handleOpenModal = () => setIsModalOpen(true);
   const handleCloseModal = () => setIsModalOpen(false);
+
+  const handleResponseGenerated = (response) => {
+    setGeneratedResponse(response);
+  };
 
   return (
     <Box
@@ -209,6 +215,13 @@ const DashRecent = () => {
             <Typography variant="h6" sx={{ color: "#333", mb: 2 }}>
               {currentReview?.review_text}
             </Typography>
+            {generatedResponse && (
+              <Box sx={{ mb: 2 }} bgcolor={theme.palette.grey[300]}>
+                <Typography variant="body1" sx={{ color: "#333", mb: 2 }}>
+                  {generatedResponse}
+                </Typography>
+              </Box>
+            )}
 
             <Rating
               value={Number(currentReview?.rating)}
@@ -240,7 +253,17 @@ const DashRecent = () => {
               </Box>
             </Box>
 
-            <Box display="flex" justifyContent="flex-end" sx={{ mt: 3 }}>
+            <Box
+              display="flex"
+              justifyContent="flex-end"
+              sx={{ mt: 3 }}
+              gap={2}
+            >
+              <AIResponseButton
+                userId={localStorage.getItem("user_id")}
+                reviewId={currentReview?.id}
+                onResponseGenerated={handleResponseGenerated}
+              />
               <Button
                 onClick={handleCloseModal}
                 color="secondary"
