@@ -202,6 +202,7 @@ const Dashboard = () => {
         {/* <DashBar data={summaryData} /> */}
         <DashRecent data={reviewData} />
         <DashInsights />
+        {/* <DashBar data={reviewData} /> */}
       </Box>
     </Box>
   );
