@@ -1,28 +1,74 @@
-import React from "react";
-import FlexBetween from "components/FlexBetween";
+import React, { useState, useCallback, useEffect } from "react";
+import { Box, useTheme, Divider } from "@mui/material";
 import Header from "components/Header";
-import { Box, Typography, useTheme, useMediaQuery } from "@mui/material";
 
-// import BreakdownChart from "components/BreakdownChart";
-// import OverviewChart from "components/OverviewChart";
+import { ThumbUpAltOutlined, ThumbDownAltOutlined } from "@mui/icons-material";
+import axios from "axios";
 
-import { useAuth, useUser } from "@clerk/clerk-react";
-import { useGetCompanyIdQuery, useGetUserQuery } from "state/api";
+import CustomerInsights from "./CustomerInsights";
+// import MetricsSection from "./MetricsSection";
+import InsightBox from "./InsightBox";
 
 const Insights = () => {
   const theme = useTheme();
-  const isNonMediumScreens = useMediaQuery("(min-width: 1200px)");
-  const [value, setValue] = React.useState(0);
+  const company = localStorage.getItem("company_id");
 
-  // GRAB ALL RELEVANT DATABELOW
-  const { userId } = useAuth();
-  const { user } = useUser();
-  const userFromDb = useGetUserQuery(userId).data;
-  const company = useGetCompanyIdQuery(userFromDb?.company_id).data;
+  const [insightsData, setInsightsData] = useState(null);
+  const [animatedBoxes, setAnimatedBoxes] = useState([]);
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
+  const fetchInsights = useCallback(async () => {
+    try {
+      if (!insightsData) {
+        const response = await axios.get(
+          `${process.env.REACT_APP_SERVICES_BASE_URL}/fetch_insights?company_id=${company}`,
+        );
+        setInsightsData(response.data.data);
+      }
+    } catch (error) {
+      console.error("Error fetching insights:", error);
+    }
+  }, [insightsData, company]);
+
+  useEffect(() => {
+    fetchInsights();
+  }, [fetchInsights]);
+
+  useEffect(() => {
+    if (insightsData && insightsData.insights) {
+      const animationDelay = 100; // milliseconds between each box animation
+      insightsData.insights.forEach((_, index) => {
+        setTimeout(() => {
+          setAnimatedBoxes((prev) => [...prev, index]);
+        }, index * animationDelay);
+      });
+    }
+  }, [insightsData]);
+
+  if (!insightsData) {
+    return <Box>Loading...</Box>;
+  }
+
+  const positiveInsights = insightsData.highlights
+    ? insightsData.highlights.map((highlight) => ({
+        icon: ThumbUpAltOutlined,
+        text: highlight.title,
+        value: parseInt(highlight.percentage),
+        color: theme.palette.success.main,
+        description: highlight.description,
+      }))
+    : [];
+
+  const negativeInsights = insightsData.lowlights
+    ? insightsData.lowlights.map((lowlight) => ({
+        icon: ThumbDownAltOutlined,
+        text: lowlight.title,
+        value: parseInt(lowlight.percentage),
+        color: theme.palette.error.main,
+        description: lowlight.description,
+      }))
+    : [];
+
+  console.log(insightsData);
 
   return (
     <Box
@@ -30,321 +76,59 @@ const Insights = () => {
       bgcolor={theme.palette.grey[100]}
       sx={{ borderRadius: "16px" }}
       mb="1.5rem"
-      p=".5rem"
+      p="2rem"
     >
-      <FlexBetween>
-        <Box m="1rem 1rem  0rem">
-          <Box ml="0.8rem" mt="1rem">
-            <Header title="Actionable Insights" />
-          </Box>
-        </Box>
-      </FlexBetween>
+      <Box ml="0.8rem">
+        <Header title="Insights" />
+      </Box>
+
+      <Divider sx={{ mb: "2rem" }} />
+
+      <Box display="grid" gridTemplateColumns="repeat(2, 3fr)" gap="20px">
+        <CustomerInsights
+          title="Customers Are Loving..."
+          insights={positiveInsights}
+        />
+        <CustomerInsights
+          title="Driving Reviews Down..."
+          insights={negativeInsights}
+        />
+      </Box>
+
+      {/* <MetricsSection /> */}
 
       <Box
-        m="20px"
         display="grid"
-        gridTemplateColumns="repeat(24, 1fr)"
-        gridAutoRows="100px"
-        gap="30px"
-        sx={{
-          "& > div": { gridColumn: isNonMediumScreens ? undefined : "span 12" },
-        }}
+        gridTemplateColumns="repeat(2, 1fr)"
+        gap="20px"
+        mt="20px"
       >
-        {/* insight 1 */}
-
-        <Box
-          gridColumn="span 12"
-          gridRow="span 3"
-          backgroundColor={theme.palette.background.default}
-          borderRadius="0.55rem"
-          p="1rem"
-          sx={{
-            "&:hover": {
-              boxShadow: "0 0 10px 0 rgba(0,0,0,0.1)",
-              transition: "0.3s ease-out",
-              // scale: "102.6%"
-            },
-          }}
-        >
-          <Box
-            display="flex"
-            flexDirection="row"
-            gap="10px"
-            ml="1.5rem"
-            mt=".5rem"
-            mb=".5rem"
-          >
-            <Typography variant="h3" fontWeight="bold">
-              {" "}
-              Insight 1
-            </Typography>
-          </Box>
-          <Box
-            display="flex"
-            flexDirection="row"
-            gap="10px"
-            ml="1.5rem"
-            mt=".5rem"
-            mb=".5rem"
-          >
-            <Typography variant="h6"> Some context here</Typography>
-          </Box>
-
-          <Box
-            display="flex"
-            flexDirection="row"
-            gap="10px"
-            ml="1.5rem"
-            mt=".5rem"
-            mb=".5rem"
-            pt="2rem"
-          >
-            <Typography variant="h6">
-              {" "}
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry. Lorem Ipsum has been the industry's standard dummy text
-              ever since the 1500s, when an unknown printer took a galley of
-              type and scrambled it to make a type specimen book. It has
-              survived not only five centuries, but also the leap into
-              electronic typesetting, remaining essentially unchanged. It was
-              popularised in the 1960s with the release of Letraset sheets
-              containing Lorem Ipsum passages, and more recently with desktop
-              publishing software like Aldus PageMaker including versions of
-              Lorem Ipsum.
-            </Typography>
-          </Box>
-
-          <Box
-            display="flex"
-            flexDirection="row"
-            gap="10px"
-            ml="1.5rem"
-            mt=".5rem"
-            mb=".5rem"
-          ></Box>
-        </Box>
-
-        {/* insight 2 */}
-
-        <Box
-          gridColumn="span 12"
-          gridRow="span 3"
-          backgroundColor={theme.palette.background.default}
-          borderRadius="0.55rem"
-          p="1rem"
-          sx={{
-            "&:hover": {
-              boxShadow: "0 0 10px 0 rgba(0,0,0,0.1)",
-              transition: "0.3s ease-out",
-              // scale: "102.6%"
-            },
-          }}
-        >
-          <Box
-            display="flex"
-            flexDirection="row"
-            gap="10px"
-            ml="1.5rem"
-            mt=".5rem"
-            mb=".5rem"
-          >
-            <Typography variant="h3" fontWeight="bold">
-              {" "}
-              Insight 2
-            </Typography>
-          </Box>
-          <Box
-            display="flex"
-            flexDirection="row"
-            gap="10px"
-            ml="1.5rem"
-            mt=".5rem"
-            mb=".5rem"
-          >
-            <Typography variant="h6"> Some context here</Typography>
-          </Box>
-
-          <Box
-            display="flex"
-            flexDirection="row"
-            gap="10px"
-            ml="1.5rem"
-            mt=".5rem"
-            mb=".5rem"
-            pt="2rem"
-          >
-            <Typography variant="h6">
-              {" "}
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry. Lorem Ipsum has been the industry's standard dummy text
-              ever since the 1500s, when an unknown printer took a galley of
-              type and scrambled it to make a type specimen book. It has
-              survived not only five centuries, but also the leap into
-              electronic typesetting, remaining essentially unchanged. It was
-              popularised in the 1960s with the release of Letraset sheets
-              containing Lorem Ipsum passages, and more recently with desktop
-              publishing software like Aldus PageMaker including versions of
-              Lorem Ipsum.
-            </Typography>
-          </Box>
-
-          <Box
-            display="flex"
-            flexDirection="row"
-            gap="10px"
-            ml="1.5rem"
-            mt=".5rem"
-            mb=".5rem"
-          ></Box>
-        </Box>
-
-        {/* insight 3 */}
-
-        <Box
-          gridColumn="span 12"
-          gridRow="span 3"
-          backgroundColor={theme.palette.background.default}
-          borderRadius="0.55rem"
-          p="1rem"
-          sx={{
-            "&:hover": {
-              boxShadow: "0 0 10px 0 rgba(0,0,0,0.1)",
-              transition: "0.3s ease-out",
-              // scale: "102.6%"
-            },
-          }}
-        >
-          <Box
-            display="flex"
-            flexDirection="row"
-            gap="10px"
-            ml="1.5rem"
-            mt=".5rem"
-            mb=".5rem"
-          >
-            <Typography variant="h3" fontWeight="bold">
-              {" "}
-              Insight 3
-            </Typography>
-          </Box>
-          <Box
-            display="flex"
-            flexDirection="row"
-            gap="10px"
-            ml="1.5rem"
-            mt=".5rem"
-            mb=".5rem"
-          >
-            <Typography variant="h6"> Some context here</Typography>
-          </Box>
-
-          <Box
-            display="flex"
-            flexDirection="row"
-            gap="10px"
-            ml="1.5rem"
-            mt=".5rem"
-            mb=".5rem"
-            pt="2rem"
-          >
-            <Typography variant="h6">
-              {" "}
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry. Lorem Ipsum has been the industry's standard dummy text
-              ever since the 1500s, when an unknown printer took a galley of
-              type and scrambled it to make a type specimen book. It has
-              survived not only five centuries, but also the leap into
-              electronic typesetting, remaining essentially unchanged. It was
-              popularised in the 1960s with the release of Letraset sheets
-              containing Lorem Ipsum passages, and more recently with desktop
-              publishing software like Aldus PageMaker including versions of
-              Lorem Ipsum.
-            </Typography>
-          </Box>
-
-          <Box
-            display="flex"
-            flexDirection="row"
-            gap="10px"
-            ml="1.5rem"
-            mt=".5rem"
-            mb=".5rem"
-          ></Box>
-        </Box>
-
-        {/* insight 4 */}
-
-        <Box
-          gridColumn="span 12"
-          gridRow="span 3"
-          backgroundColor={theme.palette.background.default}
-          borderRadius="0.55rem"
-          p="1rem"
-          sx={{
-            "&:hover": {
-              boxShadow: "0 0 10px 0 rgba(0,0,0,0.1)",
-              transition: "0.3s ease-out",
-              // scale: "102.6%"
-            },
-          }}
-        >
-          <Box
-            display="flex"
-            flexDirection="row"
-            gap="10px"
-            ml="1.5rem"
-            mt=".5rem"
-            mb=".5rem"
-          >
-            <Typography variant="h3" fontWeight="bold">
-              {" "}
-              Insight 4
-            </Typography>
-          </Box>
-          <Box
-            display="flex"
-            flexDirection="row"
-            gap="10px"
-            ml="1.5rem"
-            mt=".5rem"
-            mb=".5rem"
-          >
-            <Typography variant="h6"> Some context here</Typography>
-          </Box>
-
-          <Box
-            display="flex"
-            flexDirection="row"
-            gap="10px"
-            ml="1.5rem"
-            mt=".5rem"
-            mb=".5rem"
-            pt="2rem"
-          >
-            <Typography variant="h6">
-              {" "}
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry. Lorem Ipsum has been the industry's standard dummy text
-              ever since the 1500s, when an unknown printer took a galley of
-              type and scrambled it to make a type specimen book. It has
-              survived not only five centuries, but also the leap into
-              electronic typesetting, remaining essentially unchanged. It was
-              popularised in the 1960s with the release of Letraset sheets
-              containing Lorem Ipsum passages, and more recently with desktop
-              publishing software like Aldus PageMaker including versions of
-              Lorem Ipsum.
-            </Typography>
-          </Box>
-
-          <Box
-            display="flex"
-            flexDirection="row"
-            gap="10px"
-            ml="1.5rem"
-            mt=".5rem"
-            mb=".5rem"
-          ></Box>
-        </Box>
+        {insightsData.insights
+          ? insightsData.insights.map((insight, index) => (
+              <Box
+                key={index}
+                sx={{
+                  opacity: animatedBoxes.includes(index) ? 1 : 0,
+                  transform: animatedBoxes.includes(index)
+                    ? "translateY(0)"
+                    : "translateY(20px)",
+                  transition: "opacity 0.5s ease-out, transform 0.5s ease-out",
+                }}
+              >
+                <InsightBox {...insight} />
+              </Box>
+            ))
+          : [...Array(4)].map((_, index) => (
+              <Box
+                key={index}
+                sx={{
+                  animation: "pulse 1.5s infinite",
+                  bgcolor: "grey.300",
+                  borderRadius: "8px",
+                  height: "200px",
+                }}
+              />
+            ))}
       </Box>
     </Box>
   );
