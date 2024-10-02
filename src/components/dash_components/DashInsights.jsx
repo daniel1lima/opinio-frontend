@@ -1,169 +1,111 @@
-import React, { useState } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import {
   Box,
-  Button,
-  Card,
-  CardContent,
-  Chip,
-  Stack,
   Typography,
   useTheme,
-  Checkbox,
+  Grid,
+  CircularProgress,
 } from "@mui/material";
+import { ThumbUpAltOutlined, ThumbDownAltOutlined } from "@mui/icons-material";
+import axios from "axios";
 
-const insights = [
-  {
-    title: "Bathrooms",
-    description:
-      "Clean them, a user stated that some of the toilets were clogged",
-    status: "Design",
-    timeLogged: "13h 20m",
-    statusColor: "success",
-  },
-  {
-    title: "Food",
-    description:
-      "A user stated that the food was not up to par with what they paid for",
-    status: "Concept",
-    timeLogged: "8h 20m",
-    statusColor: "primary",
-  },
-  {
-    title: "Service",
-    description:
-      "A user stated that the service was lackluster because one of your employees was extremely rude",
-    status: "Re-design",
-    timeLogged: "80h 40m",
-    statusColor: "warning",
-  },
-];
+import TopInsightCard from "./TopInsightCard";
+import UrgentInsightCard from "./UrgentInsightCard";
 
-const DashInsights = () => {
+const DashboardInsights = () => {
   const theme = useTheme();
-  const [taskList, setTaskList] = useState(insights);
+  const company = localStorage.getItem("company_id");
 
-  const addTask = () => {
-    const newTask = {
-      title: "New Task",
-      description: "Description of the new task",
-      status: "New",
-      timeLogged: "0h 0m",
-      statusColor: "default",
-      completed: false, // Added completed field
-    };
-    setTaskList([...taskList, newTask]);
-  };
+  const [insightsData, setInsightsData] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  const toggleTaskCompletion = (index) => {
-    const newTaskList = taskList.map((task, i) =>
-      i === index ? { ...task, completed: !task.completed } : task,
+  const fetchInsights = useCallback(async () => {
+    try {
+      setLoading(true);
+      const response = await axios.get(
+        `${process.env.REACT_APP_SERVICES_BASE_URL}/fetch_insights?company_id=${company}`,
+      );
+      setInsightsData(response.data.data);
+    } catch (error) {
+      console.error("Error fetching insights:", error);
+    } finally {
+      setLoading(false);
+    }
+  }, [company]);
+
+  useEffect(() => {
+    fetchInsights();
+  }, [fetchInsights]);
+
+  if (loading) {
+    return (
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        height="100%"
+      >
+        <CircularProgress />
+      </Box>
     );
-    setTaskList(newTaskList);
-  };
+  }
+
+  if (!insightsData) {
+    return <Typography>No insights available.</Typography>;
+  }
+
+  const topPositiveInsight = insightsData.highlights?.[0] || null;
+  const topNegativeInsight = insightsData.lowlights?.[0] || null;
+  const urgentInsights =
+    insightsData.insights?.sort((a, b) => b.urgency - a.urgency).slice(0, 3) ||
+    [];
 
   return (
     <Box
-      gridColumn="span 12"
-      gridRow="span 3"
-      backgroundColor={theme.palette.background.default}
-      borderRadius="0.55rem"
+      bgcolor={theme.palette.background.paper}
+      borderRadius="1rem"
       p="1rem"
-      sx={{
-        "&:hover": {
-          boxShadow: "0 0 10px 0 rgba(0,0,0,0.1)",
-          transition: "0.3s ease-out",
-        },
-      }}
+      height="100%"
+      display="flex"
+      flexDirection="column"
+      position="relative"
+      overflow="hidden"
     >
-      <Box
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-        ml="1rem"
-        mt="1rem"
-        mr="1rem"
-      >
-        <Box display="flex" alignItems="center" gap="10px">
-          <Typography variant="h3" fontWeight="bold">
-            Insights
-          </Typography>
-        </Box>
-        <Box display="flex" alignItems="center" gap="10px">
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={addTask}
-            sx={{ textTransform: "none", borderRadius: "0.55rem" }}
-          >
-            Add Task
-          </Button>
-        </Box>
-      </Box>
-      <Box
-        className="show-scrollbar"
-        height="calc(100% - 5rem)" // Adjust height to fit within the parent box
-        ml=".5rem"
-        mt="2rem"
-        p=".5rem"
-        sx={{
-          overflowY: "auto", // Ensure overflow content is scrollable
-          maxHeight: "100%", // Prevent overflow
-          "&::-webkit-scrollbar": { width: "2px" },
-          "&::-webkit-scrollbar-thumb": {
-            backgroundColor: theme.palette.common.black,
-          },
-          "&::-webkit-scrollbar-track": {
-            backgroundColor: theme.palette.black,
-          },
-        }}
-      >
-        <Stack spacing={2}>
-          {taskList.map((insight, index) => (
-            <Card
-              key={index}
-              variant="outlined"
-              sx={{
-                borderRadius: "0.55rem",
-                width: "100%",
-                opacity: insight.completed ? 0.5 : 1, // Adjust opacity based on completion
-              }}
-            >
-              <CardContent>
-                <Box
-                  display="flex"
-                  justifyContent="space-between"
-                  alignItems="center"
-                >
-                  <Typography variant="h6" fontWeight="bold">
-                    {insight.title}
-                  </Typography>
-                  <Chip label={insight.status} color={insight.statusColor} />
-                  <Checkbox
-                    checked={insight.completed}
-                    onChange={() => toggleTaskCompletion(index)}
-                    sx={{
-                      color: theme.palette.primary.main,
-                      "&.Mui-checked": {
-                        color: theme.palette.common.blue,
-                      },
-                    }}
-                  />
-                </Box>
-                <Typography variant="body2" color="textSecondary" mt={1}>
-                  {insight.description}
-                </Typography>
-                <Box display="flex" alignItems="center" mt={2}>
-                  <Typography variant="body2" fontWeight="bold">
-                    Estimated Time: {insight.timeLogged}
-                  </Typography>
-                </Box>
-              </CardContent>
-            </Card>
+      <Typography variant="h5" fontWeight="bold" mb={2}>
+        Key Insights
+      </Typography>
+      <Grid container spacing={2}>
+        <Grid item xs={12} md={6}>
+          <TopInsightCard
+            insight={topPositiveInsight}
+            type="positive"
+            icon={ThumbUpAltOutlined}
+            color={theme.palette.success.main}
+          />
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <TopInsightCard
+            insight={topNegativeInsight}
+            type="negative"
+            icon={ThumbDownAltOutlined}
+            color={theme.palette.error.main}
+          />
+        </Grid>
+      </Grid>
+      <Box mt={3}>
+        <Typography variant="h6" fontWeight="bold" mb={2}>
+          Urgent Insights
+        </Typography>
+        <Grid container spacing={2}>
+          {urgentInsights.map((insight, index) => (
+            <Grid item xs={12} sm={4} key={index}>
+              <UrgentInsightCard insight={insight} />
+            </Grid>
           ))}
-        </Stack>
+        </Grid>
       </Box>
     </Box>
   );
 };
 
-export default DashInsights;
+export default DashboardInsights;

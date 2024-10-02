@@ -14,6 +14,7 @@ const Stats = ({ header, stat }) => {
       gridRow="span 1"
       backgroundColor={theme.palette.background.default}
       borderRadius="0.55rem"
+      height="100%"
       sx={{
         "&:hover": {
           boxShadow: "0 0 10px 0 rgba(0,0,0,0.1)",
