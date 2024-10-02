@@ -27,8 +27,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import FlexBetween from "./FlexBetween";
 import logo from "assets/logo.png";
 import StarIcon from "@mui/icons-material/Star";
-import SnoozeIcon from "@mui/icons-material/Snooze";
-import SendIcon from "@mui/icons-material/Send";
+
 import DraftsIcon from "@mui/icons-material/Drafts";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useGetInboxBreakdownQuery } from "state/api";
@@ -69,17 +68,6 @@ const navItems = [
   {
     text: "Integrations",
     icon: <LinkIcon />,
-  },
-];
-
-const folders = [
-  {
-    text: "Folder 1",
-    count: 18,
-  },
-  {
-    text: "Folder 2",
-    count: 4,
   },
 ];
 
@@ -164,14 +152,6 @@ const Sidebar = ({
       text: "Starred",
       icon: <StarIcon />,
       count: inboxBreakdown.starredReviews,
-    },
-    {
-      text: "Snoozed",
-      icon: <SnoozeIcon />,
-    },
-    {
-      text: "Sent",
-      icon: <SendIcon />,
     },
     {
       text: "Drafts",
@@ -371,42 +351,6 @@ const Sidebar = ({
               )}
               {showInboxItems && (
                 <>
-                  <Typography
-                    sx={{ m: "2.25rem 0 1rem 3rem", fontWeight: "bold" }}
-                  >
-                    Folders
-                  </Typography>
-                  {folders.map(({ text, count }) => (
-                    <ListItem key={text} disablePadding>
-                      <ListItemButton
-                        sx={{
-                          color: theme.palette.secondary[200],
-                          transition: "transform 0.2s ease",
-                          "&:hover": {
-                            transform: "scale(1.02)",
-                          },
-                        }}
-                      >
-                        <ListItemText
-                          primary={
-                            <Typography sx={{ fontWeight: "bold" }}>
-                              {text}
-                            </Typography>
-                          }
-                        />
-                        <Typography
-                          variant="body2"
-                          sx={{
-                            ml: "auto",
-                            color: "textSecondary",
-                            opacity: 0.6,
-                          }}
-                        >
-                          {count}
-                        </Typography>
-                      </ListItemButton>
-                    </ListItem>
-                  ))}
                   <Typography
                     sx={{ m: "2.25rem 0 1rem 3rem", fontWeight: "bold" }}
                   >

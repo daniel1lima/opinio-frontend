@@ -135,7 +135,7 @@ const InboxNavbar = ({ unreadCount, starredCount, totalCount }) => {
           boxShadow: "none",
           borderBottom: "1px solid #ddd",
           left: 220,
-          width: "83%",
+          width: "89%",
         }}
       >
         <Toolbar>
