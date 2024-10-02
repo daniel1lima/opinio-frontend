@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, Tooltip } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles((theme) => ({
   cardContainer: {
     perspective: "1000px",
-    height: "200px",
+    height: "300px",
     width: "600px",
     "&:hover": {
       transform: "scale(1.02)",
@@ -39,13 +39,47 @@ const useStyles = makeStyles((theme) => ({
     zIndex: 2,
   },
   backSide: {
-    backgroundColor: "white", // Static color example
-    color: "black", // Static contrast color example
+    backgroundColor: "white",
+    color: "black",
     transform: "rotateY(180deg)",
+  },
+  urgencyDot: {
+    width: 8,
+    height: 8,
+    borderRadius: "50%",
+    marginLeft: 4,
+    transition: "background-color 0.3s ease-in-out",
   },
 }));
 
-const InsightBox = ({ title, problem, dotColors, solution }) => {
+const UrgencyDots = ({ urgency }) => {
+  const classes = useStyles();
+
+  const getUrgencyColor = (dotIndex) => {
+    if (dotIndex < urgency) {
+      if (urgency <= 2) return "#4CAF50";
+      if (urgency <= 4) return "#FFA000";
+      return "#F44336";
+    }
+    return "#D3D3D3";
+  };
+
+  return (
+    <Tooltip title={`Urgency: ${urgency}/6`} arrow placement="top">
+      <Box display="flex">
+        {[...Array(6)].map((_, index) => (
+          <Box
+            key={index}
+            className={classes.urgencyDot}
+            style={{ backgroundColor: getUrgencyColor(index) }}
+          />
+        ))}
+      </Box>
+    </Tooltip>
+  );
+};
+
+const InsightBox = ({ title, problem, solution, urgency }) => {
   const classes = useStyles();
   const [isFlipped, setIsFlipped] = useState(false);
 
@@ -69,19 +103,9 @@ const InsightBox = ({ title, problem, dotColors, solution }) => {
               <Typography variant="h6" fontWeight="bold">
                 {title}
               </Typography>
-              <Box display="flex">
-                {dotColors.map((color, index) => (
-                  <Box
-                    key={index}
-                    width={8}
-                    height={8}
-                    borderRadius="50%"
-                    bgcolor={color}
-                    ml={0.5}
-                  />
-                ))}
-              </Box>
+              <UrgencyDots urgency={urgency} />
             </Box>
+
             <Typography variant="subtitle1" fontWeight="bold" mb={1}>
               The Problem
             </Typography>

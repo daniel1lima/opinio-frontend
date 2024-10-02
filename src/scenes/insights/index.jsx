@@ -1,97 +1,74 @@
-import React from "react";
-import { Box, useTheme, useMediaQuery, Divider } from "@mui/material";
+import React, { useState, useCallback, useEffect } from "react";
+import { Box, useTheme, Divider } from "@mui/material";
 import Header from "components/Header";
-import { useAuth, useUser } from "@clerk/clerk-react";
-import { useGetCompanyIdQuery, useGetUserQuery } from "state/api";
-import {
-  CoronavirusOutlined,
-  SupportAgentOutlined,
-  GroupOutlined,
-  RestaurantOutlined,
-  FactCheckOutlined,
-  BusinessCenterOutlined,
-} from "@mui/icons-material";
+
+import { ThumbUpAltOutlined, ThumbDownAltOutlined } from "@mui/icons-material";
+import axios from "axios";
 
 import CustomerInsights from "./CustomerInsights";
-import MetricsSection from "./MetricsSection";
+// import MetricsSection from "./MetricsSection";
 import InsightBox from "./InsightBox";
 
 const Insights = () => {
   const theme = useTheme();
-  const isNonMediumScreens = useMediaQuery("(min-width: 1200px)");
+  const company = localStorage.getItem("company_id");
 
-  const { userId } = useAuth();
-  const { user } = useUser();
-  const userFromDb = useGetUserQuery(userId).data;
-  const company = useGetCompanyIdQuery(userFromDb?.company_id).data;
+  const [insightsData, setInsightsData] = useState(null);
+  const [animatedBoxes, setAnimatedBoxes] = useState([]);
 
-  const positiveInsights = [
-    {
-      icon: CoronavirusOutlined,
-      text: "Covid Protocols",
-      value: 95,
-      color: theme.palette.success.main,
-    },
-    {
-      icon: SupportAgentOutlined,
-      text: "Fast Customer Support",
-      value: 82,
-      color: theme.palette.primary.dark,
-    },
-    {
-      icon: GroupOutlined,
-      text: "Social Environment",
-      value: 89,
-      color: theme.palette.info.main,
-    },
-  ];
+  const fetchInsights = useCallback(async () => {
+    try {
+      if (!insightsData) {
+        const response = await axios.get(
+          `${process.env.REACT_APP_SERVICES_BASE_URL}/fetch_insights?company_id=${company}`,
+        );
+        setInsightsData(response.data.data);
+      }
+    } catch (error) {
+      console.error("Error fetching insights:", error);
+    }
+  }, [insightsData, company]);
 
-  const negativeInsights = [
-    {
-      icon: RestaurantOutlined,
-      text: "Food Safety",
-      value: 74,
-      color: theme.palette.warning.main,
-    },
-    {
-      icon: FactCheckOutlined,
-      text: "Compliance Basics Procedures",
-      value: 52,
-      color: theme.palette.error.main,
-    },
-    {
-      icon: BusinessCenterOutlined,
-      text: "Company Networking",
-      value: 38,
-      color: theme.palette.secondary.main,
-    },
-  ];
+  useEffect(() => {
+    fetchInsights();
+  }, [fetchInsights]);
 
-  const insightBoxes = [
-    {
-      title: "To-Do 1",
-      problem: "Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
-      dotColors: ["#FFD700", "#D3D3D3", "#D3D3D3"],
-    },
-    {
-      title: "To-Do 2",
-      problem:
-        "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua...",
-      dotColors: ["#4CAF50", "#4CAF50", "#4CAF50"],
-    },
-    {
-      title: "To-Do 3",
-      problem:
-        "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris...",
-      dotColors: ["#4CAF50", "#4CAF50", "#D3D3D3"],
-    },
-    {
-      title: "To-Do 4",
-      problem:
-        "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum...",
-      dotColors: ["#4CAF50", "#4CAF50", "#D3D3D3"],
-    },
-  ];
+  useEffect(() => {
+    if (insightsData && insightsData.insights) {
+      const animationDelay = 100; // milliseconds between each box animation
+      insightsData.insights.forEach((_, index) => {
+        setTimeout(() => {
+          setAnimatedBoxes((prev) => [...prev, index]);
+        }, index * animationDelay);
+      });
+    }
+  }, [insightsData]);
+
+  if (!insightsData) {
+    return <Box>Loading...</Box>;
+  }
+
+  const positiveInsights = insightsData.highlights
+    ? insightsData.highlights.map((highlight) => ({
+        icon: ThumbUpAltOutlined,
+        text: highlight.title,
+        value: parseInt(highlight.percentage),
+        color: theme.palette.success.main,
+        description: highlight.description,
+      }))
+    : [];
+
+  const negativeInsights = insightsData.lowlights
+    ? insightsData.lowlights.map((lowlight) => ({
+        icon: ThumbDownAltOutlined,
+        text: lowlight.title,
+        value: parseInt(lowlight.percentage),
+        color: theme.palette.error.main,
+        description: lowlight.description,
+      }))
+    : [];
+
+  console.log(insightsData);
 
   return (
     <Box
@@ -118,7 +95,7 @@ const Insights = () => {
         />
       </Box>
 
-      <MetricsSection />
+      {/* <MetricsSection /> */}
 
       <Box
         display="grid"
@@ -126,9 +103,32 @@ const Insights = () => {
         gap="20px"
         mt="20px"
       >
-        {insightBoxes.map((insight, index) => (
-          <InsightBox key={index} {...insight} />
-        ))}
+        {insightsData.insights
+          ? insightsData.insights.map((insight, index) => (
+              <Box
+                key={index}
+                sx={{
+                  opacity: animatedBoxes.includes(index) ? 1 : 0,
+                  transform: animatedBoxes.includes(index)
+                    ? "translateY(0)"
+                    : "translateY(20px)",
+                  transition: "opacity 0.5s ease-out, transform 0.5s ease-out",
+                }}
+              >
+                <InsightBox {...insight} />
+              </Box>
+            ))
+          : [...Array(4)].map((_, index) => (
+              <Box
+                key={index}
+                sx={{
+                  animation: "pulse 1.5s infinite",
+                  bgcolor: "grey.300",
+                  borderRadius: "8px",
+                  height: "200px",
+                }}
+              />
+            ))}
       </Box>
     </Box>
   );

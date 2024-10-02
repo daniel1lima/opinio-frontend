@@ -1,55 +1,113 @@
-import React from "react";
-import { Box, Typography, LinearProgress } from "@mui/material";
-
-const InsightItem = ({ icon: Icon, text, value, color }) => (
-  <Box mb={2} p={2}>
-    <Box display="flex" alignItems="center" mb={1}>
-      <Icon sx={{ width: 24, height: 24, mr: 1, color: color }} />
-      <Typography variant="body3" fontWeight="bold">
-        {text}
-      </Typography>
-    </Box>
-    <Box display="flex" alignItems="center">
-      <LinearProgress
-        variant="determinate"
-        value={value}
-        sx={{
-          flexGrow: 1,
-          height: 10, // Increased height for better visibility
-          borderRadius: 5, // Slightly rounded corners
-          backgroundColor: "rgba(0,0,0,0.1)",
-          "& .MuiLinearProgress-bar": {
-            backgroundColor: color,
-            borderRadius: 5, // Match the border radius of the track
-          },
-          "&.MuiLinearProgress-root": {
-            marginTop: 1, // Add some space above the progress bar
-            marginBottom: 1, // Add some space below the progress bar
-          },
-        }}
-      />
-      <Typography
-        variant="body3"
-        fontWeight="bold"
-        ml={1}
-        minWidth={40}
-        textAlign="right"
-      >
-        {value}%
-      </Typography>
-    </Box>
-  </Box>
-);
+import React, { useState, useEffect } from "react";
+import {
+  Box,
+  Typography,
+  useTheme,
+  LinearProgress,
+  Tooltip,
+  IconButton,
+  Fade,
+} from "@mui/material";
+import FlexBetween from "components/FlexBetween";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 
 const CustomerInsights = ({ title, insights }) => {
+  const theme = useTheme();
+  const [progress, setProgress] = useState(0);
+  const [fadeIn, setFadeIn] = useState(false);
+
+  useEffect(() => {
+    setFadeIn(true);
+    const timer = setInterval(() => {
+      setProgress((oldProgress) => {
+        if (oldProgress === 100) {
+          clearInterval(timer);
+          return 100;
+        }
+        const diff = Math.random() * 20;
+        return Math.min(oldProgress + diff, 100);
+      });
+    }, 50);
+
+    return () => {
+      clearInterval(timer);
+    };
+  }, []);
+
   return (
-    <Box bgcolor="white" p={2} borderRadius={2} boxShadow={1}>
-      <Typography ml={2} mt={2} variant="h4" mb={2} fontWeight="bold">
+    <Box
+      bgcolor={theme.palette.background.paper}
+      borderRadius="1rem"
+      p="1.5rem"
+    >
+      <Typography
+        variant="h6"
+        color={theme.palette.secondary[100]}
+        fontWeight="bold"
+        sx={{ mb: "15px" }}
+      >
         {title}
       </Typography>
-      {insights.map((insight, index) => (
-        <InsightItem key={index} {...insight} />
-      ))}
+      <Box display="flex" flexDirection="column" gap="1.5rem">
+        {insights.map((item, i) => (
+          <Box key={`${item.text}-${i}`}>
+            <FlexBetween>
+              <Box display="flex" alignItems="center" gap="1rem">
+                <item.icon
+                  sx={{
+                    color: item.color,
+                    fontSize: "26px",
+                  }}
+                />
+                <Box display="flex" alignItems="center">
+                  <Fade in={fadeIn} timeout={1000}>
+                    <Typography
+                      variant="h5"
+                      fontWeight="bold"
+                      sx={{ color: theme.palette.secondary[100] }}
+                    >
+                      {item.text}
+                    </Typography>
+                  </Fade>
+                  <Tooltip
+                    title={item.description}
+                    arrow
+                    placement="top"
+                    sx={{ fontSize: "2rem" }}
+                  >
+                    <IconButton size="small" color="primary">
+                      <InfoOutlinedIcon />
+                    </IconButton>
+                  </Tooltip>
+                </Box>
+              </Box>
+            </FlexBetween>
+            <FlexBetween sx={{ mt: "0.5rem" }}>
+              <LinearProgress
+                variant="determinate"
+                value={progress * (item.value / 100)}
+                sx={{
+                  height: 4,
+                  borderRadius: 5,
+                  width: "100%",
+                  backgroundColor: theme.palette.primary.main,
+                  "& .MuiLinearProgress-bar": {
+                    borderRadius: 5,
+                    backgroundColor: item.color,
+                  },
+                }}
+              />
+              <Typography
+                variant="body2"
+                fontWeight="bold"
+                sx={{ color: theme.palette.secondary[100], ml: "1rem" }}
+              >
+                {item.value}%
+              </Typography>
+            </FlexBetween>
+          </Box>
+        ))}
+      </Box>
     </Box>
   );
 };
