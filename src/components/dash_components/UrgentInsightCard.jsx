@@ -20,6 +20,7 @@ const UrgentInsightCard = ({ insight }) => {
       flexDirection="column"
       position="relative"
       overflow="hidden"
+      outline="1px solid rgba(128, 128, 128, 0.5)"
     >
       <Box
         position="absolute"
