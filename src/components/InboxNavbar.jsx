@@ -12,9 +12,7 @@ import {
   Delete as DeleteIcon,
   Archive as ArchiveIcon,
   Markunread as MarkunreadIcon,
-  Report as ReportIcon,
   Label as LabelIcon,
-  MoreVert as MoreVertIcon,
   Search as SearchIcon,
 } from "@mui/icons-material";
 import { useTheme } from "@mui/material/styles";
@@ -135,7 +133,7 @@ const InboxNavbar = ({ unreadCount, starredCount, totalCount }) => {
           boxShadow: "none",
           borderBottom: "1px solid #ddd",
           left: 220,
-          width: "89%",
+          width: "88%",
         }}
       >
         <Toolbar>
@@ -179,13 +177,7 @@ const InboxNavbar = ({ unreadCount, starredCount, totalCount }) => {
               <MarkunreadIcon />
             </IconButton>
             <IconButton color="inherit">
-              <ReportIcon />
-            </IconButton>
-            <IconButton color="inherit">
               <LabelIcon />
-            </IconButton>
-            <IconButton color="inherit">
-              <MoreVertIcon />
             </IconButton>
           </Box>
         </Toolbar>
