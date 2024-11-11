@@ -1,14 +1,9 @@
 import React, { useState } from "react";
+import { Responsive, WidthProvider } from "react-grid-layout";
+import "react-grid-layout/css/styles.css";
 import FlexBetween from "components/FlexBetween";
 import Header from "components/Header";
-import {
-  Box,
-  useTheme,
-  useMediaQuery,
-  Tab,
-  Typography,
-  Grid,
-} from "@mui/material";
+import { Box, useTheme, useMediaQuery, Tab, Typography } from "@mui/material";
 import { useSpring, animated } from "@react-spring/web";
 import { Tabs } from "@mui/material";
 import { useAuth, useUser } from "@clerk/clerk-react";
@@ -33,11 +28,60 @@ const gradientAnimation = keyframes`
   100% { background-position: 0% 80%; }
 `;
 
+const ResponsiveGridLayout = WidthProvider(Responsive);
+
 const Dashboard = () => {
   const theme = useTheme();
   const isNonMediumScreens = useMediaQuery("(min-width: 1200px)");
   const [value, setValue] = useState(0);
   const [showWelcome, setShowWelcome] = useState(true);
+  const [layouts, setLayouts] = useState({
+    lg: [
+      { i: "stats1", x: 0, y: 0, w: 8, h: 2 },
+      { i: "stats2", x: 8, y: 0, w: 8, h: 2 },
+      { i: "activeIntegrations", x: 30, y: 8, w: 16, h: 3 },
+      { i: "dashLine", x: 0, y: 2, w: 16, h: 6 },
+      { i: "dashRecent", x: 0, y: 8, w: 16, h: 6 },
+      { i: "dashInsights", x: 32, y: 0, w: 16, h: 8 },
+    ],
+  });
+
+  const onLayoutChange = (newLayout, layouts) => {
+    // Convert the current layout to a map for easy lookup
+    const currentLayoutMap = layouts.lg.reduce((acc, item) => {
+      acc[item.i] = item;
+      return acc;
+    }, {});
+
+    // Check if any items have switched positions
+    const switchedItems = newLayout.filter(
+      (item) =>
+        currentLayoutMap[item.i] &&
+        (item.x !== currentLayoutMap[item.i].x ||
+          item.y !== currentLayoutMap[item.i].y),
+    );
+
+    if (switchedItems.length === 2) {
+      // Two items have switched positions
+      const [item1, item2] = switchedItems;
+
+      // Create a new layout with the switched positions
+      const updatedLayout = layouts.lg.map((item) => {
+        if (item.i === item1.i) {
+          return { ...item, x: item2.x, y: item2.y };
+        } else if (item.i === item2.i) {
+          return { ...item, x: item1.x, y: item1.y };
+        }
+        return item;
+      });
+
+      // Update the layouts state
+      setLayouts({ ...layouts, lg: updatedLayout });
+    } else {
+      // If no switch occurred, update layouts as normal
+      setLayouts(layouts);
+    }
+  };
 
   // GRAB ALL RELEVANT DATA BELOW
   const { userId } = useAuth();
@@ -185,30 +229,42 @@ const Dashboard = () => {
         </animated.div>
       )}
 
-      <Grid container spacing={2}>
-        <Grid item xs={12} md={6}>
+      <ResponsiveGridLayout
+        className="layout"
+        layouts={layouts}
+        breakpoints={{ lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 }}
+        cols={{ lg: 32, md: 24, sm: 16, xs: 8, xxs: 4 }}
+        rowHeight={60}
+        onLayoutChange={onLayoutChange}
+        isDraggable
+        isResizable={false}
+        allowOverlap={true}
+        preventCollision={true}
+        compactType={null}
+        maxRows={14} // Add this line to limit the maximum number of rows
+      >
+        <div key="stats1">
           <Stats header="Total Reviews" stat={totalReviews} />
-        </Grid>
-        <Grid item xs={12} md={6}>
+        </div>
+        <div key="stats2">
           <Stats header="New Reviews" stat={newReviewsToday} />
-        </Grid>
-
-        <Grid item xs={12} md={6}>
-          <DashLine timeframe={value} />
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <DashRecent data={reviewData} />
-        </Grid>
-        <Grid item xs={12} md={6}>
+        </div>
+        <div key="activeIntegrations">
           <ActiveIntegrations
             data={connectionsData}
             isLoading={isConnectionsLoading}
           />
-        </Grid>
-        <Grid item xs={12} md={6}>
+        </div>
+        <div key="dashLine">
+          <DashLine timeframe={value} />
+        </div>
+        <div key="dashRecent">
+          <DashRecent data={reviewData} />
+        </div>
+        <div key="dashInsights">
           <DashInsights />
-        </Grid>
-      </Grid>
+        </div>
+      </ResponsiveGridLayout>
     </Box>
   );
 };

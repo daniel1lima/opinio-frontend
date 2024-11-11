@@ -38,10 +38,6 @@ const navItems = [
     icon: <HomeOutlined />,
   },
   {
-    text: "Client Facing",
-    icon: null,
-  },
-  {
     text: "Insights",
     icon: <InsightsIcon />,
   },
