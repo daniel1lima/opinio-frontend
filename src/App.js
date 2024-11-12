@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import { useMemo } from "react";
 import { ClerkProvider, SignedIn, SignedOut } from "@clerk/clerk-react";
+import { NextUIProvider } from "@nextui-org/react";
 import Dashboard from "scenes/dashboard";
 import Layout from "scenes/layout";
 import Insights from "scenes/insights";
@@ -33,9 +34,11 @@ function App() {
       <BrowserRouter>
         <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
           <ThemeProvider theme={theme}>
-            <CssBaseline />
-            <SignedInRoutes />
-            <SignedOutRoutes />
+            <NextUIProvider>
+              <CssBaseline />
+              <SignedInRoutes />
+              <SignedOutRoutes />
+            </NextUIProvider>
           </ThemeProvider>
         </ClerkProvider>
       </BrowserRouter>

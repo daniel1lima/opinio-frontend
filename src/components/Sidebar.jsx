@@ -38,10 +38,6 @@ const navItems = [
     icon: <HomeOutlined />,
   },
   {
-    text: "Client Facing",
-    icon: null,
-  },
-  {
     text: "Insights",
     icon: <InsightsIcon />,
   },
@@ -73,18 +69,18 @@ const navItems = [
 
 const labels = [
   {
-    text: "Dribbble",
+    text: "Critical",
     color: "pink",
     count: 152,
     fontWeight: "bold",
   },
   {
-    text: "Behance",
+    text: "Food",
     color: "blue",
     count: 37,
   },
   {
-    text: "Craftwork",
+    text: "Staff",
     color: "green",
     count: 26,
   },

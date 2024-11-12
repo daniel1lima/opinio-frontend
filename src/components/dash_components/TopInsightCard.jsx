@@ -14,6 +14,7 @@ const TopInsightCard = ({ insight, type, icon: Icon, color }) => {
       height="100%"
       display="flex"
       flexDirection="column"
+      outline={type === "positive" ? "1px solid green" : "1px solid red"}
     >
       <Box display="flex" alignItems="center" mb={1}>
         <Icon sx={{ color, marginRight: 1 }} />

@@ -39,7 +39,7 @@ const Dashboard = () => {
     lg: [
       { i: "stats1", x: 0, y: 0, w: 8, h: 2 },
       { i: "stats2", x: 8, y: 0, w: 8, h: 2 },
-      { i: "activeIntegrations", x: 30, y: 8, w: 6, h: 3 },
+      { i: "activeIntegrations", x: 30, y: 8, w: 16, h: 3 },
       { i: "dashLine", x: 0, y: 2, w: 16, h: 6 },
       { i: "dashRecent", x: 0, y: 8, w: 16, h: 6 },
       { i: "dashInsights", x: 32, y: 0, w: 16, h: 8 },

@@ -33,7 +33,13 @@ const Stats = ({ header, stat }) => {
           <LongMenu />
         </Box>
       </FlexBetween>
-      <Typography mt=".5rem" variant="h2" fontWeight="bold" align="center">
+      <Typography
+        mt=".2rem"
+        mb="1rem"
+        variant="h2"
+        fontWeight="bold"
+        align="center"
+      >
         {stat}
         {stat > 0 && (
           <ExpandLessOutlinedIcon color="success" sx={{ fontSize: 26 }} />
