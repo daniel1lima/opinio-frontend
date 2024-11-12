@@ -1,6 +1,7 @@
 # Opinio - Business Analytics Dashboard
 ![Opinio_Logo_White](https://github.com/user-attachments/assets/5d4dcfe0-a11f-44b5-9168-2d07ed50a8bc)
 
+![Demo]{https://youtu.be/8RQAcJam31s}
 
 ## Overview
 
